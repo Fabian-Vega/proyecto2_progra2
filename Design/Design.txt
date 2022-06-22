@@ -4,13 +4,14 @@ size_t                  nodeCount
 size_t*                 adjacencyMatrix
 vector <List<DataType>> adjacencyList 
 bool                    isDirected
+bool                    hasValues
 
 Class List
     Class Node
     attributes:
     Datatype  data
     Node*     next
-    long long weight
+    double    value
 
 attributes:
 size_t           count
@@ -33,16 +34,16 @@ removeVertex(x):
 Remove/Destroys the vertex x, if there is one, returns true, otherwise, returns false
 
 addEdge(x, y, value):
-Adds/Creates an edge from the vertex x to the vertex y with a given weight, returns true if the edges was not there, otherwise, returns false
+Adds/Creates an edge from the vertex x to the vertex y with a given value, returns true if the edges was not there, otherwise, returns false
 
 removeEdge(x, y):
-Remove/Destroys an edge from the vertex x to the vertex y with a given weight, returns true if the edges was not there, otherwise, returns false
+Remove/Destroys an edge from the vertex x to the vertex y with a given value, returns true if the edges was not there, otherwise, returns false
 
 getEdge(x, y):
 Returns the value associated with the edge (nodo x, nodo y)
 
 setEdge(x, y, v):
-Sets the values associated with the edge (nodo x, nodo y) to v (weight)
+Sets the values associated with the edge (nodo x, nodo y) to v (value)
 
 operator()(x, y):
 Returns the value associated with edge (x, y) in both, read-only and write-only
