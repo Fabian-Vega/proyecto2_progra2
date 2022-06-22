@@ -1,0 +1,29 @@
+bool isEmpty():
+Checks the graph, if empty, returns true, otherwise, returns false
+
+bool isAdjacent(x, y):
+Checks if there is an edge (arista) from vertex x (nodo x) to the vertex y (nodo y)
+
+DataType getNeighbors(x):
+Returns all the neighbors (adyacencias) of a vertex x (nodo x) 
+
+bool addVertex(x):
+Adds/Creates the vertex x, if there isn't one, returns true, otherwise, returns false
+
+removeVertex(x):
+Remove/Destroys the vertex x, if there is one, returns true, otherwise, returns false
+
+addEdge(x, y, value):
+Adds/Creates an edge from the vertex x to the vertex y with a given weight, returns true if the edges was not there, otherwise, returns false
+
+removeEdge(x, y):
+Remove/Destroys an edge from the vertex x to the vertex y with a given weight, returns true if the edges was not there, otherwise, returns false
+
+getEdge(x, y):
+Returns the value associated with the edge (nodo x, nodo y)
+
+setEdge(x, y, v):
+Sets the values associated with the edge (nodo x, nodo y) to v (weight)
+
+operator()(x, y):
+Returns the value associated with edge (x, y) in both, read-only and write-only
