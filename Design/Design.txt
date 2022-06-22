@@ -1,3 +1,22 @@
+Class Graph
+attributes:
+size_t                  nodeCount
+size_t*                 adjacencyMatrix
+vector <List<DataType>> adjacencyList 
+bool                    isDirected
+
+Class List
+    Class Node
+    attributes:
+    Datatype  data
+    Node*     next
+    long long weight
+
+attributes:
+size_t           count
+Node <Datatype>* first
+
+
 bool isEmpty():
 Checks the graph, if empty, returns true, otherwise, returns false
 
