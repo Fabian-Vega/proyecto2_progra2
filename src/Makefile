@@ -1,28 +1,33 @@
-CC=cc
-CFLAGS=-g -Wall -Wextra
+CXX=g++
+CXXFLAGS=-Wall -Wextra -std=c++17 -fno-elide-constructors
+DEFS=#-DVERBOSE
 
-# Cryptoarithmetic app 
-bin/cryptosolver:  bin/cryptoarithmetic.so bin/main.so | bin/.
-	$(CC) $(CFLAGS) $^ -o $@
+.PHONY: all
+all: bin/ecci.a bin/concat bin/median
 
-bin/main.so: build/main.o bin/cryptoarithmetic.so build/wordlist.o build/solutionbook.o| bin/.
-	$(CC) $(CFLAGS) -shared $^ -o $@
+.PHONY: asan
+asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
+asan: all
 
-build/main.o: src/main.c | build/.
-	$(CC) -c -fPIC $(CFLAGS) $< -o $@
+# Link appGraph
+bin/appGraph: build/main.o bin/graph.a | bin/.
+	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
-# Cryptoarithmetic Library
-bin/cryptoarithmetic.so:  bin/solutionbook.so build/solutionkey.o build/wordlist.o build/cryptoarithmetic.o| build/. bin/.
-	$(CC) $(CFLAGS) -shared $^ -o $@
+# Compile app
+build/main.o: src/main.cpp | build/.
+	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
-bin/solutionbook.so: build/solutionkey.o build/solutionbook.o | bin/.
-	$(CC) $(CFLAGS) -shared $^ -o $@
+ 
+# graph library
+#Lo que cambie probablemente es la linea 23
+bin/graph.a: build/graph.o | bin/.
+	ar rs $@ $^
+build/%.o: src/%.cpp src/%.hpp | build/.
+	$(CXX) -c -g $(CXXFLAGS) $(DEFS) $< -o $@
 
-build/%.o: src/%.c src/%.h | build/.
-	$(CC) -c -fPIC $(CFLAGS) $< -o $@
-
+.PRECIOUS: %/.
 %/.:
-	mkdir -p $@ 
+	mkdir -p $@
 
 .PHONY: clean
 clean:
@@ -30,5 +35,4 @@ clean:
 
 .PHONY: lint
 lint:
-	cpplint --filter=-build/header_guard,-build/include_subdir,-readability,-casting,-runtime/int src/*.h src/*.c
-
+	cpplint --filter=-build/header_guard,-build/include_subdir,-build/c++11,-runtime/references src/*.?pp src/*.?pp
