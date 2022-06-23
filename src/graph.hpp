@@ -44,7 +44,7 @@ class Graph{
         delete[] this->adjacencyMatrix;
         delete[] this->adjacencyList;
     }
-    public:
+    /*public:
     DataType& operator()(){
 
     }
