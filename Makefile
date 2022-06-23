@@ -3,7 +3,7 @@ CXXFLAGS=-Wall -Wextra -std=c++17 -fno-elide-constructors
 DEFS=#-DVERBOSE
 
 .PHONY: all
-all: bin/ecci.a bin/concat bin/median
+all: bin/appGraph
 
 .PHONY: asan
 asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
@@ -20,7 +20,7 @@ build/main.o: src/main.cpp | build/.
  
 # graph library
 #Lo que cambie probablemente es la linea 23
-bin/graph.a: build/graph.o | bin/.
+bin/graph.a: build/graph.o build/list.o | bin/.
 	ar rs $@ $^
 build/%.o: src/%.cpp src/%.hpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) $< -o $@

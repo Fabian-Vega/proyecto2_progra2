@@ -1,17 +1,10 @@
 #include <vector>
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
-#endif // GRAPH_HPP
 
-/*
-Class Graph
-attributes:
-size_t                  nodeCount
-size_t*                 adjacencyMatrix
-vector <List<DataType>> adjacencyList 
-bool                    isDirected
-bool       
-*/
+#include "list.hpp"
+
+namespace grph{
 
 template<typename DataType>
 class Graph{
@@ -39,7 +32,7 @@ class Graph{
     delete[] this->adjacencyMatrix;
     delete[] this->adjacencyList;
   }
-    public:
+    /*public:
     DataType& operator()(){
 
     }
@@ -72,5 +65,7 @@ class Graph{
     }
     void setEdge(x, y, v){
 
-    }
+    }*/
 };
+}//namespace grph
+#endif // GRAPH_HPP

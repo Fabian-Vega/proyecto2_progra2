@@ -4,16 +4,23 @@
 
 namespace grph{
 
+template<typename Datatype, typename Valuetype>
 class List{
  private:
   class Node{
    public:
-    std::string data;
-    double      value;
-    Node*       next;
+    Datatype       data;
+    Valuetype      value;
+    Node*          next;
 
    public:
-    Node(const std::string& data, double value = 0, Node* next = nullptr)
+    Node(const Datatype& data, Node* next = nullptr)
+    :data(data),
+     value(),
+     next(next){
+    }
+    
+    Node(const Datatype& data, Valuetype& value, Node* next = nullptr)
     :data(data),
      value(value),
      next(next){
@@ -31,7 +38,9 @@ class List{
    last(nullptr){  
   }
   ~List(){
-
+    for(Node node = this->first; node; node = node.next){
+      delete node;
+    }
   }
 
  public:
@@ -40,12 +49,13 @@ class List{
   }
 
  public:
-  void append(const std::string& data){
+  void append(const Datatype& data){
     if(this->isEmpty()){
-      this->first = this->last = new Node(data); 
+      this->first = this->last = new Node(data);
     }else{
       this->last = this->last->next = new Node(data);
     }
+    ++this->count; 
   }
 };
 
