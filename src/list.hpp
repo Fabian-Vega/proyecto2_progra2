@@ -57,7 +57,7 @@ class List{
   }
 
   ~List() {
-    for (Edge* edge = this->head; edge; edge = edge.next) {
+    for (Edge* edge = this->head; edge; edge = edge->next) {
       delete edge;
     }
   }
@@ -95,23 +95,14 @@ class List{
     return *this;
   }
 
-  List& operator=(List&& other) {
-    if (this != &other) {
-      std::swap(this->count, other.count);
-      std::swap(this->first, other.first);
-      std::swap(this->last, other.last);
-    }
-    return *this;
-  }
-
  private:
-  Edge* findEdge(const Datatype& data) {
+  Edge* findEdge(const Datatype& data) const {
     Edge* edge = this->head;
     while (edge) {
       if (edge->data == data) {
         break;
       } else {
-        edge = edge.next;
+        edge = edge->next;
       }
     }
     return edge;
@@ -167,8 +158,8 @@ class List{
         "List: Tried to remove the original vertex");
     }
 
-    edge.previous->next = edge.next;
-    edge.next->previous = edge.previous;
+    edge->previous->next = edge->next;
+    edge->next->previous = edge->previous;
     delete edge;
   }
 

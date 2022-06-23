@@ -1,7 +1,8 @@
 // Copyright [2022] <Alejandro B, Fabian V, Kenneth V>
-#include <vector>
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
+
+#include <vector>
 
 #include "list.hpp"
 
@@ -139,7 +140,8 @@ class Graph {
     return true;
   }
 
-  Valuetype& getEdge(const DataType& origin, const DataType& destination) {
+  const Valuetype& getEdge(
+    const DataType& origin, const DataType& destination) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);
     if (originPosition == 0 || destinPosition == 0) {
@@ -193,12 +195,12 @@ class Graph {
 
  private:
   bool couldIncreaseCapacity(size_t newCapacity) const {
-    if (this->adjacencyList.size != newCapacity ||
-    this->adjacencyMatrix.size != newCapacity) {
+    if (this->adjacencyList.size() != newCapacity ||
+    this->adjacencyMatrix.size() != newCapacity) {
       return false;
     }
-    for (size_t row = 0; row < this->newCapacity; row++) {
-      if (this->adjacencyMatrix[row].size != newCapacity) {
+    for (size_t row = 0; row < newCapacity; row++) {
+      if (this->adjacencyMatrix[row].size() != newCapacity) {
         return false;
       }
     }
