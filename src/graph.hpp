@@ -8,26 +8,26 @@
 namespace grph {
 
 template<typename DataType, typename Valuetype>
-class Graph{
+class Graph {
  private:
   size_t nodeCount;
-  std::vector<std::vector<short>> adjacencyMatrix;
+  std::vector<std::vector<__int16_t>> adjacencyMatrix;
   std::vector<grph::List<DataType, Valuetype>> adjacencyList;
   bool isDirected;
-    
+
  public:
   explicit Graph(size_t nodeCount = 0, bool directed = false)
   :nodeCount(nodeCount),
-  adjacencyMatrix(nodeCount, std::vector<short>(nodeCount)),
-  adjacencyList(nodeCount, grph::List<DataType, Valuetype>>()),
-  isDirected(directed){
+  adjacencyMatrix(nodeCount, std::vector<__int16_t>(nodeCount)),
+  adjacencyList(nodeCount, grph::List<DataType, Valuetype>()),
+  isDirected(directed) {
   }
 
   ~Graph() {
-  //delete this->adjacencyMatrix;
-  //delete this->adjacencyList;
+  // delete this->adjacencyMatrix;
+  // delete this->adjacencyList;
   }
-    
+
   /* public:
     DataType& operator()(){
 
@@ -62,9 +62,8 @@ class Graph{
     void setEdge(x, y, v){
 
     }*/
-
 };
 
-}//namespace grph
+}  // namespace grph
 
-#endif // GRAPH_HPP
+#endif  // GRAPH_HPP
