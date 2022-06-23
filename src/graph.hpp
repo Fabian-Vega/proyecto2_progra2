@@ -8,38 +8,50 @@ namespace grph{
 
 template<typename DataType>
 class Graph{
-   private:
+    private:
     size_t nodeCount;
-    size_t* adjacencyMatrix;
+    std::vector<std::vector<size_t>> adjacencyMatrix;
     std::vector <List<DataType>> adjacencyList;
     bool isDirected;
     
- public:
-  explicit Graph(size_t initialNodeCount = 0, bool direction = false)
-  :nodeCount(initialNodeCount)
-  ,adjacencyMatrix(new size_t[this->nodeCount]()){
-    if (this->adjacencyMatrix == nullptr) {
-      throw std::runtime_error("no memory to create dynamic array");
+    public:
+    explicit Graph(size_t initialNodeCount = 0, bool directed = false)
+    :nodeCount(initialNodeCount)
+    ,adjacencyMatrix(new size_t[this->nodeCount]()){
+        if (this->adjacencyMatrix == nullptr) {
+        throw std::runtime_error("no memory to create matrix");
+        } else {
+            for (int i = 0; i <= nodeCount; i++){
+                if ((adjacencyMatrix[i] = new size_t[this->nodeCount]()) == NULL) {
+                    
+                }
+            }
+            
+        }
+    ,adjacencyList(new List<DataType>[this->nodeCount]()){
+        if (this->adjacencyList == nullptr) {
+            throw std::runtime_error("no memory to create adjacency list");
+        }
     }
-  ,adjacencyList(new List<DataType>[this->nodeCount]()){
-    if (this->adjacencyList == nullptr) {
-      throw std::runtime_error("no memory to create dynamic array");
+    ,isDirected(directed)
     }
-  }
-  ,isDirected(direction)
-  }
-  ~Graph() {
-    delete[] this->adjacencyMatrix;
-    delete[] this->adjacencyList;
-  }
-    /*public:
+    ~Graph() {
+        /*
+        for (size_t row = 0; row < nodeCount; ++row) {
+            delete[] this->matrix[row];
+        }
+        */
+        delete[] this->adjacencyMatrix;
+        delete[] this->adjacencyList;
+    }
+    public:
     DataType& operator()(){
 
     }
 
     public:
     inline bool isEmpty(){
-        return (nodeCount ==0 ? true : false);
+        return ((nodeCount ==0) ? true : false);
     }
     
     bool isAdjacent(x, y){
