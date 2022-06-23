@@ -35,42 +35,45 @@ class List{
 
  private:
   size_t count;
-  Node*  first;
-  Node*  last;
+  Node*  head;
+  Node*  tail;
 
  public:
   List()
   :count(0),
-   first(nullptr),
-   last(nullptr) {
+   head(nullptr),
+   tail(nullptr) {
   }
   explicit List(const Datatype& data)
   :count(1),
-   first(new Node(data)),
-   last(first) {
-    if (last == nullptr) {
+   head(new Node(data)),
+   tail(head) {
+    if (tail == nullptr) {
       throw std::runtime_error("List: No memory to initialize list");
     }
   }
   ~List() {
-    for ( Node node = this->first; node; node = node.next ) {
+    for ( Node node = this->head; node; node = node.next ) {
       delete node;
     }
   }
 
  public:
-  inline bool isEmpty()const {
-    return this->first == nullptr;
+  inline bool isEmpty() const {
+    return this->head == nullptr;
+  }
+  inline const Datatype& getHead() const {
+    return this->head->data;
   }
 
  public:
   void append(const Datatype& data) {
     if ( this->isEmpty() ) {
-      this->first = this->last = new Node(data);
+      this->head = this->tail = new Node(data);
     } else {
-      this->last = this->last->next = new Node(data, this->last);
+      this->tail = this->tail->next = new Node(data, this->tail);
     }
-    if (last == nullptr) {
+    if (tail == nullptr) {
       throw std::runtime_error("List: No memory to append node");
     }
     ++this->count;
