@@ -23,10 +23,10 @@ class Graph {
   isDirected(directed) {
   }
 
-  ~Graph() {
+  // ~Graph() {
   // delete this->adjacencyMatrix;
   // delete this->adjacencyList;
-  }
+  // }
 
   /* public:
     DataType& operator()(){
