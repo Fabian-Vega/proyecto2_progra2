@@ -5,6 +5,9 @@
 
 #include "list.hpp"
 
+const size_t INITIAL_CAPACITY = 10;
+const size_t INCREASE_FACTOR = 3;
+
 namespace grph {
 
 template<typename DataType, typename Valuetype>
@@ -17,10 +20,10 @@ class Graph {
   bool isDirected;
 
  public:
-  explicit Graph(size_t capacity = 0, bool directed = false)
+  explicit Graph(size_t capacity = INITIAL_CAPACITY, bool directed = false)
   :vertexCount(0),
   capacity(capacity),
-  adjacencyMatrix(capacity, std::vector<__int16_t>(capacity)),
+  adjacencyMatrix(capacity, std::vector<__int16_t>(capacity, 0)),
   adjacencyList(capacity, grph::List<DataType, Valuetype>()),
   isDirected(directed) {
   }
@@ -67,13 +70,13 @@ class Graph {
     if (this->whereIsVertex(vertex)) {
       return false;
     }
-    for (size_t row = 0; row < this->vertexCount; row++) {
-      this->adjacencyMatrix[row].push_back(0);
+
+    if (this->vertexCount == this->capacity) {
+      this->increaseCapacity();
     }
-    this->adjacencyMatrix.push_back(
-      std::vector<__int16_t>(++this->vertexCount, 0));
-    this->adjacencyList.push_back(
-      grph::List<DataType, Valuetype>(vertex));
+
+    this->adjacencyList[this->vertexCount++] =
+    grph::List<DataType, Valuetype>(vertex);
     return true;
   }
 
@@ -165,6 +168,42 @@ class Graph {
     }
 
     this->adjacencyList[originPosition].setEdgeValue(destination, value);
+  }
+
+ private:
+  void increaseCapacity(size_t newCapacity = 0) {
+    if (newCapacity == 0) {
+      newCapacity = INCREASE_FACTOR * this->capacity;
+    }
+    this->adjacencyMatrix.resize(
+      newCapacity, std::vector<__int16_t>(newCapacity, 0));
+    for (size_t row = 0; row < this->vertexCount; row++) {
+      this->adjacencyMatrix[row].resize(newCapacity, 0);
+    }
+
+    this->adjacencyList.resize(
+      newCapacity, grph::List<DataType, Valuetype>());
+
+    if (!this->couldIncreaseCapacity(newCapacity)) {
+      throw std::runtime_error(
+        "Graph: No enough memory to increase capacity");
+    }
+    this->capacity = newCapacity;
+  }
+
+ private:
+  bool couldIncreaseCapacity(size_t newCapacity) const {
+    if (this->adjacencyList.size != newCapacity ||
+    this->adjacencyMatrix.size != newCapacity) {
+      return false;
+    }
+    for (size_t row = 0; row < this->newCapacity; row++) {
+      if (this->adjacencyMatrix[row].size != newCapacity) {
+        return false;
+      }
+    }
+
+    return true;
   }
 };
 

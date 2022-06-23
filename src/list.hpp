@@ -3,6 +3,7 @@
 #define LIST_HPP
 
 #include <stdexcept>
+#include <utility>
 
 namespace grph {
 
@@ -59,6 +60,48 @@ class List{
     for (Edge* edge = this->head; edge; edge = edge.next) {
       delete edge;
     }
+  }
+
+ public:
+  List& operator=(const List& other) {
+    if (this != &other) {
+      if (this->count != other.count) {
+        this->copyEdges(other, (this->count < other.count)?
+        this->count : other.count);
+
+        if (this->count < other.count) {
+          Edge* edge = other.head;
+          for (size_t position = 0;
+          position < this->count; position++) {
+            edge = edge->next;
+          }
+
+          for (size_t aditions = other.count-this->count;
+          aditions > 0; aditions--) {
+            this->append(edge->data, edge->value);
+          }
+
+        } else {
+          for (size_t deletions = this->count - other.count;
+          deletions > 0; deletions--) {
+            this->remove(this->tail->data);
+          }
+        }
+
+      } else {
+        this->copyEdges(other, this->count);
+      }
+    }
+    return *this;
+  }
+
+  List& operator=(List&& other) {
+    if (this != &other) {
+      std::swap(this->count, other.count);
+      std::swap(this->first, other.first);
+      std::swap(this->last, other.last);
+    }
+    return *this;
   }
 
  private:
@@ -127,6 +170,18 @@ class List{
     edge.previous->next = edge.next;
     edge.next->previous = edge.previous;
     delete edge;
+  }
+
+ private:
+  void copyEdges(const List& other, size_t count) {
+    Edge* thisEdge = this->head;
+    Edge* otherEdge = other.head;
+    for (size_t element = 0; element < count; element++) {
+      thisEdge->data = otherEdge->data;
+      thisEdge->value = otherEdge->value;
+      thisEdge = thisEdge->next;
+      otherEdge = otherEdge->next;
+    }
   }
 };
 
