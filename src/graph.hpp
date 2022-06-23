@@ -21,12 +21,26 @@ class Graph{
     std::vector <List<DataType>> adjacencyList;
     bool isDirected;
     
- public:
-  explicit Graph(size_t initialNodeCount = 0, bool direction = false)
-  :nodeCount(initialNodeCount)
-  ,adjacencyMatrix(new size_t[this->nodeCount]()){
-    if (this->adjacencyMatrix == nullptr) {
-      throw std::runtime_error("no memory to create dynamic array");
+    public:
+    explicit Graph(size_t initialNodeCount = 0, bool directed = false)
+    :nodeCount(initialNodeCount)
+    ,adjacencyMatrix(new size_t[this->nodeCount]()){
+        if (this->adjacencyMatrix == nullptr) {
+        throw std::runtime_error("no memory to create matrix");
+        } else {
+            for (int i = 0; i <= nodeCount; i++){
+                if ((adjacencyMatrix[i] = new size_t[this->nodeCount]()) == NULL) {
+                    
+                }
+            }
+            
+        }
+    ,adjacencyList(new List<DataType>[this->nodeCount]()){
+        if (this->adjacencyList == nullptr) {
+            throw std::runtime_error("no memory to create adjacency list");
+        }
+    }
+    ,isDirected(directed)
     }
     ~Graph() {
         delete[] this->adjacencyMatrix;
