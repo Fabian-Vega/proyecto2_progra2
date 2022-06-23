@@ -1,50 +1,34 @@
+// Copyright [2022] <Alejandro B, Fabian V, Kenneth V>
 #include <vector>
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
 #include "list.hpp"
 
-namespace grph{
+namespace grph {
 
-template<typename DataType>
+template<typename DataType, typename Valuetype>
 class Graph{
-    private:
-    size_t nodeCount;
-    std::vector<std::vector<size_t>> adjacencyMatrix;
-    std::vector <List<DataType>> adjacencyList;
-    bool isDirected;
+ private:
+  size_t nodeCount;
+  std::vector<std::vector<short>> adjacencyMatrix;
+  std::vector<grph::List<DataType, Valuetype>> adjacencyList;
+  bool isDirected;
     
-    public:
-    explicit Graph(size_t initialNodeCount = 0, bool directed = false)
-    :nodeCount(initialNodeCount)
-    ,adjacencyMatrix(new size_t[this->nodeCount]()){
-        if (this->adjacencyMatrix == nullptr) {
-        throw std::runtime_error("no memory to create matrix");
-        } else {
-            for (int i = 0; i <= nodeCount; i++){
-                if ((adjacencyMatrix[i] = new size_t[this->nodeCount]()) == NULL) {
-                    
-                }
-            }
-            
-        }
-    ,adjacencyList(new List<DataType>[this->nodeCount]()){
-        if (this->adjacencyList == nullptr) {
-            throw std::runtime_error("no memory to create adjacency list");
-        }
-    }
-    ,isDirected(directed)
-    }
-    ~Graph() {
-        /*
-        for (size_t row = 0; row < nodeCount; ++row) {
-            delete[] this->matrix[row];
-        }
-        */
-        delete[] this->adjacencyMatrix;
-        delete[] this->adjacencyList;
-    }
-    /*public:
+ public:
+  explicit Graph(size_t nodeCount = 0, bool directed = false)
+  :nodeCount(nodeCount),
+  adjacencyMatrix(nodeCount, std::vector<short>(nodeCount)),
+  adjacencyList(nodeCount, grph::List<DataType, Valuetype>>()),
+  isDirected(directed){
+  }
+
+  ~Graph() {
+  //delete this->adjacencyMatrix;
+  //delete this->adjacencyList;
+  }
+    
+  /* public:
     DataType& operator()(){
 
     }
@@ -78,6 +62,9 @@ class Graph{
     void setEdge(x, y, v){
 
     }*/
+
 };
+
 }//namespace grph
+
 #endif // GRAPH_HPP
