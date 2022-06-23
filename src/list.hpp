@@ -24,7 +24,7 @@ class List{
      previous(previous),
      next(next) {
     }
-    Node(const Datatype& data, Valuetype& value,
+    Node(const Datatype& data, const Valuetype& value,
     Node* previous = nullptr, Node* next = nullptr)
     :data(data),
      value(value),
@@ -65,18 +65,37 @@ class List{
   inline const Datatype& getHead() const {
     return this->head->data;
   }
+  inline void setHeadsValue(const Valuetype& value) {
+    this->head->value = value;
+  }
 
  public:
-  void append(const Datatype& data) {
-    if ( this->isEmpty() ) {
-      this->head = this->tail = new Node(data);
-    } else {
-      this->tail = this->tail->next = new Node(data, this->tail);
-    }
-    if (tail == nullptr) {
+  void append(const Datatype& data, const Valuetype& value) {
+    this->tail->next = new Node(data, value, this->tail);
+    if (tail->next == nullptr) {
       throw std::runtime_error("List: No memory to append node");
     }
+    this->tail = this->tail->next;
     ++this->count;
+  }
+  void remove(const Datatype& data) {
+    Node node = head->next;
+    while (node) {
+      if (node.data == data) {
+        break;
+      } else {
+        node = node.next;
+      }
+    }
+
+    if (node == nullptr) {
+      throw std::runtime_error(
+        "List: Tried to delete a non existent node");
+    }
+
+    node.previous->next = node.next;
+    node.next->previous = node.previous;
+    delete node;
   }
 };
 

@@ -14,15 +14,13 @@ class Graph {
   std::vector<std::vector<__int16_t>> adjacencyMatrix;
   std::vector<grph::List<DataType, Valuetype>> adjacencyList;
   bool isDirected;
-  bool isValued;
 
  public:
-  explicit Graph(bool directed = false, bool valued = false)
+  explicit Graph(bool directed = false)
   :vertexCount(0),
   adjacencyMatrix(),
   adjacencyList(),
-  isDirected(directed),
-  isValued(valued) {
+  isDirected(directed) {
   }
 
   // ~Graph() {
@@ -34,6 +32,7 @@ class Graph {
   inline bool isEmpty() const {
     return this->vertexCount == 0;
   }
+
   size_t whereIsVertex(const DataType& vertex) const {
     for (size_t position = 0; position < this->vertexCount; position++) {
       if (!this->adjacencyList[position].isEmpty() &&
@@ -48,12 +47,15 @@ class Graph {
   /*DataType& operator()() {
 
   }
-  bool isAdjacent(x, y){
+
+  bool isAdjacent(x, y) {
 
   }
-  DataType& getNeighbors(x){
+
+  DataType& getNeighbors(x) {
 
   }*/
+
   bool addVertex(const DataType& vertex) {
     if (this->whereIsVertex(vertex)) {
       return false;
@@ -67,9 +69,10 @@ class Graph {
       grph::List<DataType, Valuetype>(vertex));
     return true;
   }
+
   bool removeVertex(const DataType& vertex) const {
     size_t position = this->whereIsVertex(vertex);
-    if (position == 0) {
+    if (position == 0) {  // Could put the increment here but might fail
       return false;
     }
     this->adjacencyList.erase(
@@ -83,16 +86,54 @@ class Graph {
     --this->vertexCount;
     return true;
   }
-  /*bool addEdge(x, y, value){
+
+  bool addEdge(const DataType& origin, const DataType& destination,
+  const Valuetype& value) {
+    size_t originPosition = this->whereIsVertex(origin);
+    size_t destinPosition = this->whereIsVertex(destination);
+    if (originPosition == 0 || destinPosition == 0) {
+      throw std::runtime_error(
+        "Graph: Could not find vertex(es) to add the edge");
+    }
+
+    if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
+      return false;
+    }
+
+    if (origin == destination) {
+      this->adjacencyList[originPosition].setHeadsValue(value);
+      this->adjacencyMatrix[originPosition][originPosition] = 2;
+    } else {
+      this->adjacencyList[originPosition].append(destination, value);
+      this->adjacencyMatrix[originPosition][destinPosition] = 1;
+    }
+    return true;
+  }
+
+  bool removeEdge(const DataType& origin, const DataType& destination) {
+    size_t originPosition = this->whereIsVertex(origin);
+    size_t destinPosition = this->whereIsVertex(destination);
+    if (originPosition == 0 || destinPosition == 0) {
+      throw std::runtime_error(
+        "Graph: Could not find vertex(es) to add the edge");
+    }
+
+    if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
+      return false;
+    }
+
+    if (origin != destination) {
+      this->adjacencyList[originPosition].remove(destination);
+    }
+    this->adjacencyMatrix[originPosition][originPosition] = 0;
+    return true;
+  }
+
+  /*DataType& getEdge(x, y) {
 
   }
-  bool removeEdge(x, y){
 
-  }
-  DataType& getEdge(x, y){
-
-  }
-  void setEdge(x, y, v){
+  void setEdge(x, y, v) {
 
   }*/
 };
