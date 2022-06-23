@@ -1,9 +1,9 @@
-//"Copyright [2022] <Alejandro B, Fabian V, Kenneth V>"
+//Copyright [2022] <Alejandro B, Fabian V, Kenneth V>
 #ifndef LIST_HPP
 #define LIST_HPP
 #include <string>
 
-namespace grph{
+namespace grph {
 
 template<typename Datatype, typename Valuetype>
 class List{
@@ -15,50 +15,50 @@ class List{
     Node*          next;
 
    public:
-    Node(const Datatype& data, Node* next = nullptr)
+    explicit Node(const Datatype& data, Node* next = nullptr)
     :data(data),
      value(),
-     next(next){
+     next(next) {
     }
     
     Node(const Datatype& data, Valuetype& value, Node* next = nullptr)
     :data(data),
      value(value),
-     next(next){
+     next(next) {
     }
   };
- private:
+  private:
   size_t count;
   Node*  first;
   Node*  last;
 
- public: 
+ public:
   List()
   :count(0),
    first(nullptr),
-   last(nullptr){  
+   last(nullptr) {
   }
-  ~List(){
-    for(Node node = this->first; node; node = node.next){
+  ~List() {
+    for( Node node = this->first; node; node = node.next ) {
       delete node;
     }
   }
 
  public:
-  inline bool isEmpty()const{
+  inline bool isEmpty()const {
     return this->first == nullptr;
   }
 
  public:
-  void append(const Datatype& data){
-    if(this->isEmpty()){
+  void append( const Datatype& data ) {
+    if( this->isEmpty() ) {
       this->first = this->last = new Node(data);
-    }else{
+    } else {
       this->last = this->last->next = new Node(data);
     }
-    ++this->count; 
+    ++this->count;
   }
 };
 
 }//namespace grph
-#endif // LIST_HPP
+#endif  // LIST_HPP
