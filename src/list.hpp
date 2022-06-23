@@ -1,4 +1,4 @@
-//Copyright [2022] <Alejandro B, Fabian V, Kenneth V>
+// Copyright [2022] <Alejandro B, Fabian V, Kenneth V>
 #ifndef LIST_HPP
 #define LIST_HPP
 #include <string>
@@ -60,5 +60,5 @@ class List{
   }
 };
 
-}//namespace grph
+} // namespace grph
 #endif  // LIST_HPP
