@@ -43,9 +43,11 @@ class Graph{
     ,isDirected(directed)
     }
     ~Graph() {
+        /*
         for (size_t row = 0; row < nodeCount; ++row) {
             delete[] this->matrix[row];
         }
+        */
         delete[] this->adjacencyMatrix;
         delete[] this->adjacencyList;
     }
