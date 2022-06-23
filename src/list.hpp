@@ -9,23 +9,24 @@ namespace grph {
 template<typename Datatype, typename Valuetype>
 class List{
  private:
-  class Node{
+  class Edge{
    public:
     Datatype       data;
     Valuetype      value;
-    Node*          previous;
-    Node*          next;
+    Edge*          previous;
+    Edge*          next;
 
    public:
-    explicit Node(const Datatype& data,
-    Node* previous = nullptr, Node* next = nullptr)
+    explicit Edge(const Datatype& data,
+    Edge* previous = nullptr, Edge* next = nullptr)
     :data(data),
      value(),
      previous(previous),
      next(next) {
     }
-    Node(const Datatype& data, const Valuetype& value,
-    Node* previous = nullptr, Node* next = nullptr)
+
+    Edge(const Datatype& data, const Valuetype& value,
+    Edge* previous = nullptr, Edge* next = nullptr)
     :data(data),
      value(value),
      previous(previous),
@@ -35,8 +36,8 @@ class List{
 
  private:
   size_t count;
-  Node*  head;
-  Node*  tail;
+  Edge*  head;
+  Edge*  tail;
 
  public:
   List()
@@ -44,58 +45,88 @@ class List{
    head(nullptr),
    tail(nullptr) {
   }
+
   explicit List(const Datatype& data)
   :count(1),
-   head(new Node(data)),
+   head(new Edge(data)),
    tail(head) {
     if (tail == nullptr) {
       throw std::runtime_error("List: No memory to initialize list");
     }
   }
+
   ~List() {
-    for ( Node node = this->head; node; node = node.next ) {
-      delete node;
+    for (Edge* edge = this->head; edge; edge = edge.next) {
+      delete edge;
     }
+  }
+
+ private:
+  Edge* findEdge(const Datatype& data) {
+    Edge* edge = this->head;
+    while (edge) {
+      if (edge->data == data) {
+        break;
+      } else {
+        edge = edge.next;
+      }
+    }
+    return edge;
   }
 
  public:
   inline bool isEmpty() const {
     return this->head == nullptr;
   }
+
   inline const Datatype& getHead() const {
     return this->head->data;
   }
-  inline void setHeadsValue(const Valuetype& value) {
-    this->head->value = value;
+
+  const Valuetype& getEdgeValue(const Datatype& data) const {
+    Edge* edge = this->findEdge(data);
+    if (edge == nullptr) {
+      throw std::runtime_error(
+        "List: Tried to get the value of a non existent edge");
+    }
+
+    return edge->value;
+  }
+
+  void setEdgeValue(const Datatype& data, const Valuetype& value) {
+    Edge* edge = this->findEdge(data);
+    if (edge == nullptr) {
+      throw std::runtime_error(
+        "List: Tried to set the value of a non existent edge");
+    }
+
+    edge->value = value;
   }
 
  public:
   void append(const Datatype& data, const Valuetype& value) {
-    this->tail->next = new Node(data, value, this->tail);
+    this->tail->next = new Edge(data, value, this->tail);
     if (tail->next == nullptr) {
-      throw std::runtime_error("List: No memory to append node");
+      throw std::runtime_error("List: No memory to append edge");
     }
     this->tail = this->tail->next;
     ++this->count;
   }
+
   void remove(const Datatype& data) {
-    Node node = head->next;
-    while (node) {
-      if (node.data == data) {
-        break;
-      } else {
-        node = node.next;
-      }
-    }
-
-    if (node == nullptr) {
+    Edge* edge = this->findEdge(data);
+    if (edge == nullptr) {
       throw std::runtime_error(
-        "List: Tried to delete a non existent node");
+        "List: Tried to remove a non existent edge");
+    }
+    if (edge == head) {
+      throw std::runtime_error(
+        "List: Tried to remove the original vertex");
     }
 
-    node.previous->next = node.next;
-    node.next->previous = node.previous;
-    delete node;
+    edge.previous->next = edge.next;
+    edge.next->previous = edge.previous;
+    delete edge;
   }
 };
 

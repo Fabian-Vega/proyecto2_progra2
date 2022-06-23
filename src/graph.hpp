@@ -11,15 +11,17 @@ template<typename DataType, typename Valuetype>
 class Graph {
  private:
   size_t vertexCount;
+  size_t capacity;
   std::vector<std::vector<__int16_t>> adjacencyMatrix;
   std::vector<grph::List<DataType, Valuetype>> adjacencyList;
   bool isDirected;
 
  public:
-  explicit Graph(bool directed = false)
+  explicit Graph(size_t capacity = 0, bool directed = false)
   :vertexCount(0),
-  adjacencyMatrix(),
-  adjacencyList(),
+  capacity(capacity),
+  adjacencyMatrix(capacity, std::vector<__int16_t>(capacity)),
+  adjacencyList(capacity, grph::List<DataType, Valuetype>()),
   isDirected(directed) {
   }
 
@@ -43,12 +45,17 @@ class Graph {
     return 0;
   }
 
- public:
-  /*DataType& operator()() {
-
+  /*friend const Valuetype& operator()(
+    const DataType& origin, const DataType& destination) const {
+    return 
   }
 
-  bool isAdjacent(x, y) {
+  friend Valuetype& operator()() {
+
+  }*/
+
+ public:
+  /*bool isAdjacent(x, y) {
 
   }
 
@@ -101,7 +108,7 @@ class Graph {
     }
 
     if (origin == destination) {
-      this->adjacencyList[originPosition].setHeadsValue(value);
+      this->adjacencyList[originPosition].setEdgeValue(origin, value);
       this->adjacencyMatrix[originPosition][originPosition] = 2;
     } else {
       this->adjacencyList[originPosition].append(destination, value);
@@ -115,7 +122,7 @@ class Graph {
     size_t destinPosition = this->whereIsVertex(destination);
     if (originPosition == 0 || destinPosition == 0) {
       throw std::runtime_error(
-        "Graph: Could not find vertex(es) to add the edge");
+        "Graph: Could not find vertex(es) to remove the edge");
     }
 
     if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
@@ -129,13 +136,36 @@ class Graph {
     return true;
   }
 
-  /*DataType& getEdge(x, y) {
+  Valuetype& getEdge(const DataType& origin, const DataType& destination) {
+    size_t originPosition = this->whereIsVertex(origin);
+    size_t destinPosition = this->whereIsVertex(destination);
+    if (originPosition == 0 || destinPosition == 0) {
+      throw std::runtime_error(
+        "Graph: Could not find vertex(es) to get the edge");
+    }
 
+    if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
+      throw std::runtime_error("Graph: Could not find edge to get it");
+    }
+
+    return this->adjacencyList[originPosition].getEdgeValue(destination);
   }
 
-  void setEdge(x, y, v) {
+  void setEdge(const DataType& origin, const DataType& destination,
+  const Valuetype& value) {
+    size_t originPosition = this->whereIsVertex(origin);
+    size_t destinPosition = this->whereIsVertex(destination);
+    if (originPosition == 0 || destinPosition == 0) {
+      throw std::runtime_error(
+        "Graph: Could not find vertex(es) to set the edge");
+    }
 
-  }*/
+    if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
+      throw std::runtime_error("Graph: Could not find edge to set it");
+    }
+
+    this->adjacencyList[originPosition].setEdgeValue(destination, value);
+  }
 };
 
 }  // namespace grph
