@@ -35,7 +35,42 @@ class Graph{
   }
   ,isDirected(direction)
   }
+  ~Graph() {
+    delete[] this->adjacencyMatrix;
+    delete[] this->adjacencyList;
+  }
+    public:
+    DataType& operator()(){
 
-  
-  
+    }
+
+    public:
+    inline bool isEmpty(){
+        return (nodeCount ==0 ? true : false);
+    }
+    
+    bool isAdjacent(x, y){
+
+    }
+    DataType& getNeighbors(x){
+
+    }
+    bool addVertex(x){
+
+    }
+    bool removeVertex(x){
+
+    }
+    bool addEdge(x, y, value){
+
+    }
+    bool removeEdge(x, y){
+
+    }
+    DataType& getEdge(x, y){
+
+    }
+    void setEdge(x, y, v){
+
+    }
 };
