@@ -15,9 +15,9 @@ bool
 
 template<typename DataType>
 class Graph{
-   private:
+    private:
     size_t nodeCount;
-    size_t* adjacencyMatrix;
+    std::vector<std::vector<size_t>> adjacencyMatrix;
     std::vector <List<DataType>> adjacencyList;
     bool isDirected;
     
@@ -28,17 +28,10 @@ class Graph{
     if (this->adjacencyMatrix == nullptr) {
       throw std::runtime_error("no memory to create dynamic array");
     }
-  ,adjacencyList(new List<DataType>[this->nodeCount]()){
-    if (this->adjacencyList == nullptr) {
-      throw std::runtime_error("no memory to create dynamic array");
+    ~Graph() {
+        delete[] this->adjacencyMatrix;
+        delete[] this->adjacencyList;
     }
-  }
-  ,isDirected(direction)
-  }
-  ~Graph() {
-    delete[] this->adjacencyMatrix;
-    delete[] this->adjacencyList;
-  }
     public:
     DataType& operator()(){
 
@@ -46,7 +39,7 @@ class Graph{
 
     public:
     inline bool isEmpty(){
-        return (nodeCount ==0 ? true : false);
+        return ((nodeCount ==0) ? true : false);
     }
     
     bool isAdjacent(x, y){
