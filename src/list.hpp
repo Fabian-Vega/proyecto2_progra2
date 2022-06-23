@@ -20,14 +20,14 @@ class List{
      value(),
      next(next) {
     }
-    
     Node(const Datatype& data, Valuetype& value, Node* next = nullptr)
     :data(data),
      value(value),
      next(next) {
     }
   };
-  private:
+
+ private:
   size_t count;
   Node*  first;
   Node*  last;
@@ -39,7 +39,7 @@ class List{
    last(nullptr) {
   }
   ~List() {
-    for( Node node = this->first; node; node = node.next ) {
+    for ( Node node = this->first; node; node = node.next ) {
       delete node;
     }
   }
@@ -50,8 +50,8 @@ class List{
   }
 
  public:
-  void append( const Datatype& data ) {
-    if( this->isEmpty() ) {
+  void append(const Datatype& data) {
+    if ( this->isEmpty() ) {
       this->first = this->last = new Node(data);
     } else {
       this->last = this->last->next = new Node(data);
@@ -60,5 +60,5 @@ class List{
   }
 };
 
-} // namespace grph
+}  // namespace grph
 #endif  // LIST_HPP
