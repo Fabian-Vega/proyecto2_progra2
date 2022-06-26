@@ -57,7 +57,7 @@ class List{
   }
 
   ~List() {
-    if (this->isEmpty()) {
+    if (!this->isEmpty()) {
       this->clear();
     }
   }
