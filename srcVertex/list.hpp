@@ -10,35 +10,55 @@ namespace grph {
 template<typename Datatype, typename Valuetype>
 class List{
  private:
-  class Edge{
+  class nodeList{
    public:
-    Datatype       data;
-    Valuetype      value;
-    Edge*          previous;
-    Edge*          next;
+    Vertex        vertex;
+    Edge          previous;
+    Edge          next;
 
    public:
-    explicit Edge(const Datatype& data,
+    explicit nodeList(Vertex vertex = nullptr,
     Edge* previous = nullptr, Edge* next = nullptr)
-    :data(data),
-     value(),
+    :vertex(vertex),
      previous(previous),
      next(next) {
     }
 
-    Edge(const Datatype& data, const Valuetype& value,
+    nodeList(Vertex vertex = nullptr,
     Edge* previous = nullptr, Edge* next = nullptr)
-    :data(data),
-     value(value),
+    :vertex(vertex),
      previous(previous),
      next(next) {
     }
   };
 
+  class Edge{
+   public:
+    Vertex         origin;
+    Valuetype      value;
+    Vertex         connection;
+
+   public:
+    explicit Edge(Vertex origin = nullptr, const Valuetype& value = Valuetype,
+    Vertex connection = nullptr)
+    :origin(origin),
+     value(value),
+     connection(connection) {
+    }
+
+    Edge(Vertex origin = nullptr, const Valuetype& value = Valuetype,
+    Vertex connection = nullptr)
+    :origin(origin),
+     value(value),
+     connection(connection) {
+    }
+  };
+  
+
  private:
   size_t count;
-  Edge*  head;
-  Edge*  tail;
+  nodeList*  head;
+  nodeList*  tail;
 
  public:
   List()
@@ -49,7 +69,8 @@ class List{
 
   explicit List(const Datatype& data)
   :count(1),
-   head(new Edge(data)),
+   startingVertex = Vertex(data);
+   head(new nodeList(startingVertex,nullptr,new Edge(startingVertex))),
    tail(head) {
     if (tail == nullptr) {
       throw std::runtime_error("List: No memory to initialize list");
@@ -61,7 +82,7 @@ class List{
       this->clear();
     }
   }
-
+//////////////////////////////////////////////////////////////////////////////////////////////
  public:
   List<Datatype, Valuetype>& operator=(const List<Datatype, Valuetype>& other) {
     if (this != &other) {

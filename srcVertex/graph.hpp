@@ -17,15 +17,42 @@ class Graph {
   size_t vertexCount;
   size_t capacity;
   std::vector<std::vector<__int16_t>> adjacencyMatrix;
+  std::vector<Vertex<DataType>> Vecters;
   std::vector<List<DataType, Valuetype>> adjacencyList;
   bool isDirected;
+
+  private:
+  class Vertex{
+   public:
+    Datatype             data;
+    size_t               connectionCounter;
+    std::vector<Edge*>   connectionArray;
+
+   public:
+    explicit Vertex(const Datatype& data,size_t connectionCounter = INITIAL_CAPACITY ,
+    std::vector<Edge*> connectionArray = nullptr)
+    :data(data),
+    connectionCounter(connectionCounter),
+    connectionArray(connectionCounter),
+    {
+    }
+
+    Vertex(const Datatype& data,size_t connectionCounter = INITIAL_CAPACITY ,
+    std::vector<Edge*> connectionArray = nullptr)
+    :data(data),
+    connectionCounter(connectionCounter),
+    connectionArray(connectionCounter),
+    {
+    }
+  };
+
 
  public:
   explicit Graph(size_t capacity = INITIAL_CAPACITY, bool directed = false)
   :vertexCount(0),
   capacity(capacity),
   adjacencyMatrix(capacity, std::vector<__int16_t>(capacity, 0)),
-  adjacencyList(capacity),
+  Vecters(capacity),
   isDirected(directed) {
   }
 
@@ -47,10 +74,10 @@ class Graph {
   }*/
 
  private:
-  size_t whereIsVertex(const DataType& vertex) const {
-    for (size_t position = 0; position < this->vertexCount; ++position) {
-      if (!(this->adjacencyList[position].isEmpty()) &&
-      this->adjacencyList[position].getHead() == vertex) {
+  size_t whereIsVertex(const Vertex vertex) const {
+    for (size_t position = 0; position < this->vertexCount; ++position){
+        if (!(this->Vecters[position] == nullptr) &&
+          this->&Vecters[position] == &vertex) {
         return ++position;
       }
     }
