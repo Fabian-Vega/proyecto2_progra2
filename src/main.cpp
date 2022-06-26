@@ -4,11 +4,10 @@
 #include <string>
 
 #include "graph.hpp"
-#include "list.hpp"
 
 int main(void) {
   try {
-    grph::Graph<std::string, double> grafo(3, true);
+    grph::Graph<std::string, double> grafo(18, true);
     grafo.addVertex(std::string("Boston"));
     grafo.addVertex(std::string("New York"));
     grafo.addVertex(std::string("Las Vegas"));
@@ -16,9 +15,6 @@ int main(void) {
     grafo.addVertex(std::string("Los Angeles"));
     grafo.addVertex(std::string("San Franciso"));
     grafo.addVertex(std::string("Perez Zeledon"));
-
-    // grph::List<std::string, double> pepa("Boston");
-    // std::cout << pepa.getHead() << std::endl;
 
     grafo.addEdge(std::string("Boston"),
     std::string("New York"), 80.7);
