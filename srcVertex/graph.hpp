@@ -74,7 +74,7 @@ class Graph {
   }*/
 
  private:
-  size_t whereIsVertex(const Vertex vertex) const {
+  size_t whereIsVertex(const Vertex& vertex) const {
     for (size_t position = 0; position < this->vertexCount; ++position){
         if (!(this->Vecters[position] == nullptr) &&
           this->&Vecters[position] == &vertex) {
@@ -90,8 +90,8 @@ class Graph {
   DataType& getNeighbors(x) {
   }*/
 
-  bool addVertex(const DataType& vertex) {
-    if (this->whereIsVertex(vertex)) {
+  bool addVertex(const Vertex& vertex) {
+    if (this->whereIsVertex() -1) {
       return false;
     }
 
@@ -99,24 +99,18 @@ class Graph {
       this->increaseCapacity();
     }
 
-    this->adjacencyList[this->vertexCount++] =
-    List<DataType, Valuetype>(vertex);
+    this->vertexCount++;
+    Vecters[vertexCount] = vertex;
     return true;
   }
 
-  bool removeVertex(const DataType& vertex) const {
+  bool removeVertex(const Vertex& vertex) const {
     size_t position = this->whereIsVertex(vertex);
     if (position-- == 0) {  
       return false;
     }
-    this->adjacencyList.erase(
-      this->adjacencyList.begin()+position);
-    this->adjacencyMatrix.erase(
-      this->adjacencyMatrix.begin()+position);
-    for (size_t row = 0; row < this->vertexCount; row++) {
-      this->adjacencyMatrix[row].erase(
-        this->adjacencyMatrix[row].begin()+position);
-    }
+
+    Vecters.erase(position,position++);
     --this->vertexCount;
     return true;
   }
