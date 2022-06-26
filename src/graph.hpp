@@ -25,7 +25,7 @@ class Graph {
   :vertexCount(0),
   capacity(capacity),
   adjacencyMatrix(capacity, std::vector<__int16_t>(capacity, 0)),
-  adjacencyList(capacity, grph::List<DataType, Valuetype>()),
+  adjacencyList(capacity),
   isDirected(directed) {
   }
 
@@ -39,16 +39,6 @@ class Graph {
     return this->vertexCount == 0;
   }
 
-  size_t whereIsVertex(const DataType& vertex) const {
-    for (size_t position = 0; position < this->vertexCount; position++) {
-      if (!this->adjacencyList[position].isEmpty() &&
-      this->adjacencyList[position].getHead() == vertex) {
-        return ++position;
-      }
-    }
-    return 0;
-  }
-
   /*friend const Valuetype& operator()(
     const DataType& origin, const DataType& destination) const {
     return 
@@ -57,6 +47,17 @@ class Graph {
   friend Valuetype& operator()() {
 
   }*/
+
+ private:
+  size_t whereIsVertex(const DataType& vertex) const {
+    for (size_t position = 0; position < this->vertexCount; ++position) {
+      if (!(this->adjacencyList[position].isEmpty()) &&
+      this->adjacencyList[position].getHead() == vertex) {
+        return ++position;
+      }
+    }
+    return 0;
+  }
 
  public:
   /*bool isAdjacent(x, y) {
@@ -83,11 +84,11 @@ class Graph {
 
   bool removeVertex(const DataType& vertex) const {
     size_t position = this->whereIsVertex(vertex);
-    if (position == 0) {  // Could put the increment here but might fail
+    if (position-- == 0) {  
       return false;
     }
     this->adjacencyList.erase(
-      this->adjacencyList.begin()+--position);
+      this->adjacencyList.begin()+position);
     this->adjacencyMatrix.erase(
       this->adjacencyMatrix.begin()+position);
     for (size_t row = 0; row < this->vertexCount; row++) {

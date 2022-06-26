@@ -4,19 +4,23 @@
 #include <string>
 
 #include "graph.hpp"
+#include "list.hpp"
 
 int main(void) {
   try {
     grph::Graph<std::string, double> grafo(3, true);
     grafo.addVertex(std::string("Boston"));
-    /*grafo.addVertex(std::string("New York"));
+    grafo.addVertex(std::string("New York"));
     grafo.addVertex(std::string("Las Vegas"));
     grafo.addVertex(std::string("Chicago"));
     grafo.addVertex(std::string("Los Angeles"));
     grafo.addVertex(std::string("San Franciso"));
-    grafo.addVertex(std::string("Perez Zeledon"));*7
+    grafo.addVertex(std::string("Perez Zeledon"));
 
-    /*grafo.addEdge(std::string("Boston"),
+    // grph::List<std::string, double> pepa("Boston");
+    // std::cout << pepa.getHead() << std::endl;
+
+    grafo.addEdge(std::string("Boston"),
     std::string("New York"), 80.7);
     grafo.addEdge(std::string("Boston"),
     std::string("Chicago"), 20.7);
@@ -29,9 +33,9 @@ int main(void) {
     grafo.addEdge(std::string("San Francisco"),
     std::string("Chicago"), 150.9);
     grafo.addEdge(std::string("New York"),
-    std::string("Las Vegas"), 50.1);*/
+    std::string("Las Vegas"), 50.1);
 
-    /*std::cout << "\nLa distancia entre Boston y New York es: "
+    std::cout << "\nLa distancia entre Boston y New York es: "
     << grafo.getEdge(std::string("Boston"), std::string("New York"))
     << std::endl;
     std::cout << "\nLa distancia entre Boston y San Francisco es: "
@@ -42,9 +46,9 @@ int main(void) {
     << std::endl;
     std::cout << "\nLa distancia entre New York y Las Vegas es: "
     << grafo.getEdge(std::string("New York"), std::string("Las Vegas"))
-    << std::endl;*/
+    << std::endl;
   } catch (const std::runtime_error& error) {
-    std::cerr << "median: error: " << error.what() << std::endl;
+    std::cerr << "main error: " << error.what() << std::endl;
   }
 
   return 0;

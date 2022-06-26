@@ -57,16 +57,16 @@ class List{
   }
 
   ~List() {
-    for (Edge* edge = this->head; edge; edge = edge->next) {
-      delete edge;
+    if (this->isEmpty()) {
+      this->clear();
     }
   }
 
  public:
-  List& operator=(const List& other) {
+  List<Datatype, Valuetype>& operator=(const List<Datatype, Valuetype>& other) {
     if (this != &other) {
       if (this->count != other.count) {
-        this->copyEdges(other, (this->count < other.count)?
+        this->copy(other, (this->count < other.count)?
         this->count : other.count);
 
         if (this->count < other.count) {
@@ -77,19 +77,20 @@ class List{
           }
 
           for (size_t aditions = other.count-this->count;
-          aditions > 0; aditions--) {
+          aditions > 0; --aditions) {
             this->append(edge->data, edge->value);
+            edge = edge->next;
           }
 
         } else {
           for (size_t deletions = this->count - other.count;
-          deletions > 0; deletions--) {
+          deletions > 0; --deletions) {
             this->remove(this->tail->data);
           }
         }
 
       } else {
-        this->copyEdges(other, this->count);
+        this->copy(other, this->count);
       }
     }
     return *this;
@@ -139,11 +140,14 @@ class List{
 
  public:
   void append(const Datatype& data, const Valuetype& value) {
-    this->tail->next = new Edge(data, value, this->tail);
-    if (tail->next == nullptr) {
+    if (this->isEmpty()) {
+      this->tail = this->head =  new Edge(data, value);
+    } else {
+      this->tail = this->tail->next = new Edge(data, value, this->tail);
+    }
+    if (this->tail == nullptr) {
       throw std::runtime_error("List: No memory to append edge");
     }
-    this->tail = this->tail->next;
     ++this->count;
   }
 
@@ -163,11 +167,22 @@ class List{
     delete edge;
   }
 
+  void clear() {
+    while(this->head) {
+      const Edge* current = this->head;
+      this->head = this->head->next;
+      delete current;
+    }
+
+    this->tail = nullptr;
+    this->count = 0;
+  }
+
  private:
-  void copyEdges(const List& other, size_t count) {
+  void copy(const List<Datatype, Valuetype>& other, size_t count) {
     Edge* thisEdge = this->head;
     Edge* otherEdge = other.head;
-    for (size_t element = 0; element < count; element++) {
+    for (size_t element = 0; element < count; ++element) {
       thisEdge->data = otherEdge->data;
       thisEdge->value = otherEdge->value;
       thisEdge = thisEdge->next;
