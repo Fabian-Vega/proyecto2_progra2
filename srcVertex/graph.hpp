@@ -17,8 +17,7 @@ class Graph {
   size_t vertexCount;
   size_t capacity;
   std::vector<std::vector<__int16_t>> adjacencyMatrix;
-  std::vector<Vertex<DataType>> Vecters;
-  std::vector<List<DataType, Valuetype>> adjacencyList;
+  std::vector<List<DataType, Valuetype>> Vecters;
   bool isDirected;
 
   private:
@@ -76,8 +75,8 @@ class Graph {
  private:
   size_t whereIsVertex(const Vertex& vertex) const {
     for (size_t position = 0; position < this->vertexCount; ++position){
-        if (!(this->Vecters[position] == nullptr) &&
-          this->&Vecters[position] == &vertex) {
+        if (!(this->Vecters[position].head.vecter == nullptr) &&
+          this->&Vecters[position].head.vecter == &vertex) {
         return ++position;
       }
     }
@@ -100,7 +99,7 @@ class Graph {
     }
 
     this->vertexCount++;
-    Vecters[vertexCount] = vertex;
+    Vecters[vertexCount].head.vecter = vertex;
     return true;
   }
 
@@ -110,12 +109,32 @@ class Graph {
       return false;
     }
 
+    findRemove(vertex);
     Vecters.erase(position,position++);
     --this->vertexCount;
+    
+    
     return true;
   }
 
-  bool addEdge(const DataType& origin, const DataType& destination,
+  void findRemove( Vertex& vertex) const {
+    for (size_t i = 0; i < vertexCount; i++){
+       removeConnection( Vecters[i],vertex);
+    }
+  }
+  void removeConnection(nodeList*  head,Vertex& vertex ){
+      while (head.next != nullptr){
+          if(head& == vertex&){
+              (head.previous).next = (head.next);
+              (head.next).previous = (head.previous);
+          }
+      }
+      
+
+  }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+  bool addEdge(const Vertex& origin, const Vertex& destination,
   const Valuetype& value) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);
@@ -129,6 +148,7 @@ class Graph {
     }
 
     if (origin == destination) {
+      this->
       this->adjacencyList[originPosition].setEdgeValue(origin, value);
       this->adjacencyMatrix[originPosition][originPosition] = 2;
     } else {
