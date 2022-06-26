@@ -185,7 +185,7 @@ class Graph {
     }
 
     this->adjacencyList.resize(
-      newCapacity, grph::List<DataType, Valuetype>());
+      newCapacity);
 
     if (!this->couldIncreaseCapacity(newCapacity)) {
       throw std::runtime_error(
