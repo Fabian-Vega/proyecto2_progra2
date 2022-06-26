@@ -17,7 +17,7 @@ class Graph {
   size_t vertexCount;
   size_t capacity;
   std::vector<std::vector<__int16_t>> adjacencyMatrix;
-  std::vector<grph::List<DataType, Valuetype>> adjacencyList;
+  std::vector<List<DataType, Valuetype>> adjacencyList;
   bool isDirected;
 
  public:
@@ -78,7 +78,7 @@ class Graph {
     }
 
     this->adjacencyList[this->vertexCount++] =
-    grph::List<DataType, Valuetype>(vertex);
+    List<DataType, Valuetype>(vertex);
     return true;
   }
 
