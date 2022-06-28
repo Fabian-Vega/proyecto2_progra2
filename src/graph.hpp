@@ -2,8 +2,6 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
-#include <vector>
-
 #include "vertex.hpp"
 
 const size_t INITIAL_CAPACITY = 10;
@@ -16,7 +14,7 @@ class Graph {
  private:
   size_t vertexCount;
   size_t capacity;
-  std::vector<std::vector<__int16_t>> adjacencyMatrix;
+  std::vector<std::vector<int>> adjacencyMatrix;
   std::vector<Vertex<DataType, WeightType>*> vecters;
   bool isDirected;
 
@@ -25,7 +23,7 @@ class Graph {
   explicit Graph(size_t capacity = INITIAL_CAPACITY, bool directed = false)
   :vertexCount(0),
   capacity(capacity),
-  adjacencyMatrix(capacity, std::vector<__int16_t>(capacity, 0)),
+  adjacencyMatrix(capacity, std::vector<int>(capacity, 0)),
   vecters(capacity, nullptr),
   isDirected(directed) {
   }
@@ -56,9 +54,8 @@ class Graph {
   size_t whereIsLink(const Vertex<DataType, WeightType>& origin,
   const Vertex<DataType, WeightType>& connection) const {
     for (size_t position = 0; 
-    position < origin.linkCount; ++position) {
-        if (origin.linkVector[position].connection
-        == &connection) {
+    position < origin.getLinkCount(); ++position) {
+        if (origin.getLinkConnection(position) == &connection) {
         return ++position;
       }
     }
@@ -72,7 +69,7 @@ class Graph {
   }*/
 
   bool addVertex(const Vertex<DataType, WeightType>& vertex) {
-    if (this->whereIsVertex() != 0) {
+    if (this->whereIsVertex(vertex) != 0) {
       return false;
     }
 
@@ -80,7 +77,7 @@ class Graph {
       this->increaseCapacity();
     }
 
-    this->Vecters[vertexCount++] = &vertex;
+    this->vecters[vertexCount++] = &vertex;
     return true;
   }
 
@@ -100,7 +97,7 @@ class Graph {
   const Vertex<DataType, WeightType>& connection,
   const WeightType& weight) {
     size_t originPosition = this->whereIsVertex(origin);
-    size_t destinPosition = this->whereIsVertex(destination);
+    size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
       throw std::runtime_error(
         "Graph: Could not find vertex(es) to add the link");
@@ -110,9 +107,9 @@ class Graph {
       return false;
     }
 
-    Link<DataType, WeightType> link(&origin, weight, &connection);
-    origin.linkVector.push_back(link);
-    ++origin.linkCount;
+    //  Link link(&origin, weight, &connection);
+    //  origin.linkVector.push_back(link);
+    ++origin.getLinkCount();
     this->adjacencyMatrix[originPosition][destinPosition] = 1;
     return true;
   }
@@ -120,7 +117,7 @@ class Graph {
   bool removeLink(Vertex<DataType, WeightType>& origin,
   const Vertex<DataType, WeightType>& connection) {
     size_t originPosition = this->whereIsVertex(origin);
-    size_t destinPosition = this->whereIsVertex(destination);
+    size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
       throw std::runtime_error(
         "Graph: Could not find vertex(es) to remove the link");
@@ -131,7 +128,7 @@ class Graph {
     }
 
     origin.linkVector.erase(
-      origin.linkVector.begin()+this->--findLink(origin, connection));
+      origin.linkVector.begin()+(this->whereIsLink(origin, connection)-1));
     --origin.linkCount;
     this->adjacencyMatrix[originPosition][destinPosition] = 0;
     return false;
@@ -141,7 +138,7 @@ class Graph {
     const Vertex<DataType, WeightType>& origin,
     const Vertex<DataType, WeightType>& connection) {
     size_t originPosition = this->whereIsVertex(origin);
-    size_t destinPosition = this->whereIsVertex(destination);
+    size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
       throw std::runtime_error(
         "Graph: Could not find vertex(es) to get the Link");
@@ -151,14 +148,15 @@ class Graph {
       throw std::runtime_error("Graph: Could not find Link to get it");
     }
 
-    return origin.linkVector[--this->findLink(origin, connection)].weight;
+    // Esto falla
+    return origin.getLinkWeight(this->whereIsLink(origin, connection)-1);
   }
 
   void setLink(Vertex<DataType, WeightType>& origin,
   const Vertex<DataType, WeightType>& connection,
   const WeightType& weight) {
     size_t originPosition = this->whereIsVertex(origin);
-    size_t destinPosition = this->whereIsVertex(destination);
+    size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
       throw std::runtime_error(
         "Graph: Could not find vertex(es) to set the Link");
@@ -168,7 +166,7 @@ class Graph {
       throw std::runtime_error("Graph: Could not find Link to set it");
     }
 
-    origin.linkVector[--this->findLink(origin, connection)].weight = weight;
+    origin.getLinkWeight(this->whereIsLink(origin, connection)-1) = weight;
   }
 
  private:
@@ -177,13 +175,10 @@ class Graph {
       newCapacity = INCREASE_FACTOR * this->capacity;
     }
     this->adjacencyMatrix.resize(
-      newCapacity, std::vector<__int16_t>(newCapacity, 0));
+      newCapacity, std::vector<int>(newCapacity, 0));
     for (size_t row = 0; row < this->vertexCount; row++) {
       this->adjacencyMatrix[row].resize(newCapacity, 0);
     }
-
-    this->adjacencyList.resize(
-      newCapacity);
 
     if (!this->couldIncreaseCapacity(newCapacity)) {
       throw std::runtime_error(
@@ -194,8 +189,7 @@ class Graph {
 
  private:
   bool couldIncreaseCapacity(size_t newCapacity) const {
-    if (this->adjacencyList.size() != newCapacity ||
-    this->adjacencyMatrix.size() != newCapacity) {
+    if (this->adjacencyMatrix.size() != newCapacity) {
       return false;
     }
     for (size_t row = 0; row < newCapacity; row++) {
@@ -207,7 +201,7 @@ class Graph {
     return true;
   }
 
-  void findRemove(Vertex& vertex) const {
+  void findRemove(Vertex<DataType, WeightType>& vertex) const {
     for (size_t current = 0; current < this->vertexCount; ++current) {
       if (this->vecters[current] != &vertex) {
         for (size_t connection = 0; 

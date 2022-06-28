@@ -5,7 +5,6 @@
 
 #include "graph.hpp"
 
-
 int main(void) {
   try {
     grph::Graph<std::string, double> grafo(3, true);
