@@ -4,53 +4,59 @@
 
 #include <vector>
 
-#include "list.hpp"
+#include "vertex.hpp"
 
 const size_t INITIAL_CAPACITY = 10;
 const size_t INCREASE_FACTOR = 3;
 
 namespace grph {
 
-template<typename DataType, typename Valuetype>
+template<typename DataType, typename WeightType>
 class Graph {
  private:
   size_t vertexCount;
   size_t capacity;
   std::vector<std::vector<__int16_t>> adjacencyMatrix;
-  std::vector<List<DataType, Valuetype>> adjacencyList;
+  std::vector<Vertex<DataType, WeightType>*> vecters;
   bool isDirected;
+
 
  public:
   explicit Graph(size_t capacity = INITIAL_CAPACITY, bool directed = false)
   :vertexCount(0),
   capacity(capacity),
   adjacencyMatrix(capacity, std::vector<__int16_t>(capacity, 0)),
-  adjacencyList(capacity),
+  vecters(capacity, nullptr),
   isDirected(directed) {
   }
-
-  // ~Graph() {
-  // delete this->adjacencyMatrix;
-  // delete this->adjacencyList;
-  // }
 
  public:
   inline bool isEmpty() const {
     return this->vertexCount == 0;
   }
 
-  /*friend const Valuetype& operator()(
+  /*friend const WeightType& operator()(
     const DataType& origin, const DataType& destination) const {
     return 
   }
-  friend Valuetype& operator()() {
+  friend WeightType& operator()() {
   }*/
 
  private:
-  size_t whereIsVertex(const DataType& vertex) const {
+  size_t whereIsVertex(const Vertex& vertex) const {
     for (size_t position = 0; position < this->vertexCount; ++position) {
-      if (!(this->adjacencyList[position].isEmpty()) &&
-      this->adjacencyList[position].getHead() == vertex) {
+        if (this->vecters[position] != nullptr &&
+          this->vecters[position] == &vertex) {
+        return ++position;
+      }
+    }
+    return 0;
+  }
+
+  size_t whereIsLink(const Vertex& origin, const Vertex& connection,) const {
+    for (size_t position = 0; position < this->vecters[position]->linkCount; ++position) {
+        if (this->vecters[position] != nullptr &&
+          this->vecters[position] == &vertex) {
         return ++position;
       }
     }
@@ -63,109 +69,96 @@ class Graph {
   DataType& getNeighbors(x) {
   }*/
 
-  bool addVertex(const DataType& vertex) {
-    if (this->whereIsVertex(vertex)) {
+  bool addVertex(const Vertex& vertex) {
+    if (this->whereIsVertex() != 0) {
       return false;
     }
 
-    if (this->vertexCount == this->capacity) {
+    if (this->vertexCount >= this->capacity) {
       this->increaseCapacity();
     }
 
-    this->adjacencyList[this->vertexCount++] =
-    List<DataType, Valuetype>(vertex);
+    this->Vecters[vertexCount++] = &vertex;
     return true;
   }
 
-  bool removeVertex(const DataType& vertex) const {
+  bool removeVertex(const Vertex& vertex) const {
     size_t position = this->whereIsVertex(vertex);
     if (position-- == 0) {  
       return false;
     }
-    this->adjacencyList.erase(
-      this->adjacencyList.begin()+position);
-    this->adjacencyMatrix.erase(
-      this->adjacencyMatrix.begin()+position);
-    for (size_t row = 0; row < this->vertexCount; row++) {
-      this->adjacencyMatrix[row].erase(
-        this->adjacencyMatrix[row].begin()+position);
-    }
+
+    findRemove(vertex);
+    this->vecters.erase(this->vecters.begin()+position);
     --this->vertexCount;
     return true;
   }
 
-  bool addEdge(const DataType& origin, const DataType& destination,
-  const Valuetype& value) {
+  bool addLink(const Vertex& origin, const Vertex& connection,
+  const WeightType& weight) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);
-    if (originPosition == 0 || destinPosition == 0) {
+    if (originPosition-- == 0 || destinPosition-- == 0) {
       throw std::runtime_error(
-        "Graph: Could not find vertex(es) to add the edge");
+        "Graph: Could not find vertex(es) to add the link");
     }
 
-    if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
+    if (this->adjacencyMatrix[originPosition][destinPosition]) {
       return false;
     }
 
-    if (origin == destination) {
-      this->adjacencyList[originPosition].setEdgeValue(origin, value);
-      this->adjacencyMatrix[originPosition][originPosition] = 2;
-    } else {
-      this->adjacencyList[originPosition].append(destination, value);
-      this->adjacencyMatrix[originPosition][destinPosition] = 1;
-    }
+    Link<DataType, WeightType> link(&origin, weight, &connection);
+    origin.linkVector.push_back(link);
+    ++origin.linkCount;
     return true;
   }
 
-  bool removeEdge(const DataType& origin, const DataType& destination) {
+  bool removeLink(const DataType& origin, const DataType& destination) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);
-    if (originPosition == 0 || destinPosition == 0) {
+    if (originPosition-- == 0 || destinPosition-- == 0) {
       throw std::runtime_error(
-        "Graph: Could not find vertex(es) to remove the edge");
+        "Graph: Could not find vertex(es) to remove the link");
     }
 
-    if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
-      return false;
+    if (!this->adjacencyMatrix[originPosition][destinPosition]) {
+      return true;
     }
 
-    if (origin != destination) {
-      this->adjacencyList[originPosition].remove(destination);
-    }
-    this->adjacencyMatrix[originPosition][originPosition] = 0;
-    return true;
+    
+    return false;
   }
 
-  const Valuetype& getEdge(
+  const WeightType& getLink(
     const DataType& origin, const DataType& destination) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);
     if (originPosition == 0 || destinPosition == 0) {
       throw std::runtime_error(
-        "Graph: Could not find vertex(es) to get the edge");
+        "Graph: Could not find vertex(es) to get the Link");
     }
 
     if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
-      throw std::runtime_error("Graph: Could not find edge to get it");
+      throw std::runtime_error("Graph: Could not find Link to get it");
     }
 
-    return this->adjacencyList[originPosition].getEdgeValue(destination);
+    return this->adjacencyList[originPosition].getLinkValue(destination);
   }
 
-  void setEdge(const DataType& origin, const DataType& destination,
-  const Valuetype& value) {
+  void setLink(const DataType& origin, const DataType& destination,
+  const WeightType& value) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);
     if (originPosition == 0 || destinPosition == 0) {
       throw std::runtime_error(
-        "Graph: Could not find vertex(es) to set the edge");
+        "Graph: Could not find vertex(es) to set the Link");
     }
 
     if (this->adjacencyMatrix[--originPosition][--destinPosition]) {
-      throw std::runtime_error("Graph: Could not find edge to set it");
+      throw std::runtime_error("Graph: Could not find Link to set it");
     }
 
-    this->adjacencyList[originPosition].setEdgeValue(destination, value);
+    this->adjacencyList[originPosition].setLinkValue(destination, value);
   }
 
  private:
@@ -203,6 +196,21 @@ class Graph {
 
     return true;
   }
+
+  void findRemove(Vertex& vertex) const {
+    for (size_t current = 0; current < this->vertexCount; ++current) {
+      if (this->vecters[current] != &vertex) {
+        for (size_t connection = 0; 
+        connection < this->vecters[current]->linkCount; ++connection) {
+          if (this->vecters[current]->linkVector[connection]->connection == &vertex) {
+            this->vecters[current]->linkVector.erase(
+              this->vecters[current]->linkVector.begin()+connection);
+          }
+        }
+      }
+    }
+  }
+
 };
 
 }  // namespace grph

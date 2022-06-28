@@ -17,41 +17,15 @@ class Graph {
   size_t vertexCount;
   size_t capacity;
   std::vector<std::vector<__int16_t>> adjacencyMatrix;
-  std::vector<List<DataType, Valuetype>> Vecters;
+  std::vector<List<DataType, Valuetype>> adjacencyList;
   bool isDirected;
-
-  private:
-  class Vertex{
-   public:
-    Datatype             data;
-    size_t               connectionCounter;
-    std::vector<Edge*>   connectionArray;
-
-   public:
-    explicit Vertex(const Datatype& data,size_t connectionCounter = INITIAL_CAPACITY ,
-    std::vector<Edge*> connectionArray = nullptr)
-    :data(data),
-    connectionCounter(connectionCounter),
-    connectionArray(connectionCounter),
-    {
-    }
-
-    Vertex(const Datatype& data,size_t connectionCounter = INITIAL_CAPACITY ,
-    std::vector<Edge*> connectionArray = nullptr)
-    :data(data),
-    connectionCounter(connectionCounter),
-    connectionArray(connectionCounter),
-    {
-    }
-  };
-
 
  public:
   explicit Graph(size_t capacity = INITIAL_CAPACITY, bool directed = false)
   :vertexCount(0),
   capacity(capacity),
   adjacencyMatrix(capacity, std::vector<__int16_t>(capacity, 0)),
-  Vecters(capacity),
+  adjacencyList(capacity),
   isDirected(directed) {
   }
 
@@ -73,10 +47,10 @@ class Graph {
   }*/
 
  private:
-  size_t whereIsVertex(const Vertex& vertex) const {
-    for (size_t position = 0; position < this->vertexCount; ++position){
-        if (!(this->Vecters[position].head.vecter == nullptr) &&
-          this->&Vecters[position].head.vecter == &vertex) {
+  size_t whereIsVertex(const DataType& vertex) const {
+    for (size_t position = 0; position < this->vertexCount; ++position) {
+      if (!(this->adjacencyList[position].isEmpty()) &&
+      this->adjacencyList[position].getHead() == vertex) {
         return ++position;
       }
     }
@@ -89,8 +63,8 @@ class Graph {
   DataType& getNeighbors(x) {
   }*/
 
-  bool addVertex(const Vertex& vertex) {
-    if (this->whereIsVertex() -1) {
+  bool addVertex(const DataType& vertex) {
+    if (this->whereIsVertex(vertex)) {
       return false;
     }
 
@@ -98,43 +72,29 @@ class Graph {
       this->increaseCapacity();
     }
 
-    this->vertexCount++;
-    Vecters[vertexCount].head.vecter = vertex;
+    this->adjacencyList[this->vertexCount++] =
+    List<DataType, Valuetype>(vertex);
     return true;
   }
 
-  bool removeVertex(const Vertex& vertex) const {
+  bool removeVertex(const DataType& vertex) const {
     size_t position = this->whereIsVertex(vertex);
     if (position-- == 0) {  
       return false;
     }
-
-    findRemove(vertex);
-    Vecters.erase(position,position++);
+    this->adjacencyList.erase(
+      this->adjacencyList.begin()+position);
+    this->adjacencyMatrix.erase(
+      this->adjacencyMatrix.begin()+position);
+    for (size_t row = 0; row < this->vertexCount; row++) {
+      this->adjacencyMatrix[row].erase(
+        this->adjacencyMatrix[row].begin()+position);
+    }
     --this->vertexCount;
-    
-    
     return true;
   }
 
-  void findRemove( Vertex& vertex) const {
-    for (size_t i = 0; i < vertexCount; i++){
-       removeConnection( Vecters[i],vertex);
-    }
-  }
-  void removeConnection(nodeList*  head,Vertex& vertex ){
-      while (head.next != nullptr){
-          if(head& == vertex&){
-              (head.previous).next = (head.next);
-              (head.next).previous = (head.previous);
-          }
-      }
-      
-
-  }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-  bool addEdge(const Vertex& origin, const Vertex& destination,
+  bool addEdge(const DataType& origin, const DataType& destination,
   const Valuetype& value) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);
@@ -148,7 +108,6 @@ class Graph {
     }
 
     if (origin == destination) {
-      this->
       this->adjacencyList[originPosition].setEdgeValue(origin, value);
       this->adjacencyMatrix[originPosition][originPosition] = 2;
     } else {
