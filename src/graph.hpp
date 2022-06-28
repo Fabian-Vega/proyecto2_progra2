@@ -138,7 +138,7 @@ class Graph {
   }
 
   const WeightType& getLink(
-    const Vertex<DataType, WeightType>& origin
+    const Vertex<DataType, WeightType>& origin,
     const Vertex<DataType, WeightType>& connection) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(destination);

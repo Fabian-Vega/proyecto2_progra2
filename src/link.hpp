@@ -8,7 +8,7 @@ namespace grph {
 
 template<typename Datatype, typename WeightType>
 class Link{
-  public:
+ public:
   Vertex<Datatype, WeightType>*         origin;
   WeightType                            weight;
   Vertex<Datatype, WeightType>*         connection;

@@ -35,15 +35,19 @@ int main(void) {
 
     std::cout << "\nLa distancia entre Boston y New York es: "
     << grafo.getLink(boston, york) << std::endl;
-    std::cout << "\nLa distancia entre Boston y San Francisco es: "
-    << grafo.getLink(std::string("Boston"), std::string("San Francisco"))
-    << std::endl;
     std::cout << "\nLa distancia entre Boston y Las Vegas es: "
-    << grafo.getLink(std::string("Boston"), std::string("Las Vegas"))
-    << std::endl;
-    std::cout << "\nLa distancia entre New York y Las Vegas es: "
-    << grafo.getLink(std::string("New York"), std::string("Las Vegas"))
-    << std::endl;
+    << grafo.getLink(boston, vegas) << std::endl;
+    std::cout << "\nLa distancia entre Boston y Chicago es: "
+    << grafo.getLink(boston, chicago) << std::endl;
+    std::cout << "\nLa distancia entre Boston y Los Angeles es: "
+    << grafo.getLink(boston, angeles) << std::endl;
+    std::cout << "\nLa distancia entre Boston y Sam Francisco es: "
+    << grafo.getLink(boston, francisco) << std::endl;
+    std::cout << "\nLa distancia entre Boston y Perez Zeledón es: "
+    << grafo.getLink(boston, perez) << std::endl;
+    std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
+    << grafo.getLink(perez, boston) << std::endl;
+
   } catch (const std::runtime_error& error) {
     std::cerr << "main error: " << error.what() << std::endl;
   }
