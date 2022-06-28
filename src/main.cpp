@@ -5,43 +5,44 @@
 
 #include "graph.hpp"
 
+
 int main(void) {
   try {
     grph::Graph<std::string, double> grafo(3, true);
-    grafo.addVertex(std::string("Boston"));
-    grafo.addVertex(std::string("New York"));
-    grafo.addVertex(std::string("Las Vegas"));
-    grafo.addVertex(std::string("Chicago"));
-    grafo.addVertex(std::string("Los Angeles"));
-    grafo.addVertex(std::string("San Franciso"));
-    grafo.addVertex(std::string("Perez Zeledon"));
+    grph::Vertex<std::string, double> boston(std::string("Boston"));
+    grph::Vertex<std::string, double> york(std::string("New York"));
+    grph::Vertex<std::string, double> vegas(std::string("Las Vegas"));
+    grph::Vertex<std::string, double> chicago(std::string("Chicago"));
+    grph::Vertex<std::string, double> angeles(std::string("Los Angeles"));
+    grph::Vertex<std::string, double> francisco(std::string("San Franciso"));
+    grph::Vertex<std::string, double> perez(std::string("Perez Zeledon"));
 
-    grafo.addEdge(std::string("Boston"),
-    std::string("New York"), 80.7);
-    grafo.addEdge(std::string("Boston"),
-    std::string("Chicago"), 20.7);
-    grafo.addEdge(std::string("Boston"),
-    std::string("Las Vegas"), 120.4);
-    grafo.addEdge(std::string("Boston"),
-    std::string("San Francisco"), 10.2);
-    grafo.addEdge(std::string("San Francisco"),
-    std::string("Perez Zeledon"), 800.9);
-    grafo.addEdge(std::string("San Francisco"),
-    std::string("Chicago"), 150.9);
-    grafo.addEdge(std::string("New York"),
-    std::string("Las Vegas"), 50.1);
+    grafo.addVertex(boston);
+    grafo.addVertex(york);
+    grafo.addVertex(vegas);
+    grafo.addVertex(chicago);
+    grafo.addVertex(angeles);
+    grafo.addVertex(francisco);
+    grafo.addVertex(perez);
+
+    grafo.addLink(boston, york, 80.7);
+    grafo.addLink(boston, vegas, 3.5);
+    grafo.addLink(boston, chicago, 26);
+    grafo.addLink(boston, angeles, 18);
+    grafo.addLink(boston, francisco, 43.2);
+    grafo.addLink(boston, perez, 786345);
+    grafo.addLink(perez, boston, 69420);
 
     std::cout << "\nLa distancia entre Boston y New York es: "
-    << grafo.getEdge(std::string("Boston"), std::string("New York"))
-    << std::endl;
+    << grafo.getLink(boston, york) << std::endl;
     std::cout << "\nLa distancia entre Boston y San Francisco es: "
-    << grafo.getEdge(std::string("Boston"), std::string("San Francisco"))
+    << grafo.getLink(std::string("Boston"), std::string("San Francisco"))
     << std::endl;
     std::cout << "\nLa distancia entre Boston y Las Vegas es: "
-    << grafo.getEdge(std::string("Boston"), std::string("Las Vegas"))
+    << grafo.getLink(std::string("Boston"), std::string("Las Vegas"))
     << std::endl;
     std::cout << "\nLa distancia entre New York y Las Vegas es: "
-    << grafo.getEdge(std::string("New York"), std::string("Las Vegas"))
+    << grafo.getLink(std::string("New York"), std::string("Las Vegas"))
     << std::endl;
   } catch (const std::runtime_error& error) {
     std::cerr << "main error: " << error.what() << std::endl;
