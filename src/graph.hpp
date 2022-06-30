@@ -144,7 +144,7 @@ class Graph {
         "Graph: Could not find vertex(es) to get the Link");
     }
 
-    if (this->adjacencyMatrix[originPosition][destinPosition]) {
+    if (this->adjacencyMatrix[originPosition][destinPosition] == 0) {
       throw std::runtime_error("Graph: Could not find Link to get it");
     }
 
