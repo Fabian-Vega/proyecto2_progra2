@@ -8,14 +8,14 @@
 int main(void) {
   try {
     //xd
-    grph::Graph<std::string, double> grafo(3, true);
-    grph::Vertex<std::string, double> boston((std::string("Boston")));
-    grph::Vertex<std::string, double> york((std::string("New York")));
-    grph::Vertex<std::string, double> vegas((std::string("Las Vegas")));
-    grph::Vertex<std::string, double> chicago((std::string("Chicago")));
-    grph::Vertex<std::string, double> angeles((std::string("Los Angeles")));
-    grph::Vertex<std::string, double> francisco((std::string("San Franciso")));
-    grph::Vertex<std::string, double> perez((std::string("Perez Zeledon")));
+    grph::Graph<std::string, long long> grafo(3, true);
+    grph::Vertex<std::string, long long> boston((std::string("Boston")));
+    grph::Vertex<std::string, long long> york((std::string("New York")));
+    grph::Vertex<std::string, long long> vegas((std::string("Las Vegas")));
+    grph::Vertex<std::string, long long> chicago((std::string("Chicago")));
+    grph::Vertex<std::string, long long> angeles((std::string("Los Angeles")));
+    grph::Vertex<std::string, long long> francisco((std::string("San Franciso")));
+    grph::Vertex<std::string, long long> perez((std::string("Perez Zeledon")));
 
     grafo.addVertex(boston);
     grafo.addVertex(york);
@@ -25,8 +25,8 @@ int main(void) {
     grafo.addVertex(francisco);
     grafo.addVertex(perez);
 
-    double weights[7] = {80.7, 3.5, 26, 18, 43.2, 786345, 69420};
-
+    long long weights[7] = {80, 3, 26, 18, 43, 786345, 69420};
+    //grafo.removeVertex(francisco);
     grafo.addLink(boston, york, weights[0]);
     grafo.addLink(boston, vegas, weights[1]);
     grafo.addLink(boston, chicago, weights[2]);

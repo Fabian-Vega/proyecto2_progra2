@@ -82,7 +82,7 @@ class Graph {
     return true;
   }
 
-  bool removeVertex(const Vertex<DataType, WeightType>& vertex) {
+  bool removeVertex(Vertex<DataType, WeightType>& vertex) {
     size_t position = this->whereIsVertex(vertex);
     if (position-- == 0) {
       return false;
@@ -201,15 +201,15 @@ class Graph {
     return true;
   }
 
-  void findRemove(Vertex<DataType, WeightType>& vertex) const {
+  void findRemove(Vertex<DataType, WeightType>& vertex) {
     for (size_t current = 0; current < this->vertexCount; ++current) {
       if (this->vecters[current] != &vertex) {
         for (size_t connection = 0;
-        connection < this->vecters[current]->linkCount; ++connection) {
+        connection < this->vecters[current]->getLinkCount(); ++connection) {
           if (
-    this->vecters[current]->linkVector[connection]->connection == &vertex) {
-            this->vecters[current]->linkVector.erase(
-              this->vecters[current]->linkVector.begin()+connection);
+    this->vecters[current]->getLinkConnection(connection) == &vertex) {
+            this->vecters[current]->getLinkVector().erase(
+              this->vecters[current]->getLinkVector().begin()+connection);
           }
         }
       }
