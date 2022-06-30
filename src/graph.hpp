@@ -75,8 +75,11 @@ class Graph {
     return this->adjacencyMatrix[originPosition][destinPosition] != 0;
  
   }
-  //DataType& getNeighbors(x) {
-  //}
+
+  std::vector<Vertex<DataType, WeightType>*> getNeighbors(
+    Vertex<DataType, WeightType>* origin) {
+      
+  }
 
   bool addVertex(Vertex<DataType, WeightType>* vertex) {
     if (this->whereIsVertex(vertex) != 0) {
