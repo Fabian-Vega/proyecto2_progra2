@@ -55,7 +55,7 @@ class Graph {
 
   size_t whereIsLink(const Vertex<DataType, WeightType>& origin,
   const Vertex<DataType, WeightType>& connection) const {
-    for (size_t position = 0; 
+    for (size_t position = 0;
     position < origin.getLinkCount(); ++position) {
         if (origin.getLinkConnection(position) == &connection) {
         return ++position;
@@ -85,7 +85,7 @@ class Graph {
 
   bool removeVertex(const Vertex<DataType, WeightType>& vertex) {
     size_t position = this->whereIsVertex(vertex);
-    if (position-- == 0) {  
+    if (position-- == 0) {
       return false;
     }
 
@@ -205,9 +205,10 @@ class Graph {
   void findRemove(Vertex<DataType, WeightType>& vertex) const {
     for (size_t current = 0; current < this->vertexCount; ++current) {
       if (this->vecters[current] != &vertex) {
-        for (size_t connection = 0; 
+        for (size_t connection = 0;
         connection < this->vecters[current]->linkCount; ++connection) {
-          if (this->vecters[current]->linkVector[connection]->connection == &vertex) {
+          if (
+    this->vecters[current]->linkVector[connection]->connection == &vertex) {
             this->vecters[current]->linkVector.erase(
               this->vecters[current]->linkVector.begin()+connection);
           }
@@ -215,7 +216,6 @@ class Graph {
       }
     }
   }
-
 };
 
 }  // namespace grph
