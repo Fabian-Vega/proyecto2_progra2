@@ -33,7 +33,7 @@ class Vertex {
     }
 
    public:
-    inline const WeightType& getWeight() const {
+    inline WeightType& getWeight() {
       return this->weight;
     }
     inline const Vertex<DataType, WeightType>* getConnection() const {
@@ -58,7 +58,7 @@ class Vertex {
     return this->linkCount;
   }
 
-  inline const size_t& getLinkCount() const {
+  inline size_t getLinkCount() const {
     return this->linkCount;
   }
 
@@ -66,7 +66,7 @@ class Vertex {
     return this->linkVector;
   }
 
-  inline const WeightType& getLinkWeight(size_t linkPosition) const {
+  inline WeightType& getLinkWeight(size_t linkPosition) {
     return this->linkVector[linkPosition].getWeight();
   }
 

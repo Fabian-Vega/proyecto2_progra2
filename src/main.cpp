@@ -9,13 +9,13 @@ int main(void) {
   try {
     //xd
     grph::Graph<std::string, long long> grafo(3, true);
-    grph::Vertex<std::string, long long> boston((std::string("Boston")));
-    grph::Vertex<std::string, long long> york((std::string("New York")));
-    grph::Vertex<std::string, long long> vegas((std::string("Las Vegas")));
-    grph::Vertex<std::string, long long> chicago((std::string("Chicago")));
-    grph::Vertex<std::string, long long> angeles((std::string("Los Angeles")));
-    grph::Vertex<std::string, long long> francisco((std::string("San Franciso")));
-    grph::Vertex<std::string, long long> perez((std::string("Perez Zeledon")));
+    grph::Vertex<std::string, long long>* boston = new grph::Vertex<std::string, long long>((std::string("Boston")));
+    grph::Vertex<std::string, long long>* york = new grph::Vertex<std::string, long long>((std::string("New York")));
+    grph::Vertex<std::string, long long>* vegas = new grph::Vertex<std::string, long long>((std::string("Las Vegas")));
+    grph::Vertex<std::string, long long>* chicago = new grph::Vertex<std::string, long long>((std::string("Chicago")));
+    grph::Vertex<std::string, long long>* angeles = new grph::Vertex<std::string, long long>((std::string("Los Angeles")));
+    grph::Vertex<std::string, long long>* francisco = new grph::Vertex<std::string, long long>((std::string("San Franciso")));
+    grph::Vertex<std::string, long long>* perez = new grph::Vertex<std::string, long long>((std::string("Perez Zeledon")));
 
     grafo.addVertex(boston);
     grafo.addVertex(york);
@@ -26,7 +26,7 @@ int main(void) {
     grafo.addVertex(perez);
 
     long long weights[7] = {80, 3, 26, 18, 43, 786345, 69420};
-    //grafo.removeVertex(francisco);
+
     grafo.addLink(boston, york, weights[0]);
     grafo.addLink(boston, vegas, weights[1]);
     grafo.addLink(boston, chicago, weights[2]);
@@ -35,6 +35,31 @@ int main(void) {
     grafo.addLink(boston, perez, weights[5]);
     grafo.addLink(perez, boston, weights[6]);
 
+    if(grafo.isAdjacent(boston, york)){
+      std::cout<<"Si son pendejon"<<std::endl;
+    }
+    if(grafo.isAdjacent(boston, vegas)){
+      std::cout<<"Si son pendejon"<<std::endl;
+    }
+    if(grafo.isAdjacent(boston, chicago)){
+      std::cout<<"Si son pendejon"<<std::endl;
+    }
+    if(grafo.isAdjacent(boston, perez)){
+      std::cout<<"Si son pendejon"<<std::endl;
+    }
+    if(grafo.isAdjacent(boston, angeles)){
+      std::cout<<"Si son pendejon"<<std::endl;
+    }
+    if(grafo.isAdjacent(boston, francisco)){
+      std::cout<<"Si son pendejon"<<std::endl;
+    }
+    if(grafo.isAdjacent(perez, boston)){
+      std::cout<<"Si son pendejon"<<std::endl;
+    }
+    if(grafo.isAdjacent(perez, vegas)==false){
+      std::cout<<"NO son pendejon"<<std::endl;
+    }
+    
     std::cout << "\nLa distancia entre Boston y New York es: "
     << grafo.getLink(boston, york) << std::endl;
     std::cout << "\nLa distancia entre Boston y Las Vegas es: "
@@ -49,7 +74,13 @@ int main(void) {
     << grafo.getLink(boston, perez) << std::endl;
     std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
     << grafo.getLink(perez, boston) << std::endl;
-    
+    delete boston;
+    delete york;
+    delete vegas;
+    delete chicago;
+    delete angeles;
+    delete francisco;
+    delete perez;
   } catch (const std::runtime_error& error) {
     std::cerr << "main error: " << error.what() << std::endl;
   }

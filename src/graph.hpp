@@ -42,21 +42,20 @@ class Graph {
   }*/
 
  private:
-  size_t whereIsVertex(const Vertex<DataType, WeightType>& vertex) const {
+  size_t whereIsVertex(const Vertex<DataType, WeightType>* vertex) const {
     for (size_t position = 0; position < this->vertexCount; ++position) {
-        if (this->vecters[position] != nullptr &&
-          this->vecters[position] == &vertex) {
+        if (this->vecters[position] == vertex) {
         return ++position;
       }
     }
     return 0;
   }
 
-  size_t whereIsLink(const Vertex<DataType, WeightType>& origin,
-  const Vertex<DataType, WeightType>& connection) const {
+  size_t whereIsLink(const Vertex<DataType, WeightType>* origin,
+  const Vertex<DataType, WeightType>* connection) const {
     for (size_t position = 0;
-    position < origin.getLinkCount(); ++position) {
-        if (origin.getLinkConnection(position) == &connection) {
+    position < origin->getLinkCount(); ++position) {
+        if (origin->getLinkConnection(position) == connection) {
         return ++position;
       }
     }
@@ -64,12 +63,22 @@ class Graph {
   }
 
  public:
-  /*bool isAdjacent(x, y) {
-  }
-  DataType& getNeighbors(x) {
-  }*/
+  bool isAdjacent(
+  Vertex<DataType, WeightType>* origin,
+  Vertex<DataType, WeightType>* connection) {
+    size_t originPosition = this->whereIsVertex(origin);
+    size_t destinPosition = this->whereIsVertex(connection);
+    if (originPosition-- == 0 || destinPosition-- == 0) {
+      return false;
+    }
 
-  bool addVertex(Vertex<DataType, WeightType>& vertex) {
+    return this->adjacencyMatrix[originPosition][destinPosition] != 0;
+ 
+  }
+  //DataType& getNeighbors(x) {
+  //}
+
+  bool addVertex(Vertex<DataType, WeightType>* vertex) {
     if (this->whereIsVertex(vertex) != 0) {
       return false;
     }
@@ -77,12 +86,12 @@ class Graph {
     if (this->vertexCount >= this->capacity) {
       this->increaseCapacity();
     }
-
-    this->vecters[vertexCount++] = &vertex;
+    
+    this->vecters[this->vertexCount++] = vertex;
     return true;
   }
 
-  bool removeVertex(Vertex<DataType, WeightType>& vertex) {
+  bool removeVertex(Vertex<DataType, WeightType>* vertex) {
     size_t position = this->whereIsVertex(vertex);
     if (position-- == 0) {
       return false;
@@ -94,8 +103,8 @@ class Graph {
     return true;
   }
 
-  bool addLink(Vertex<DataType, WeightType>& origin,
-  Vertex<DataType, WeightType>& connection,
+  bool addLink(Vertex<DataType, WeightType>* origin,
+  Vertex<DataType, WeightType>* connection,
   WeightType& weight) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
@@ -108,14 +117,14 @@ class Graph {
       return false;
     }
 
-    origin.getLinkVector().push_back(origin.createLink(weight, &connection));
-    ++origin.getLinkCount();
+    origin->getLinkVector().push_back(origin->createLink(weight, connection));
+    ++(origin->getLinkCount());
     this->adjacencyMatrix[originPosition][destinPosition] = 1;
     return true;
   }
 
-  bool removeLink(Vertex<DataType, WeightType>& origin,
-  const Vertex<DataType, WeightType>& connection) {
+  bool removeLink(Vertex<DataType, WeightType>* origin,
+  const Vertex<DataType, WeightType>* connection) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
@@ -127,16 +136,16 @@ class Graph {
       return true;
     }
 
-    origin.linkVector.erase(
-      origin.linkVector.begin()+(this->whereIsLink(origin, connection)-1));
-    --origin.linkCount;
+    origin->getLinkVector().erase(
+      origin->getLinkVector().begin()+(this->whereIsLink(origin, connection)-1));
+    --origin->getLinkCount();
     this->adjacencyMatrix[originPosition][destinPosition] = 0;
     return false;
   }
 
-  const WeightType& getLink(
-    const Vertex<DataType, WeightType>& origin,
-    const Vertex<DataType, WeightType>& connection) {
+   WeightType& getLink(
+    Vertex<DataType, WeightType>* origin,
+    Vertex<DataType, WeightType>* connection) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
@@ -148,13 +157,12 @@ class Graph {
       throw std::runtime_error("Graph: Could not find Link to get it");
     }
 
-    // Esto falla
-    return origin.getLinkWeight(this->whereIsLink(origin, connection)-1);
+    return origin->getLinkWeight(this->whereIsLink(origin, connection)-1);
   }
 
-  void setLink(Vertex<DataType, WeightType>& origin,
-  const Vertex<DataType, WeightType>& connection,
-  const WeightType& weight) {
+  void setLink(Vertex<DataType, WeightType>* origin,
+  Vertex<DataType, WeightType>* connection,
+  WeightType& weight) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
@@ -162,11 +170,11 @@ class Graph {
         "Graph: Could not find vertex(es) to set the Link");
     }
 
-    if (this->adjacencyMatrix[originPosition][destinPosition]) {
+    if (this->adjacencyMatrix[originPosition][destinPosition] == 0) {
       throw std::runtime_error("Graph: Could not find Link to set it");
     }
 
-    origin.getLinkWeight(this->whereIsLink(origin, connection)-1) = weight;
+    origin->getLinkWeight(this->whereIsLink(origin, connection)-1) = weight;
   }
 
  private:
@@ -179,6 +187,8 @@ class Graph {
     for (size_t row = 0; row < this->vertexCount; row++) {
       this->adjacencyMatrix[row].resize(newCapacity, 0);
     }
+
+    this->vecters.resize(newCapacity, nullptr);
 
     if (!this->couldIncreaseCapacity(newCapacity)) {
       throw std::runtime_error(
@@ -201,13 +211,13 @@ class Graph {
     return true;
   }
 
-  void findRemove(Vertex<DataType, WeightType>& vertex) {
+  void findRemove(Vertex<DataType, WeightType>* vertex) {
     for (size_t current = 0; current < this->vertexCount; ++current) {
-      if (this->vecters[current] != &vertex) {
+      if (this->vecters[current] != vertex) {
         for (size_t connection = 0;
         connection < this->vecters[current]->getLinkCount(); ++connection) {
           if (
-    this->vecters[current]->getLinkConnection(connection) == &vertex) {
+    this->vecters[current]->getLinkConnection(connection) == vertex) {
             this->vecters[current]->getLinkVector().erase(
               this->vecters[current]->getLinkVector().begin()+connection);
           }
