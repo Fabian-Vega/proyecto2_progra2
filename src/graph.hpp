@@ -34,7 +34,6 @@ class Graph {
   inline bool isEmpty() const {
     return this->vertexCount == 0;
   }
-
   /*friend const WeightType& operator()(
     const DataType& origin, const DataType& destination) const {
     return 
@@ -70,7 +69,7 @@ class Graph {
   DataType& getNeighbors(x) {
   }*/
 
-  bool addVertex(const Vertex<DataType, WeightType>& vertex) {
+  bool addVertex(Vertex<DataType, WeightType>& vertex) {
     if (this->whereIsVertex(vertex) != 0) {
       return false;
     }
@@ -96,7 +95,7 @@ class Graph {
   }
 
   bool addLink(Vertex<DataType, WeightType>& origin,
-  const Vertex<DataType, WeightType>& connection,
+  Vertex<DataType, WeightType>& connection,
   WeightType& weight) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
@@ -109,7 +108,7 @@ class Graph {
       return false;
     }
 
-    origin.linkVector.push_back(origin.createLink(weight, connection));
+    origin.getLinkVector().push_back(origin.createLink(weight, &connection));
     ++origin.getLinkCount();
     this->adjacencyMatrix[originPosition][destinPosition] = 1;
     return true;

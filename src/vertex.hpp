@@ -25,7 +25,7 @@ class Vertex {
     }
 
     Link(Vertex<DataType, WeightType>* origin,
-    const WeightType& weight,
+    WeightType& weight,
     Vertex<DataType, WeightType>* connection)
     :origin(origin),
     weight(weight),
@@ -62,6 +62,10 @@ class Vertex {
     return this->linkCount;
   }
 
+  inline std::vector<Link>& getLinkVector() {
+    return this->linkVector;
+  }
+
   inline const WeightType& getLinkWeight(size_t linkPosition) const {
     return this->linkVector[linkPosition].getWeight();
   }
@@ -72,9 +76,9 @@ class Vertex {
   }
 
  public:
-  Link& createLink(WeightType weight,
+  Vertex<DataType, WeightType>::Link createLink(WeightType weight,
   Vertex<DataType, WeightType>* connection) {
-  Link(this, weight, connection);
+    return Vertex<DataType, WeightType>::Link(this, weight, connection);
   }
 };
 

@@ -24,13 +24,15 @@ int main(void) {
     grafo.addVertex(francisco);
     grafo.addVertex(perez);
 
-    grafo.addLink(boston, york, 80.7);
-    grafo.addLink(boston, vegas, 3.5);
-    grafo.addLink(boston, chicago, 26);
-    grafo.addLink(boston, angeles, 18);
-    grafo.addLink(boston, francisco, 43.2);
-    grafo.addLink(boston, perez, 786345);
-    grafo.addLink(perez, boston, 69420);
+    double weights[7] = {80.7, 3.5, 26, 18, 43.2, 786345, 69420};
+
+    grafo.addLink(boston, york, weights[0]);
+    grafo.addLink(boston, vegas, weights[1]);
+    grafo.addLink(boston, chicago, weights[2]);
+    grafo.addLink(boston, angeles, weights[3]);
+    grafo.addLink(boston, francisco, weights[4]);
+    grafo.addLink(boston, perez, weights[5]);
+    grafo.addLink(perez, boston, weights[6]);
 
     std::cout << "\nLa distancia entre Boston y New York es: "
     << grafo.getLink(boston, york) << std::endl;
