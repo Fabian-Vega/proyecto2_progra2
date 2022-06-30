@@ -3,7 +3,7 @@
 #define GRAPH_HPP
 
 #include <stdexcept>
-
+#include <vector>
 #include "vertex.hpp"
 
 const size_t INITIAL_CAPACITY = 10;
