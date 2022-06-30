@@ -8,9 +8,9 @@ namespace grph {
 
 template<typename DataType, typename WeightType>
 class Vertex{
-  private:
-    struct Link{
-      public:
+  public:
+    class Link{
+      private:
         Vertex<DataType, WeightType>*         origin;
         WeightType                            weight;
         Vertex<DataType, WeightType>*         connection;
@@ -30,6 +30,13 @@ class Vertex{
         weight(weight),
         connection(connection) {
         }
+      public:
+       inline const WeightType& getWeight() const {
+        return this->weight;
+       }
+       inline const Vertex<DataType, WeightType>* getConnection() const {
+        return this->connection;
+       }
     };
     
    private:
@@ -38,10 +45,10 @@ class Vertex{
     std::vector<Link>    linkVector;
 
    public:
-    Vertex(const Datatype& data, size_t linkCount = 0)
+    Vertex(const DataType& data, size_t linkCount = 0)
     :data(data),
     linkCount(linkCount),
-    linkVector(linkCount, Link(*this, *this)) {
+    linkVector(linkCount) {
     }
 
    public:
@@ -54,13 +61,17 @@ class Vertex{
     }
 
     inline const WeightType& getLinkWeight(size_t linkPosition) const {
-      return this->linkVector[linkPosition].weight;
+      return this->linkVector[linkPosition].getWeight();
     }
 
     inline Vertex<DataType, WeightType>* getLinkConnection(
       size_t linkPosition) const {
-      return this->linkVector[linkPosition].connection;
+      return this->linkVector[linkPosition].getConnection();
     }
+    public:
+     Link& createLink(WeightType weight, Vertex<DataType, WeightType>* connection) {
+      Link(this, weight, connection);
+     }
   };
 
 } // namespace grph

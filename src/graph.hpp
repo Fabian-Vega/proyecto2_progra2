@@ -2,6 +2,8 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <stdexcept>
+
 #include "vertex.hpp"
 
 const size_t INITIAL_CAPACITY = 10;
@@ -81,7 +83,7 @@ class Graph {
     return true;
   }
 
-  bool removeVertex(const Vertex<DataType, WeightType>& vertex) const {
+  bool removeVertex(const Vertex<DataType, WeightType>& vertex) {
     size_t position = this->whereIsVertex(vertex);
     if (position-- == 0) {  
       return false;
@@ -95,7 +97,7 @@ class Graph {
 
   bool addLink(Vertex<DataType, WeightType>& origin,
   const Vertex<DataType, WeightType>& connection,
-  const WeightType& weight) {
+  WeightType& weight) {
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
     if (originPosition-- == 0 || destinPosition-- == 0) {
@@ -107,8 +109,7 @@ class Graph {
       return false;
     }
 
-    //  Link link(&origin, weight, &connection);
-    //  origin.linkVector.push_back(link);
+    origin.linkVector.push_back(origin.createLink(weight, connection));
     ++origin.getLinkCount();
     this->adjacencyMatrix[originPosition][destinPosition] = 1;
     return true;

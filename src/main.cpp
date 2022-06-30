@@ -7,14 +7,14 @@
 
 int main(void) {
   try {
-    grph::Graph<std::string, double> grafo(3, true);
-    grph::Vertex<std::string, double> boston(std::string("Boston"));
-    grph::Vertex<std::string, double> york(std::string("New York"));
-    grph::Vertex<std::string, double> vegas(std::string("Las Vegas"));
-    grph::Vertex<std::string, double> chicago(std::string("Chicago"));
-    grph::Vertex<std::string, double> angeles(std::string("Los Angeles"));
-    grph::Vertex<std::string, double> francisco(std::string("San Franciso"));
-    grph::Vertex<std::string, double> perez(std::string("Perez Zeledon"));
+    /*grph::Graph<std::string, double> grafo(3, true);
+    grph::Vertex<std::string, double> boston((std::string("Boston")));
+    grph::Vertex<std::string, double> york((std::string("New York")));
+    grph::Vertex<std::string, double> vegas((std::string("Las Vegas")));
+    grph::Vertex<std::string, double> chicago((std::string("Chicago")));
+    grph::Vertex<std::string, double> angeles((std::string("Los Angeles")));
+    grph::Vertex<std::string, double> francisco((std::string("San Franciso")));
+    grph::Vertex<std::string, double> perez((std::string("Perez Zeledon")));
 
     grafo.addVertex(boston);
     grafo.addVertex(york);
@@ -46,7 +46,7 @@ int main(void) {
     << grafo.getLink(boston, perez) << std::endl;
     std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
     << grafo.getLink(perez, boston) << std::endl;
-
+*/
   } catch (const std::runtime_error& error) {
     std::cerr << "main error: " << error.what() << std::endl;
   }
