@@ -8,9 +8,9 @@
 namespace grph {
 
 template<typename DataType, typename WeightType>
-class Vertex{
+class Vertex {
  public:
-  class Link{
+  class Link {
    private:
     Vertex<DataType, WeightType>*         origin;
     WeightType                            weight;
@@ -31,6 +31,7 @@ class Vertex{
     weight(weight),
     connection(connection) {
     }
+
    public:
     inline const WeightType& getWeight() const {
       return this->weight;
@@ -39,6 +40,7 @@ class Vertex{
       return this->connection;
     }
   };
+
  private:
   DataType             data;
   size_t               linkCount;
@@ -64,10 +66,11 @@ class Vertex{
     return this->linkVector[linkPosition].getWeight();
   }
 
-  inline Vertex<DataType, WeightType>* getLinkConnection(
+  inline const Vertex<DataType, WeightType>* getLinkConnection(
     size_t linkPosition) const {
     return this->linkVector[linkPosition].getConnection();
   }
+
  public:
   Link& createLink(WeightType weight,
   Vertex<DataType, WeightType>* connection) {
@@ -75,6 +78,6 @@ class Vertex{
   }
 };
 
-} // namespace grph
+}  // namespace grph
 
 #endif  // VERTEX_HPP
