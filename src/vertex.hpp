@@ -3,6 +3,7 @@
 
 #define VERTEX_HPP
 
+#include <cstddef>
 #include <vector>
 
 namespace grph {
@@ -36,6 +37,12 @@ class Vertex {
     inline WeightType& getWeight() {
       return this->weight;
     }
+    inline const WeightType& getWeight() const {
+      return this->weight;
+    }
+    inline Vertex<DataType, WeightType>* getConnection() {
+      return this->connection;
+    }
     inline const Vertex<DataType, WeightType>* getConnection() const {
       return this->connection;
     }
@@ -54,6 +61,10 @@ class Vertex {
   }
 
  public:
+  inline const DataType& getData() const {
+    return this->data;
+  }
+
   inline size_t& getLinkCount() {
     return this->linkCount;
   }
@@ -68,6 +79,15 @@ class Vertex {
 
   inline WeightType& getLinkWeight(size_t linkPosition) {
     return this->linkVector[linkPosition].getWeight();
+  }
+
+  inline const WeightType& getLinkWeight(size_t linkPosition) const {
+    return this->linkVector[linkPosition].getWeight();
+  }
+
+  inline Vertex<DataType, WeightType>* getLinkConnection(
+    size_t linkPosition) {
+    return this->linkVector[linkPosition].getConnection();
   }
 
   inline const Vertex<DataType, WeightType>* getLinkConnection(

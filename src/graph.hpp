@@ -2,6 +2,7 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <new>
 #include <stdexcept>
 #include <vector>
 #include "vertex.hpp"
@@ -34,12 +35,18 @@ class Graph {
   inline bool isEmpty() const {
     return this->vertexCount == 0;
   }
-  /*friend const WeightType& operator()(
-    const DataType& origin, const DataType& destination) const {
-    return 
+  
+  const WeightType& operator() (
+    const Vertex<DataType, WeightType>* origin,
+    const Vertex<DataType, WeightType>* connection) const {
+      return origin->getLinkWeight(this->whereIsLink(origin, connection)-1);
   }
-  friend WeightType& operator()() {
-  }*/
+
+  WeightType& operator()(
+    Vertex<DataType, WeightType>* origin,
+    Vertex<DataType, WeightType>* connection) {
+      return origin->getLinkWeight(this->whereIsLink(origin, connection)-1);
+  }
 
  private:
   size_t whereIsVertex(const Vertex<DataType, WeightType>* vertex) const {
@@ -72,13 +79,21 @@ class Graph {
       return false;
     }
 
-    return this->adjacencyMatrix[originPosition][destinPosition] != 0;
+    return this->adjacencyMatrix[originPosition][destinPosition] != 0
+    || this->adjacencyMatrix[destinPosition][originPosition] != 0;
  
   }
-
-  std::vector<Vertex<DataType, WeightType>*> getNeighbors(
+  
+  Vertex<DataType, WeightType>** getNeighbors(
     Vertex<DataType, WeightType>* origin) {
-      
+      Vertex<DataType, WeightType>** neighbors = 
+      new Vertex<DataType, WeightType>*[origin->getLinkCount()];
+      for (size_t neighbor = 0; neighbor < origin->getLinkCount();
+      ++neighbor) {
+        neighbors[neighbor] = origin->getLinkConnection(neighbor);
+      }
+
+      return neighbors;
   }
 
   bool addVertex(Vertex<DataType, WeightType>* vertex) {
@@ -121,8 +136,15 @@ class Graph {
     }
 
     origin->getLinkVector().push_back(origin->createLink(weight, connection));
-    ++(origin->getLinkCount());
+    ++origin->getLinkCount();
     this->adjacencyMatrix[originPosition][destinPosition] = 1;
+
+    if (!this->isDirected) {
+      connection->getLinkVector().push_back(
+        connection->createLink(weight, origin));
+    ++connection->getLinkCount();
+    this->adjacencyMatrix[destinPosition][originPosition] = 1;
+    }
     return true;
   }
 
@@ -143,6 +165,13 @@ class Graph {
       origin->getLinkVector().begin()+(this->whereIsLink(origin, connection)-1));
     --origin->getLinkCount();
     this->adjacencyMatrix[originPosition][destinPosition] = 0;
+
+    if (!this->isDirected) {
+      connection->getLinkVector().erase(
+      connection->getLinkVector().begin()+(this->whereIsLink(connection, origin)-1));
+    --connection->getLinkCount();
+    this->adjacencyMatrix[destinPosition][originPosition] = 0;
+    }
     return false;
   }
 
@@ -178,6 +207,9 @@ class Graph {
     }
 
     origin->getLinkWeight(this->whereIsLink(origin, connection)-1) = weight;
+    if (!this->isDirected) {
+      connection->getLinkWeight(this->whereIsLink(connection, origin)-1) = weight;
+    }
   }
 
  private:
