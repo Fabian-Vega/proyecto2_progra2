@@ -70,7 +70,7 @@ class Graph {
   DataType& getNeighbors(x) {
   }*/
 
-  bool addVertex(const Vertex<DataType, WeightType>& vertex) {
+  bool addVertex(Vertex<DataType, WeightType>& vertex) {
     if (this->whereIsVertex(vertex) != 0) {
       return false;
     }
