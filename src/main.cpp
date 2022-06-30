@@ -7,6 +7,7 @@
 
 int main(void) {
   try {
+    //xd
     grph::Graph<std::string, double> grafo(3, true);
     grph::Vertex<std::string, double> boston((std::string("Boston")));
     grph::Vertex<std::string, double> york((std::string("New York")));
