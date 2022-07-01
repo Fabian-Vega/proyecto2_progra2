@@ -17,9 +17,14 @@ int main(void) {
         std::cin  >> inputOption;
         if(inputOption == 0 || inputOption == 1 || inputOption == 2|| inputOption == 3){
             validOption = true;
+        } else{
+            std::cout << "Invalid number, please try again\n\n";
         }
-        std::cout << "Invalid number, please try again\n\n";
+        
+        
     }
+
+    grph::Graph<std::string, std::string> grafo(3, false);
 
     switch (inputOption)
     {
@@ -28,13 +33,13 @@ int main(void) {
         return 0;
     
     case 1:
-        
+        addProfile(grafo);
         break;
     case 2:
-        
+        addFriendship(grafo);
         break;
     case 3:
-        
+        printProfile(grafo);
         break;
     
     default:
@@ -42,71 +47,101 @@ int main(void) {
     }
     
 
-  try {
-    //xd
-    grph::Graph<std::string, long long> grafo(3, false);
-    grph::Vertex<std::string, long long>* boston = new grph::Vertex<std::string, long long>((std::string("Boston")));
-    grph::Vertex<std::string, long long>* york = new grph::Vertex<std::string, long long>((std::string("New York")));
-    grph::Vertex<std::string, long long>* vegas = new grph::Vertex<std::string, long long>((std::string("Las Vegas")));
-    grph::Vertex<std::string, long long>* chicago = new grph::Vertex<std::string, long long>((std::string("Chicago")));
-    grph::Vertex<std::string, long long>* angeles = new grph::Vertex<std::string, long long>((std::string("Los Angeles")));
-    grph::Vertex<std::string, long long>* francisco = new grph::Vertex<std::string, long long>((std::string("San Franciso")));
-    grph::Vertex<std::string, long long>* perez = new grph::Vertex<std::string, long long>((std::string("Perez Zeledon")));
-
-    grafo.addVertex(boston);
-    grafo.addVertex(york);
-    grafo.addVertex(vegas);
-    grafo.addVertex(chicago);
-    grafo.addVertex(angeles);
-    grafo.addVertex(francisco);
-    grafo.addVertex(perez);
-
-    long long weights[7] = {80, 3, 26, 18, 43, 786345, 69420};
-
-    grafo.addLink(boston, york, weights[0]);
-    grafo.addLink(boston, vegas, weights[1]);
-    grafo.addLink(boston, chicago, weights[2]);
-    grafo.addLink(boston, angeles, weights[3]);
-    grafo.addLink(boston, francisco, weights[4]);
-    grafo.addLink(boston, perez, weights[5]);
-    grafo.setLink(perez, boston, weights[6]);
-    
-    grph::Vertex<std::string, long long>** bostonNeighbors =
-    grafo.getNeighbors(boston);
-    std::cout << "\nLas ciudades vecinas de Boston son: \n";
-    for (size_t city = 0; city < 6; ++city) {
-      std::cout << bostonNeighbors[city]->getData() 
-      << " con una distacia de : " << grafo(boston, bostonNeighbors[city]) 
-      << std::endl;;
-    }
-    delete [] bostonNeighbors;
-
-    std::cout << "\nLa distancia entre Boston y New York es: "
-    << grafo.getLink(boston, york) << std::endl;
-    std::cout << "\nLa distancia entre Boston y Las Vegas es: "
-    << grafo.getLink(boston, vegas) << std::endl;
-    std::cout << "\nLa distancia entre Boston y Chicago es: "
-    << grafo.getLink(boston, chicago) << std::endl;
-    std::cout << "\nLa distancia entre Boston y Los Angeles es: "
-    << grafo.getLink(boston, angeles) << std::endl;
-    std::cout << "\nLa distancia entre Boston y Sam Francisco es: "
-    << grafo.getLink(boston, francisco) << std::endl;
-    std::cout << "\nLa distancia entre Boston y Perez Zeledón es: "
-    << grafo.getLink(boston, perez) << std::endl;
-    std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
-    << grafo.getLink(perez, boston) << std::endl;
-    
-    delete boston;
-    delete york;
-    delete vegas;
-    delete chicago;
-    delete angeles;
-    delete francisco;
-    delete perez;
-
-  } catch (const std::runtime_error& error) {
-    std::cerr << "main error: " << error.what() << std::endl;
-  }
+  
 
   return 0;
 }
+
+void addProfile(grph::Graph<std::string, std::string>& graph){
+    std::cout << "What is the name of the person to be added?\n";
+    std::string input = "\0";
+    std::getline (std::cin,input);
+    grph::Vertex<std::string, std::string>* vecter = new grph::Vertex<std::string, std::string>((std::string(input)));
+    if (vecter == nullptr){
+        std::cout << "The profile wasnt able to be added.\n";
+    } 
+    bool succes = graph.addVertex(vecter);
+    if (succes){
+        std::cout << "The profile was able to be added succesfully.\n";
+    }
+}
+
+void addFriendship(grph::Graph<std::string, std::string>& graph){
+    std::cout << "What profiles do you want to link?\n";
+    for (size_t i = 0; i < graph.getVertexCount(); i++){
+        std::cout << graph.getVertexes()[i].data ;
+        std::cout <<" [" << i+1 << "]";
+        std::cout << (i !=graph.getVertexCount())?  " ": "";
+        
+    }
+    bool validOption = false;
+    int inputOption = -1;
+    size_t first = 0;
+    size_t second = 0;
+    while (validOption == false) {
+        std::cout << "Please choose the first profile to be linked :\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< graph.getVertexCount()+1){
+            validOption = true;
+            first = i;
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }   
+    }
+    validOption = false;
+    while (validOption == false) {
+        std::cout << "Please choose the second profile to be linked :\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< graph.getVertexCount()+1){
+            validOption = true;
+            second = i;
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }
+    }
+    validOption = false;
+    bool succes = false;
+    while (validOption == false) {
+        std::cout << "Please choose the type of relationship that they have :\n";
+        std::cout << "[1]Friendship\n[2]Romantic Relationship\n[3]Family Member\n[4]Coworker\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< 5){
+            validOption = true;
+            succes = graph.addLink(graph.getVertexes()[first], graph.getVertexes()[second], inputOption);
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }
+    }
+    std::cout << (succes)?  "The relationship was added succesfully": "The relationship wasnt able to be added.";
+}
+
+void printProfile(grph::Graph<std::string, std::string>& graph){
+    std::cout << "What profile do you want to see?\n";
+    for (size_t i = 0; i < graph.getVertexCount(); i++){
+        std::cout << graph.getVertexes()[i].data ;
+        std::cout <<" [" << i+1 << "]";
+        std::cout << (i !=graph.getVertexCount())?  " ": "";
+        
+    }
+    bool validOption = false;
+    size_t vertexIndex = 0;
+    while (validOption == false) {
+        std::cout << "Please choose the profile to be seen :\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< graph.getVertexCount()+1){
+            validOption = true;
+            vertexIndex = inputOption;
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }   
+    }
+    std::cout <<"Name: " << graph.getVertexes()[vertexIndex].data<< "\n" << "Relationships:\n";
+    grph::Vertex<std::string, std::string>** vertexNeighbors =
+    graph.getNeighbors(graph.getVertexes()[vertexIndex]);
+    for (size_t  i = 0; i < graph.getVertexes()[vertexIndex].getLinkCount; i++){
+       std::cout << graph.getVertexes()[i].data << " " << vertex.getLinkWeight(graph.whereIsLink(graph.getVertexes()[vertexIndex],graph.getVertexes()[i])) <<"\n";
+    }
+    
+}
+
+
