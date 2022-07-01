@@ -3,11 +3,14 @@ CXXFLAGS=-Wall -Wextra -std=c++17 -fno-elide-constructors
 DEFS=#-DVERBOSE
 
 .PHONY: all
-all:  bin/blackBoxTestingApp bin/appGraph bin/test
+all:  bin/appGraph
 
 .PHONY: asan
 asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
 asan: all
+
+.PHONY: test
+test: bin/test bin/blackBoxTestingApp
 
 # Link appGraph
 bin/appGraph: build/app.o bin/graph.a | bin/.
@@ -17,29 +20,33 @@ bin/appGraph: build/app.o bin/graph.a | bin/.
 build/app.o: src/app.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
+
 # Link blackBoxTestingApp
 bin/blackBoxTestingApp: build/blackBoxTesting.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
-# Compile app
+# Compile blackBoxTestingApp
 build/blackBoxTesting.o: test/blackBoxTesting.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
+
+
 # Link catchApp
-bin/test: test/testGraph.o bin/graph.a | bin/.
+bin/test: build/testGraph.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
-# Compile app
-build/test/%.o: test/test/%.cpp | build/test/.
+# Compile catchApp
+build/%.o: test/%.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
+
 # graph library
-#Lo que cambie probablemente es la linea 2309
 bin/graph.a: build/graph.o build/vertex.o | bin/.
 	ar rs $@ $^
 
 build/%.o: src/%.cpp src/%.hpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) $< -o $@
+
 
 .PRECIOUS: %/.
 %/.:
