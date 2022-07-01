@@ -113,16 +113,20 @@ class Graph {
   Graph<DataType, WeightType>& other) {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
-      //
+      // Conditional in case the capacities are different
       if (this->capacity != other.capacity) {
+        // Cycle that goes from 0 until it reaches the size of the adjacency matrix and resizes it
         for (size_t column = 0; column < this->adjacencyMatrix.size();
         ++column) {
           this->adjacencyMatrix[column].resize(other.capacity);
         }
+        // Resizing the adjacency Matrix and the vertexes
         this->adjacencyMatrix.resize(other.capacity);
         this->vertexes.resize(other.capacity);
+        // Assign the new capacty
         this->capacity = other.capacity;
       }
+      // Assigns new adjacency matrix, vertexes, vertex count and the fact that if its directed or not
       this->adjacencyMatrix = other.adjacencyMatrix;
       this->vertexes = other.vertexes;
       this->vertexCount = other.vertexCount;
@@ -138,6 +142,7 @@ class Graph {
    */
   Graph<DataType, WeightType>& operator=(Graph<DataType, WeightType>&& other) {
     if (this != &other) {
+      // Swaps the vertex count, capacity, adjacency matrix, vertexes and if it is directed or not from this to other
       std::swap(this->vertexCount, other.vertexCount);
       std::swap(this->capacity, other.capacity);
       std::swap(this->adjacencyMatrix, other.adjacencyMatrix);
