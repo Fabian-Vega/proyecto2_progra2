@@ -165,6 +165,9 @@ class Graph {
       return origin->getLinkWeight(this->whereIsLink(origin, connection)-1);
   }
 
+
+  // Barbo guapo
+
  private:
   /**
    * @brief Finds the position of the vertex 
