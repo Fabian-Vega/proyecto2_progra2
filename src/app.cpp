@@ -24,39 +24,44 @@ const size_t optionMin, const size_t optionMax);
 void addProfile(grph::Graph<std::string, std::string>& graph);
 
 /**
- * @brief Template for a default graph
- * @tparam DataType Specific type of data the vertex are going to use
- * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ * @brief Deletes a Profile from a graph.
+ * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
+ * profile will be deleted from.
  */
 void deleteProfile(grph::Graph<std::string, std::string>& graph);
+
 /**
- * @brief Template for a default graph
- * @tparam DataType Specific type of data the vertex are going to use
- * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ * @brief Adds a friendship link between two profiles.
+ * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
+ * Friendship will be made.
  */
 void addFriendship(grph::Graph<std::string, std::string>& graph);
+
 /**
- * @brief Template for a default graph
- * @tparam DataType Specific type of data the vertex are going to use
- * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ * @brief Will delete or chage the destination of a friendship link.
+ * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
+ * Friendship will be updated from.
  */
 void updateFriendship(grph::Graph<std::string, std::string>& graph);
+
 /**
- * @brief Template for a default graph
- * @tparam DataType Specific type of data the vertex are going to use
- * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ * @brief Will delete a friendship link between two profiles.
+ * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
+ * Friendship will be deleted from.
  */
 void deleteFriendship(grph::Graph<std::string, std::string>& graph);
+
 /**
- * @brief Template for a default graph
- * @tparam DataType Specific type of data the vertex are going to use
- * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ * @brief Will chage the destination of a friendship link.
+ * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
+ * Friendship will be updated from.
  */
 void modifyFriendship(grph::Graph<std::string, std::string>& graph);
+
 /**
- * @brief Template for a default graph
- * @tparam DataType Specific type of data the vertex are going to use
- * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ * @brief Prints the data from a profile
+ * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
+ * Friendship will be printed from.
  */
 void printProfile(grph::Graph<std::string, std::string>& graph);
 
