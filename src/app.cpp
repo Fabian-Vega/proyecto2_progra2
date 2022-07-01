@@ -5,14 +5,59 @@
 
 #include "graph.hpp"
 
+/**
+ * @brief Prints header and options to choose
+ * @tparam const char* header message to be printed
+ * @tparam const char* text of options to be chosen from. 
+ * @tparam const size_t the minimun number that can be chosen as option
+ * @tparam const size_t the maximun number that can be chosen as option
+ * @return size_t the index of the option chosen
+ */
 size_t showOptions(const char* initialMessage, const char* options,
 const size_t optionMin, const size_t optionMax);
+
+/**
+ * @brief Adds a a profile to the graph
+ * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
+ * profile will be made. 
+ */
 void addProfile(grph::Graph<std::string, std::string>& graph);
+
+/**
+ * @brief Template for a default graph
+ * @tparam DataType Specific type of data the vertex are going to use
+ * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ */
 void deleteProfile(grph::Graph<std::string, std::string>& graph);
+/**
+ * @brief Template for a default graph
+ * @tparam DataType Specific type of data the vertex are going to use
+ * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ */
 void addFriendship(grph::Graph<std::string, std::string>& graph);
+/**
+ * @brief Template for a default graph
+ * @tparam DataType Specific type of data the vertex are going to use
+ * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ */
 void updateFriendship(grph::Graph<std::string, std::string>& graph);
+/**
+ * @brief Template for a default graph
+ * @tparam DataType Specific type of data the vertex are going to use
+ * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ */
 void deleteFriendship(grph::Graph<std::string, std::string>& graph);
+/**
+ * @brief Template for a default graph
+ * @tparam DataType Specific type of data the vertex are going to use
+ * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ */
 void modifyFriendship(grph::Graph<std::string, std::string>& graph);
+/**
+ * @brief Template for a default graph
+ * @tparam DataType Specific type of data the vertex are going to use
+ * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ */
 void printProfile(grph::Graph<std::string, std::string>& graph);
 
 
