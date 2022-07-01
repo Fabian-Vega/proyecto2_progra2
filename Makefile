@@ -3,7 +3,7 @@ CXXFLAGS=-Wall -Wextra -std=c++17 -fno-elide-constructors
 DEFS=#-DVERBOSE
 
 .PHONY: all
-all: bin/mainApp bin/appGraph
+all: bin/mainApp bin/appGraph bin/testing
 
 .PHONY: asan
 asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
@@ -23,6 +23,14 @@ bin/mainApp: build/main.o bin/graph.a | bin/.
 
 # Compile app
 build/main.o: src/main.cpp | build/.
+	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
+
+# Link catch
+bin/testing: build/testing/testGraph.o bin/graph.a | bin/.
+	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
+
+# Compile catch
+build/testing/%.o: src/testing/%.cpp | build/testing/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
 # graph library
