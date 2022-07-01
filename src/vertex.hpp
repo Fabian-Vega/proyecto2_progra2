@@ -8,6 +8,11 @@
 
 namespace grph {
 
+/**
+ * @brief Template for a default graph
+ * @tparam DataType Specific type of data the vertex are going to use
+ * @tparam WeightType Specific type of data the links of the graphs are going to use 
+ */
 template<typename DataType, typename WeightType>
 class Vertex {
  public:
