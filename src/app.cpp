@@ -386,7 +386,7 @@ void printProfile(grph::Graph<std::string, std::string>& graph) {
         << profile->getLinkWeight(friendship) << std::endl;
     }
 
-    // delete[] relationships;
+    delete[] relationships;
   } else {
     std::cout
     << "Currently, there are no profiles on LinkedUp" << std::endl;
