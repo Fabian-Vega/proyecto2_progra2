@@ -352,21 +352,27 @@ class Graph {
     findRemove(vertex);
     this->vertexes.erase(this->vertexes.begin()+position);
     --this->vertexCount;
-
+    // Cycle that goes from 0 until the capacity is reached
     for (size_t row = 0; row < this->capacity; row++) {
+      // Condition in case the row is different from the position
       if (row != position) {
+        // Erase the current row and adjust the adjacency matrix
         this->adjacencyMatrix[row].erase(
           this->adjacencyMatrix[row].begin()+position);
       }
     }
+    // Erase the current row and adjust the adjacency matrix
     this->adjacencyMatrix.erase(
      this->adjacencyMatrix.begin()+position);
-    
+    // Cycle that goes from 0 until the capacity is reached
     for (size_t row = 0; row < this->capacity; row++) {
+      // Pushes back all the adjacency matrix, adjusts it
       this->adjacencyMatrix[row].push_back(0);
     }
+    // Pushes back all the adjacency matrix, adjusts it
     this->adjacencyMatrix.push_back(
       std::vector<int> (this->capacity));
+    // Deletes the links and links vector of the vertex
     vertex->getLinkCount() = 0;
     vertex->getLinkVector().clear();
     return true;
