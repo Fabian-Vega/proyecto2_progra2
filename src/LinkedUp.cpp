@@ -17,8 +17,11 @@ int main(void) {
         std::cin  >> inputOption;
         if(inputOption == 0 || inputOption == 1 || inputOption == 2|| inputOption == 3){
             validOption = true;
+        } else{
+            std::cout << "Invalid number, please try again\n\n";
         }
-        std::cout << "Invalid number, please try again\n\n";
+        
+        
     }
 
     grph::Graph<std::string, std::string> grafo(3, false);
@@ -33,7 +36,7 @@ int main(void) {
         addProfile(grafo);
         break;
     case 2:
-        
+        addFriendship(grafo);
         break;
     case 3:
         
@@ -61,8 +64,56 @@ void addProfile(grph::Graph<std::string, std::string>& graph){
     if (succes){
         std::cout << "The profile was able to be added succesfully.\n";
     }
+}
 
-    
+void addFriendship(grph::Graph<std::string, std::string>& graph){
+    getVertexes();
+    std::cout << "What profiles do you want to link?\n";
+    for (size_t i = 0; i < graph.getVertexCount(); i++){
+        std::cout << graph.getVertexes()[i].data ;
+        std::cout <<" [" << i+1 << "]";
+        std::cout << (i !=graph.getVertexCount())?  " ": "";
+        
+    }
+    bool validOption = false;
+    int inputOption = -1;
+    size_t first = 0;
+    size_t second = 0;
+    while (validOption == false) {
+        std::cout << "Please choose the first profile to be linked :\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< graph.getVertexCount()+1){
+            validOption = true;
+            first = i;
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }   
+    }
+    validOption = false;
+    while (validOption == false) {
+        std::cout << "Please choose the second profile to be linked :\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< graph.getVertexCount()+1){
+            validOption = true;
+            second = i;
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }
+    }
+    validOption = false;
+    bool succes = false;
+    while (validOption == false) {
+        std::cout << "Please choose the type of relationship that they have :\n";
+        std::cout << "[1]Friendship\n[2]Romantic Relationship\n[3]Family Member\n[4]Coworker\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< 5){
+            validOption = true;
+            succes = graph.addLink(graph.getVertexes()[first], graph.getVertexes()[second], inputOption);
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }
+    }
+    std::cout << (succes)?  "The relationship was added succesfully": "The relationship wasnt able to be added.";
 }
 
 
