@@ -352,6 +352,21 @@ class Graph {
     findRemove(vertex);
     this->vertexes.erase(this->vertexes.begin()+position);
     --this->vertexCount;
+
+    for (size_t row = 0; row < this->capacity; row++) {
+      if (row != position) {
+        this->adjacencyMatrix[row].erase(
+          this->adjacencyMatrix[row].begin()+position);
+      }
+    }
+    this->adjacencyMatrix.erase(
+     this->adjacencyMatrix.begin()+position);
+    
+    for (size_t row = 0; row < this->capacity; row++) {
+      this->adjacencyMatrix[row].push_back(0);
+    }
+    this->adjacencyMatrix.push_back(
+      std::vector<int> (this->capacity));
     vertex->getLinkCount() = 0;
     vertex->getLinkVector().clear();
     return true;
