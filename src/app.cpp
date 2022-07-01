@@ -93,7 +93,6 @@ int main(void) {
           profile < graph.getVertexCount(); ++profile) {
             grph::Vertex<std::string, std::string>* current =
             graph.getVertexes()[profile];
-            graph.removeVertex(current);
             delete[] current;
           }
           std::cout << "Thanks for using LinkedUp." << std::endl;
@@ -239,7 +238,7 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
     std::cout
     << (success?
     "The relationship was added succesfully":
-    "There was already a relationship relation between these profiles")
+    "There was already a relationship between these profiles")
     << std::endl;
 
   } else {
