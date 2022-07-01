@@ -577,11 +577,12 @@ class Graph {
     for (size_t current = 0; current < this->vertexCount; ++current) {
       // Conditions if the current vertex is the same as the param vertex
       if (this->vertexes[current] != vertex) {
-        // Cycle that goes from 0 until it reaches the link
-        // count from the current vertex
+        // Looks for a link from current to vertex
         size_t linkPosition = this->whereIsLink(
           this->vertexes[current], vertex);
+        // If it finds a link
         if (linkPosition--) {
+          // Erases the found link
           this->vertexes[current]->getLinkVector().erase(
             this->vertexes[current]->getLinkVector().begin() + linkPosition);
         }
