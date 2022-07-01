@@ -3,34 +3,34 @@ CXXFLAGS=-Wall -Wextra -std=c++17 -fno-elide-constructors
 DEFS=#-DVERBOSE
 
 .PHONY: all
-all: bin/mainApp bin/appGraph bin/testing
+all:  bin/blackBoxTestingApp bin/appGraph bin/test
 
 .PHONY: asan
 asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
 asan: all
 
 # Link appGraph
-bin/appGraph: build/LinkedUp.o bin/graph.a | bin/.
+bin/appGraph: build/app.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile app
-build/LinkedUp.o: src/LinkedUp.cpp | build/.
+build/app.o: src/app.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
-# Link mainApp
-bin/mainApp: build/main.o bin/graph.a | bin/.
+# Link blackBoxTestingApp
+bin/blackBoxTestingApp: build/blackBoxTesting.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile app
-build/main.o: src/main.cpp | build/.
+build/blackBoxTesting.o: test/blackBoxTesting.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
-# Link catch
-bin/testing: build/testing/testGraph.o bin/graph.a | bin/.
+# Link catchApp
+bin/test: test/testGraph.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
-# Compile catch
-build/testing/%.o: src/testing/%.cpp | build/testing/.
+# Compile app
+build/test/%.o: test/test/%.cpp | build/test/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
 # graph library
