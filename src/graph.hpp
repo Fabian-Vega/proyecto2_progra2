@@ -48,7 +48,7 @@ class Graph {
   isDirected(directed) {
   }
 
-    Graph(const Graph<DataType, WeightType>& other)
+  Graph(const Graph<DataType, WeightType>& other)
   :vertexCount(other.vertexCount),
   capacity(other.capacity),
   adjacencyMatrix(other.adjacencyMatrix),
@@ -59,8 +59,8 @@ class Graph {
   Graph(Graph<DataType, WeightType>&& other)
   :vertexCount(other.vertexCount),
   capacity(other.capacity),
-  adjacencyMatrix(other.adjacencyMatrix),
-  vertexes(other.vertexes),
+  adjacencyMatrix(std::move(other.adjacencyMatrix)),
+  vertexes(std::move(other.vertexes)),
   isDirected(other.isDirected) {
     other.vertexCount = 0;
     other.capacity = 0;

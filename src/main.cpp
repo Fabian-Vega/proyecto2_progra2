@@ -45,21 +45,33 @@ int main(void) {
     }
     delete [] bostonNeighbors;
 
+    grph::Graph<std::string, long long> grafo2(grafo);
+
     std::cout << "\nLa distancia entre Boston y New York es: "
-    << grafo.getLink(boston, york) << std::endl;
+    << grafo2.getLink(boston, york) << std::endl;
     std::cout << "\nLa distancia entre Boston y Las Vegas es: "
-    << grafo.getLink(boston, vegas) << std::endl;
+    << grafo2.getLink(boston, vegas) << std::endl;
     std::cout << "\nLa distancia entre Boston y Chicago es: "
-    << grafo.getLink(boston, chicago) << std::endl;
+    << grafo2.getLink(boston, chicago) << std::endl;
     std::cout << "\nLa distancia entre Boston y Los Angeles es: "
-    << grafo.getLink(boston, angeles) << std::endl;
+    << grafo2.getLink(boston, angeles) << std::endl;
     std::cout << "\nLa distancia entre Boston y Sam Francisco es: "
-    << grafo.getLink(boston, francisco) << std::endl;
+    << grafo2.getLink(boston, francisco) << std::endl;
     std::cout << "\nLa distancia entre Boston y Perez Zeledón es: "
-    << grafo.getLink(boston, perez) << std::endl;
+    << grafo2.getLink(boston, perez) << std::endl;
     std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
-    << grafo.getLink(perez, boston) << std::endl;
+    << grafo2.getLink(perez, boston) << std::endl;
     
+    grph::Vertex<std::string, long long>** bNeighboors =
+    grafo.getNeighbors(boston);
+    std::cout << "\nLas ciudades vecinas de Boston son: \n";
+    for (size_t city = 0; city < 6; ++city) {
+      std::cout << bNeighboors[city]->getData() 
+      << " con una distacia de : " << grafo(boston, bNeighboors[city]) 
+      << std::endl;;
+    }
+    delete [] bNeighboors;
+
     delete boston;
     delete york;
     delete vegas;
