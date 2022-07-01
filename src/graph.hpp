@@ -4,6 +4,7 @@
 
 #include <new>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 #include "vertex.hpp"
 
@@ -500,13 +501,15 @@ class Graph {
    * @return false 
    */
   bool couldIncreaseCapacity(size_t newCapacity) const {
-    // Condition if the size of the adjacency matrix is different from new capacity, if so returns false
+    // Condition if the size of the adjacency matrix is different
+    // from new capacity, if so returns false
     if (this->adjacencyMatrix.size() != newCapacity) {
       return false;
     }
     // Cycle that goes from 0 until it reaches the new capacity
     for (size_t row = 0; row < newCapacity; row++) {
-      // Condition if the size of the adjacency matrix row is different from new capacity, if so returns false
+      // Condition if the size of the adjacency matrix row is different
+      // from new capacity, if so returns false
       if (this->adjacencyMatrix[row].size() != newCapacity) {
         return false;
       }
@@ -525,16 +528,17 @@ class Graph {
     for (size_t current = 0; current < this->vertexCount; ++current) {
       // Conditions if the current vertex is the same as the param vertex
       if (this->vertexes[current] != vertex) {
-        // Cycle that goes from 0 until it reaches the link count from the current vertex
-        size_t linkPosition = this->whereIsLink(this->vertexes[current], vertex);
-        if (linkPosition--){
+        // Cycle that goes from 0 until it reaches the link
+        // count from the current vertex
+        size_t linkPosition = this->whereIsLink(
+          this->vertexes[current], vertex);
+        if (linkPosition--) {
           this->vertexes[current]->getLinkVector().erase(
             this->vertexes[current]->getLinkVector().begin() + linkPosition);
         }
       }
     }
   }
-
 };
 
 }  // namespace grph

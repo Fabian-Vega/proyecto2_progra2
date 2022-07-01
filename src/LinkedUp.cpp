@@ -156,7 +156,7 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
 
       if (first == second) {
         std::cout 
-        << "You have chosen the same profile two times" 
+        << "You have chosen the same profile two times, " 
         << "are you sure about this desicion? (y/n)" 
         << std::endl;
         std::cin >> inputOption;
@@ -221,8 +221,8 @@ void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
   graph.getVertexes()[second-1]);
   
   std::cout 
-  << (success? "The friendship was deleted successfully":
-  "There is not a relationship between those profiles") << std::endl;
+  << (success? "There is not a relationship between those profiles":
+  "The friendship was deleted successfully") << std::endl;
 }
 
 void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
