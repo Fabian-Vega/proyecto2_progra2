@@ -94,6 +94,7 @@ int main(void) {
             grph::Vertex<std::string, std::string>* current =
             graph.getVertexes()[profile];
             graph.removeVertex(current);
+            delete current;
           }
           std::cout << "Thanks for using LinkedUp." << std::endl;
       break;
