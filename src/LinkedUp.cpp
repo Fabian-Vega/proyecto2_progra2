@@ -124,65 +124,85 @@ void addProfile(grph::Graph<std::string, std::string>& graph) {
 }
 
 void deleteProfile(grph::Graph<std::string, std::string>& graph) {
-  showProfiles( "Available profiles:", graph);
-  size_t inputOption = showOptions(
-      "Please choose the profile to be deleted", 
-      "", 1, graph.getVertexCount());
-  grph::Vertex<std::string, std::string>* profile = graph.getVertexes()[inputOption-1];
-  bool success = graph.removeVertex(profile);
-  if (success) {
-    std::cout << "The profile was able to be deleted succesfully." << std::endl;
+  if (graph.getVertexCount() > 0) {
+    showProfiles( "Available profiles:", graph);
+    size_t inputOption = showOptions(
+        "Please choose the profile to be deleted", 
+        "", 1, graph.getVertexCount());
+    grph::Vertex<std::string, std::string>* profile = graph.getVertexes()[inputOption-1];
+    bool success = graph.removeVertex(profile);
+    if (success) {
+      std::cout << "The profile was able to be deleted succesfully." << std::endl;
+    } 
+  } else {
+    std::cout 
+    << "Currently, there are no profiles to delete on LinkedUp" << std::endl;
   }
 }
 
 void addFriendship(grph::Graph<std::string, std::string>& graph) {
-  showProfiles("What profiles do you want to link?", graph);
+  if (graph.getVertexCount() > 0) {
+    showProfiles("What profiles do you want to link?", graph);
 
-  char inputOption = 'n';
-  size_t first = 0, second = 0;
-  while (inputOption == 'n' || inputOption == 'N') {
-    first = showOptions(
-      "Please choose the first profile to be linked", 
-      "", 1, graph.getVertexCount());
-    second = showOptions(
-      "Please choose the second profile to be linked",
-      "", 1, graph.getVertexCount());
+    char inputOption = 'n';
+    size_t first = 0, second = 0;
+    while (inputOption == 'n' || inputOption == 'N') {
+      first = showOptions(
+        "Please choose the first profile to be linked", 
+        "", 1, graph.getVertexCount());
+      second = showOptions(
+        "Please choose the second profile to be linked",
+        "", 1, graph.getVertexCount());
 
-    if (first == second) {
-      std::cout 
-      << "You have chosen the same profile two times" 
-      << "are you sure about this desicion? (y/n)" 
-      << std::endl;
-      std::cin >> inputOption;
-    } else {
-      inputOption = 'y';
+      if (first == second) {
+        std::cout 
+        << "You have chosen the same profile two times" 
+        << "are you sure about this desicion? (y/n)" 
+        << std::endl;
+        std::cin >> inputOption;
+      } else {
+        inputOption = 'y';
+      }
     }
-  }
-  
-  std::string relationships[4] = {"Friendship", "Romantic Relationship", "Family Member", "Coworker"};
-  size_t desition = showOptions(
-    "Please choose the type of relationship that they have:\n",
-    "[1]Friendship\n[2]Romantic Relationship\n[3]Family Member\n[4]Coworker", 
-    1, 4);
+    
+    std::string relationships[4] = {"Friendship", "Romantic Relationship", "Family Member", "Coworker"};
+    size_t desition = showOptions(
+      "Please choose the type of relationship that they have:\n",
+      "[1]Friendship\n[2]Romantic Relationship\n[3]Family Member\n[4]Coworker", 
+      1, 4);
 
-  bool success = graph.addLink(graph.getVertexes()[first-1],
-  graph.getVertexes()[second-1], relationships[desition-1]);
-  std::cout 
-  << (success? 
-  "The relationship was added succesfully":
-  "There was already a relationship relation between these profiles")
-  << std::endl;
+    bool success = graph.addLink(graph.getVertexes()[first-1],
+    graph.getVertexes()[second-1], relationships[desition-1]);
+    std::cout 
+    << (success? 
+    "The relationship was added succesfully":
+    "There was already a relationship relation between these profiles")
+    << std::endl;
+
+  } else {
+    std::cout 
+    << "Currently," 
+    << "there are no enough profiles on LinkedUp to add friendships" 
+    << std::endl;
+  }
 }
 
 void updateFriendship(grph::Graph<std::string, std::string>& graph) {
-  size_t inputOption = showOptions(
-    "Do you want to delete or modify a friendship?\n",
-    "[1]Delete friendship\n[2]Modify friendship", 1, 2);
+  if (graph.getVertexCount() > 0) {
+    size_t inputOption = showOptions(
+      "Do you want to delete or modify a friendship?\n",
+      "[1]Delete friendship\n[2]Modify friendship", 1, 2);
 
-  if (inputOption == 1) {
-    deleteFriendship(graph);
+    if (inputOption == 1) {
+      deleteFriendship(graph);
+    } else {
+      modifyFriendship(graph);
+    }
   } else {
-    modifyFriendship(graph);
+    std::cout 
+    << "Currently," 
+    << "there are no enough profiles on LinkedUp to modify friendships" 
+    << std::endl;
   }
 }
 
@@ -237,15 +257,16 @@ void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
 }
 
 void printProfile(grph::Graph<std::string, std::string>& graph) {
-  showProfiles("What profile do you want to see?", graph);
-  size_t inputOption = showOptions(
-    "Please choose the profile to be seen", "",
-    1, graph.getVertexCount());
+  if (graph.getVertexCount() > 0) {
+    showProfiles("What profile do you want to see?", graph);
+    size_t inputOption = showOptions(
+      "Please choose the profile to be seen", "",
+      1, graph.getVertexCount());
 
     grph::Vertex<std::string, std::string>* profile = 
     graph.getVertexes()[inputOption-1];
 
-    std::cout <<"Name: " 
+    std::cout << "Name: " 
     << profile->getData() 
     << "\nRelationships:\n";
 
@@ -254,8 +275,11 @@ void printProfile(grph::Graph<std::string, std::string>& graph) {
 
     for (size_t friendship = 0;
     friendship < profile->getLinkCount(); ++friendship) {
-       std::cout 
-       << relationships[friendship]->getData() << " " 
-       << profile->getLinkWeight(friendship) << std::endl;
+        std::cout 
+        << relationships[friendship]->getData() << " " 
+        << profile->getLinkWeight(friendship) << std::endl;
     }
+  } else {
+    std::cout 
+    << "Currently, there are no profiles on LinkedUp" << std::endl;
 }

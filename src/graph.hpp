@@ -303,6 +303,8 @@ class Graph {
     findRemove(vertex);
     this->vertexes.erase(this->vertexes.begin()+position);
     --this->vertexCount;
+    vertex->getLinkCount() = 0;
+     vertex->getLinkVector().clear();
     return true;
   }
 
@@ -521,6 +523,8 @@ class Graph {
             // Erases the current link from the link vector
             this->vertexes[current]->getLinkVector().erase(
             this->vertexes[current]->getLinkVector().begin()+connection);
+            --this->vertexes[current]->getLinkCount();
+            break;
           }
         }
       }
