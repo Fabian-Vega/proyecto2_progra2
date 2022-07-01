@@ -586,6 +586,7 @@ class Graph {
           this->vertexes[current]->getLinkVector().erase(
             this->vertexes[current]->getLinkVector().begin() + linkPosition);
           --this->vertexes[current]->getLinkCount();
+          this->adjacencyMatrix[current][linkPosition] = 0;
         }
       }
     }

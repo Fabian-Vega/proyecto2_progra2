@@ -125,7 +125,7 @@ int main(void) {
       }
 
       if (inputOption) {
-        std::cout << "\nDesea hacer algo más? " << std::endl;
+        std::cout << "\nDo you wish to do anything else?" << std::endl;
       }
     }
   } catch (const std::runtime_error& error) {
