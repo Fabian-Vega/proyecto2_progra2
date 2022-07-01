@@ -132,6 +132,11 @@ class Graph {
     return this->vertexCount;
   }
 
+  inline std::vector<Vertex<DataType, WeightType>*>&
+  getVertexes() {
+    return this->vertexes;
+  }
+
   inline const std::vector<Vertex<DataType, WeightType>*>&
   getVertexes() const {
     return this->vertexes;
@@ -298,6 +303,8 @@ class Graph {
     findRemove(vertex);
     this->vertexes.erase(this->vertexes.begin()+position);
     --this->vertexCount;
+    vertex->getLinkCount() = 0;
+     vertex->getLinkVector().clear();
     return true;
   }
 
@@ -355,7 +362,7 @@ class Graph {
    * @return false 
    */
   bool removeLink(Vertex<DataType, WeightType>* origin,
-  const Vertex<DataType, WeightType>* connection) {
+  Vertex<DataType, WeightType>* connection) {
     // Create and assign two size_t variables with the return value of whereIsVertex()
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
@@ -508,15 +515,10 @@ class Graph {
       // Conditions if the current vertex is the same as the param vertex
       if (this->vertexes[current] != vertex) {
         // Cycle that goes from 0 until it reaches the link count from the current vertex
-        for (size_t connection = 0;
-        connection < this->vertexes[current]->getLinkCount(); ++connection) {
-          // Conditions fif the current vertex connection is the same as vertex
-          if (
-          this->vertexes[current]->getLinkConnection(connection) == vertex) {
-            // Erases the current link from the link vector
-            this->vertexes[current]->getLinkVector().erase(
-            this->vertexes[current]->getLinkVector().begin()+connection);
-          }
+        size_t linkPosition = this->whereIsLink(this->vertexes[current], vertex);
+        if (linkPosition--){
+          this->vertexes[current]->getLinkVector().erase(
+            this->vertexes[current]->getLinkVector().begin() + linkPosition);
         }
       }
     }
