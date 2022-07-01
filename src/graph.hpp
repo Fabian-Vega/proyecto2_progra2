@@ -132,6 +132,11 @@ class Graph {
     return this->vertexCount;
   }
 
+  inline std::vector<Vertex<DataType, WeightType>*>&
+  getVertexes() {
+    return this->vertexes;
+  }
+
   inline const std::vector<Vertex<DataType, WeightType>*>&
   getVertexes() const {
     return this->vertexes;
@@ -355,7 +360,7 @@ class Graph {
    * @return false 
    */
   bool removeLink(Vertex<DataType, WeightType>* origin,
-  const Vertex<DataType, WeightType>* connection) {
+  Vertex<DataType, WeightType>* connection) {
     // Create and assign two size_t variables with the return value of whereIsVertex()
     size_t originPosition = this->whereIsVertex(origin);
     size_t destinPosition = this->whereIsVertex(connection);
