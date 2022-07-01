@@ -282,4 +282,5 @@ void printProfile(grph::Graph<std::string, std::string>& graph) {
   } else {
     std::cout 
     << "Currently, there are no profiles on LinkedUp" << std::endl;
+  }
 }

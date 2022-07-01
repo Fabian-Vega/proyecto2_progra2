@@ -515,17 +515,10 @@ class Graph {
       // Conditions if the current vertex is the same as the param vertex
       if (this->vertexes[current] != vertex) {
         // Cycle that goes from 0 until it reaches the link count from the current vertex
-        for (size_t connection = 0;
-        connection < this->vertexes[current]->getLinkCount(); ++connection) {
-          // Conditions fif the current vertex connection is the same as vertex
-          if (
-          this->vertexes[current]->getLinkConnection(connection) == vertex) {
-            // Erases the current link from the link vector
-            this->vertexes[current]->getLinkVector().erase(
-            this->vertexes[current]->getLinkVector().begin()+connection);
-            --this->vertexes[current]->getLinkCount();
-            break;
-          }
+        size_t linkPosition = this->whereIsLink(this->vertexes[current], vertex);
+        if (linkPosition--){
+          this->vertexes[current]->getLinkVector().erase(
+            this->vertexes[current]->getLinkVector().begin() + linkPosition);
         }
       }
     }
