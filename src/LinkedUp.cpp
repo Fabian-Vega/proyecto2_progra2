@@ -13,49 +13,53 @@ void printProfile(grph::Graph<std::string, std::string>& graph);
 
 
 int main(void) {
-  size_t inputOption = 4;
-  std::cout << "Welcome to LinkedUp, your place for linking up with your friends." 
-  << std::endl;
+  try {
+    size_t inputOption = 4;
+    std::cout << "Welcome to LinkedUp, your place for linking up with your friends.\n" 
+    << std::endl;
 
-  const char* initialMessage =
-  "Please choose what you wnat to do by writing the number indicated below:";
-  
-  const char* initialOptions =
-  "[1]Add User\n[2]Add Friendship\n[3]See Profile\n[0]Quit";
-  
-
-  grph::Graph<std::string, std::string> graph(3, false);
-
-  while (inputOption) {
-    inputOption = showOptions(initialMessage, initialOptions, 0, 3);
+    const char* initialMessage =
+    "Please choose what you wnat to do by writing the number indicated below:\n";
     
-    switch (inputOption) {
-    case 0:
-        std::cout << "Thanks for using LinkedUp." << std::endl;
-    break;
+    const char* initialOptions =
+    "[1]Add Profile\n[2]Add Friendship\n[3]See Profile\n[0]Quit\n";
     
-    case 1:
-        addProfile(graph);
-    break;
 
-    case 2:
-        addFriendship(graph);
-    break;
+    grph::Graph<std::string, std::string> graph(3, false);
 
-    case 3:
-        printProfile(graph);
-    break;
-    
-    default:
-      std::cout << "Am unexpected error has ocurred\n" << std::endl;
-    break;
+    while (inputOption) {
+      inputOption = showOptions(initialMessage, initialOptions, 0, 3);
+      
+      switch (inputOption) {
+      case 0:
+          std::cout << "Thanks for using LinkedUp." << std::endl;
+      break;
+      
+      case 1:
+          addProfile(graph);
+      break;
+
+      case 2:
+          addFriendship(graph);
+      break;
+
+      case 3:
+          printProfile(graph);
+      break;
+      
+      default:
+        std::cout << "Am unexpected error has ocurred\n" << std::endl;
+      break;
+      }
+
+      if (inputOption) {
+        std::cout << "\nDesea hacer algo más? " << std::endl;
+      }
     }
-
-    if (inputOption) {
-      std::cout << "Desea hacer algo más? " << std::endl;
-    }
+  } catch (const std::runtime_error& error) {
+    std::cerr << "main error: " << error.what() << std::endl;
   }
-    
+
   return 0;
 }
 
@@ -63,9 +67,9 @@ size_t showOptions (const char* initialMessage, const char* options,
 const size_t optionMin, const size_t optionMax) {
   size_t inputOption = 5; bool validOption = false;
   while (!validOption) {
-    std::cout << initialMessage << '\n'
-    << options << std::endl;
+    std::cout << initialMessage << options << std::endl;
     std::cin >> inputOption;
+    std::cout << std::endl;
 
     for (size_t option = optionMin; option <= optionMax; ++option) {
       if (inputOption == option) {
@@ -84,6 +88,7 @@ void addProfile(grph::Graph<std::string, std::string>& graph) {
   std::cout << "What is the name of the person to be added?" << std::endl;
   std::string input = "\0";
 
+  std::cin.ignore(2, '\n');
   std::getline(std::cin, input);
   grph::Vertex<std::string, std::string>* vecter = new grph::Vertex<std::string, std::string>((std::string(input)));
   if (vecter == nullptr) {
@@ -99,7 +104,7 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
   std::cout << "What profiles do you want to link?" << std::endl;
   for (size_t profile = 0; profile < graph.getVertexCount(); profile++) {
     std::cout <<"[" << profile+1 << "]"
-    << graph.getVertexes()[profile]->getData() << "/n";
+    << graph.getVertexes()[profile]->getData() << "\n";
   }
 
   char inputOption = 'n';
@@ -125,23 +130,24 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
   
   std::string relationships[4] = {"Friendship", "Romantic Relationship", "Family Member", "Coworker"};
   size_t desition = showOptions(
-    "Please choose the type of relationship that they have:",
+    "Please choose the type of relationship that they have:\n",
     "[1]Friendship\n[2]Romantic Relationship\n[3]Family Member\n[4]Coworker", 
     1, 4);
 
-  bool success = graph.addLink(graph.getVertexes()[first],
-  graph.getVertexes()[second], relationships[desition-1]);
+  bool success = graph.addLink(graph.getVertexes()[first-1],
+  graph.getVertexes()[second-1], relationships[desition-1]);
   std::cout 
   << (success? 
   "The relationship was added succesfully":
-  "There was already a relationship relation between these profiles");
+  "There was already a relationship relation between these profiles")
+  << std::endl;
 }
 
 void printProfile(grph::Graph<std::string, std::string>& graph) {
   std::cout << "What profile do you want to see?\n";
   for (size_t i = 0; i < graph.getVertexCount(); i++){
       std::cout <<"[" << i+1 << "]"
-      << graph.getVertexes()[i]->getData() << "/n";
+      << graph.getVertexes()[i]->getData() << "\n";
   }
   size_t inputOption = showOptions(
     "Please choose the profile to be seen", "",
@@ -161,7 +167,7 @@ void printProfile(grph::Graph<std::string, std::string>& graph) {
     relationship < profile->getLinkCount(); ++relationship) {
        std::cout 
        << relationships[relationship]->getData() << " " 
-       << relationships[relationship]->getLinkWeight(relationship) <<"\n";
+       << profile->getLinkWeight(relationship) << std::endl;
     }
     
 }

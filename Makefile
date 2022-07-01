@@ -3,7 +3,7 @@ CXXFLAGS=-Wall -Wextra -std=c++17 -fno-elide-constructors
 DEFS=#-DVERBOSE
 
 .PHONY: all
-all: bin/appGraph
+all: bin/mainApp bin/appGraph
 
 .PHONY: asan
 asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
@@ -17,7 +17,7 @@ bin/appGraph: build/LinkedUp.o bin/graph.a | bin/.
 build/LinkedUp.o: src/LinkedUp.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
-# Link mainGraph
+# Link mainApp
 bin/mainApp: build/main.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
