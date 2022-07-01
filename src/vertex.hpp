@@ -141,7 +141,7 @@ class Vertex {
   inline size_t& getLinkCount() {
     return this->linkCount;
   }
-  
+
   /**
    * @brief Get the linkCount from a const vertex
    * 
