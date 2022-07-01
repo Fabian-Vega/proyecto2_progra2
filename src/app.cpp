@@ -89,13 +89,13 @@ int main(void) {
 
       switch (inputOption) {
       case 0:
-          /*for (size_t profile = 0;
+          for (size_t profile = 0;
           profile < graph.getVertexCount(); ++profile) {
             grph::Vertex<std::string, std::string>* current =
             graph.getVertexes()[profile];
             graph.removeVertex(current);
             delete[] current;
-          }*/
+          }
           std::cout << "Thanks for using LinkedUp." << std::endl;
       break;
 
@@ -191,7 +191,7 @@ void deleteProfile(grph::Graph<std::string, std::string>& graph) {
     grph::Vertex<std::string, std::string>* profile =
     graph.getVertexes()[inputOption-1];
     bool success = graph.removeVertex(profile);
-    // delete profile;
+    delete profile;
     if (success) {
       std::cout <<
       "The profile was able to be deleted succesfully." << std::endl;
