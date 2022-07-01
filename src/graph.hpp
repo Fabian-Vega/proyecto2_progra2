@@ -18,7 +18,7 @@ class Graph {
   size_t vertexCount;
   size_t capacity;
   std::vector<std::vector<int>> adjacencyMatrix;
-  std::vector<Vertex<DataType, WeightType>*> vecters;
+  std::vector<Vertex<DataType, WeightType>*> vertexes;
   bool isDirected;
 
 
@@ -27,13 +27,86 @@ class Graph {
   :vertexCount(0),
   capacity(capacity),
   adjacencyMatrix(capacity, std::vector<int>(capacity, 0)),
-  vecters(capacity, nullptr),
+  vertexes(capacity, nullptr),
   isDirected(directed) {
   }
+
+    Graph(const Graph<DataType, WeightType>& other)
+  :vertexCount(other.vertexCount),
+  capacity(other.capacity),
+  adjacencyMatrix(other.adjacencyMatrix),
+  vertexes(other.vertexes),
+  isDirected(other.isDirected) {
+  }
+
+  Graph(Graph<DataType, WeightType>&& other)
+  :vertexCount(other.vertexCount),
+  capacity(other.capacity),
+  adjacencyMatrix(other.adjacencyMatrix),
+  vertexes(other.vertexes),
+  isDirected(other.isDirected) {
+    other.vertexCount = 0;
+    other.capacity = 0;
+    other.isDirected = false;
+  }
+
+  ~Graph() {
+    this->vertexCount = 0;
+    this->capacity = 0;
+    this->isDirected = false;
+    for (size_t column = 0; column < this->adjacencyMatrix.size();
+    ++column) {
+      this->adjacencyMatrix[column].clear();
+    }
+    this->adjacencyMatrix.clear();
+    this->vertexes.clear();
+  }
+
+ public:
+  Graph<DataType, WeightType>& operator=(const
+  Graph<DataType, WeightType>& other) {
+  if (this != &other) {
+    if (this->capacity != other.capacity) {
+      for (size_t column = 0; column < this->adjacencyMatrix.size();
+      ++column) {
+      this->adjacencyMatrix[column].resize(other.capacity);
+      }
+      this->adjacencyMatrix.resize(other.capacity);
+      this->vertexes.resize(other.capacity);
+      this->capacity = other.capacity;
+    }
+
+    this->adjacencyMatrix = other.adjacencyMatrix;
+    this->vertexes = other.vertexes;
+    this->vertexCount = other.vertexCount;
+    this->isDirected = other.isDirected;
+  }
+  return *this;
+}
+
+ Graph<DataType, WeightType>& operator=(Graph<DataType, WeightType>&& other) {
+  if (this != &other) {
+    std::swap(this->vertexCount, other.vertexCount);
+    std::swap(this->capacity, other.capacity);
+    std::swap(this->adjacencyMatrix, other.adjacencyMatrix);
+    std::swap(this->vertexes, other.vertexes);
+    std::swap(this->isDirected, other.isDirected);
+  }
+  return *this;
+ }
 
  public:
   inline bool isEmpty() const {
     return this->vertexCount == 0;
+  }
+
+  inline size_t getVertexCount() const {
+    return this->vertexCount;
+  }
+
+  inline const std::vector<Vertex<DataType, WeightType>*>&
+  getVertexes() const {
+    return this->vertexes;
   }
   
   const WeightType& operator() (
@@ -51,7 +124,7 @@ class Graph {
  private:
   size_t whereIsVertex(const Vertex<DataType, WeightType>* vertex) const {
     for (size_t position = 0; position < this->vertexCount; ++position) {
-        if (this->vecters[position] == vertex) {
+        if (this->vertexes[position] == vertex) {
         return ++position;
       }
     }
@@ -105,7 +178,7 @@ class Graph {
       this->increaseCapacity();
     }
     
-    this->vecters[this->vertexCount++] = vertex;
+    this->vertexes[this->vertexCount++] = vertex;
     return true;
   }
 
@@ -116,7 +189,7 @@ class Graph {
     }
 
     findRemove(vertex);
-    this->vecters.erase(this->vecters.begin()+position);
+    this->vertexes.erase(this->vertexes.begin()+position);
     --this->vertexCount;
     return true;
   }
@@ -223,7 +296,7 @@ class Graph {
       this->adjacencyMatrix[row].resize(newCapacity, 0);
     }
 
-    this->vecters.resize(newCapacity, nullptr);
+    this->vertexes.resize(newCapacity, nullptr);
 
     if (!this->couldIncreaseCapacity(newCapacity)) {
       throw std::runtime_error(
@@ -248,13 +321,13 @@ class Graph {
 
   void findRemove(Vertex<DataType, WeightType>* vertex) {
     for (size_t current = 0; current < this->vertexCount; ++current) {
-      if (this->vecters[current] != vertex) {
+      if (this->vertexes[current] != vertex) {
         for (size_t connection = 0;
-        connection < this->vecters[current]->getLinkCount(); ++connection) {
+        connection < this->vertexes[current]->getLinkCount(); ++connection) {
           if (
-    this->vecters[current]->getLinkConnection(connection) == vertex) {
-            this->vecters[current]->getLinkVector().erase(
-              this->vecters[current]->getLinkVector().begin()+connection);
+    this->vertexes[current]->getLinkConnection(connection) == vertex) {
+            this->vertexes[current]->getLinkVector().erase(
+              this->vertexes[current]->getLinkVector().begin()+connection);
           }
         }
       }
