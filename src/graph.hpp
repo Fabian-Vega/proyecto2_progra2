@@ -32,10 +32,9 @@ class Graph {
   size_t capacity;
   // AdjacencyMatrix is a matrix that represents the adjancency of the vertex
   std::vector<std::vector<int>> adjacencyMatrix;
-  // Vecters is a vector with all the vertex  
-  std::vector<Vertex<DataType, WeightType>*> vecters;
-  // IsDirected is a bool that identifies if the links are directed or not 
+  // Vertexes is a vector with all the vertex  
   std::vector<Vertex<DataType, WeightType>*> vertexes;
+  // IsDirected is a bool that identifies if the links are directed or not 
   bool isDirected;
 
 
@@ -179,11 +178,10 @@ class Graph {
     // Cycle that goes from 0 till the amount of vertex there are
     for (size_t position = 0; position < this->vertexCount; ++position) {
         // Condition in case the position is the same as the vertex param
-        if (this->vecters[position] == vertex) {
-        // Returns the position
         if (this->vertexes[position] == vertex) {
-        return ++position;
-      }
+          // Returns the position
+          return ++position;
+        }
     }
     return 0;
   }
@@ -276,9 +274,7 @@ class Graph {
     if (this->vertexCount >= this->capacity) {
       this->increaseCapacity();
     }
-    // Adds the vertex to the vertex list
-    this->vecters[this->vertexCount++] = vertex;
-    
+    // Adds the vertex to the vertex list    
     this->vertexes[this->vertexCount++] = vertex;
     return true;
   }
@@ -466,10 +462,8 @@ class Graph {
       this->adjacencyMatrix[row].resize(newCapacity, 0);
     }
     // Resizes the vertexes
-    this->vecters.resize(newCapacity, nullptr);
-    // Condition in case we could bot increase the capacity, and then throws an exception
-
     this->vertexes.resize(newCapacity, nullptr);
+    // Condition in case we could bot increase the capacity, and then throws an exception
 
     if (!this->couldIncreaseCapacity(newCapacity)) {
       throw std::runtime_error(
@@ -512,29 +506,22 @@ class Graph {
     // Cycle that goes from 0 until it reaches the vertex count
     for (size_t current = 0; current < this->vertexCount; ++current) {
       // Conditions if the current vertex is the same as the param vertex
-      if (this->vecters[current] != vertex) {
+      if (this->vertexes[current] != vertex) {
         // Cycle that goes from 0 until it reaches the link count from the current vertex
         for (size_t connection = 0;
-        connection < this->vecters[current]->getLinkCount(); ++connection) {
+        connection < this->vertexes[current]->getLinkCount(); ++connection) {
           // Conditions fif the current vertex connection is the same as vertex
           if (
-          this->vecters[current]->getLinkConnection(connection) == vertex) {
+          this->vertexes[current]->getLinkConnection(connection) == vertex) {
             // Erases the current link from the link vector
-            this->vecters[current]->getLinkVector().erase(
-            this->vecters[current]->getLinkVector().begin()+connection);
-    for (size_t current = 0; current < this->vertexCount; ++current) {
-      if (this->vertexes[current] != vertex) {
-        for (size_t connection = 0;
-        connection < this->vertexes[current]->getLinkCount(); ++connection) {
-          if (
-    this->vertexes[current]->getLinkConnection(connection) == vertex) {
             this->vertexes[current]->getLinkVector().erase(
-              this->vertexes[current]->getLinkVector().begin()+connection);
+            this->vertexes[current]->getLinkVector().begin()+connection);
           }
         }
       }
     }
   }
+
 };
 
 }  // namespace grph
