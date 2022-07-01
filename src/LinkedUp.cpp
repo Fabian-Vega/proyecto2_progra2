@@ -39,7 +39,7 @@ int main(void) {
         addFriendship(grafo);
         break;
     case 3:
-        
+        printProfile(grafo);
         break;
     
     default:
@@ -67,7 +67,6 @@ void addProfile(grph::Graph<std::string, std::string>& graph){
 }
 
 void addFriendship(grph::Graph<std::string, std::string>& graph){
-    getVertexes();
     std::cout << "What profiles do you want to link?\n";
     for (size_t i = 0; i < graph.getVertexCount(); i++){
         std::cout << graph.getVertexes()[i].data ;
@@ -114,6 +113,35 @@ void addFriendship(grph::Graph<std::string, std::string>& graph){
         }
     }
     std::cout << (succes)?  "The relationship was added succesfully": "The relationship wasnt able to be added.";
+}
+
+void printProfile(grph::Graph<std::string, std::string>& graph){
+    std::cout << "What profile do you want to see?\n";
+    for (size_t i = 0; i < graph.getVertexCount(); i++){
+        std::cout << graph.getVertexes()[i].data ;
+        std::cout <<" [" << i+1 << "]";
+        std::cout << (i !=graph.getVertexCount())?  " ": "";
+        
+    }
+    bool validOption = false;
+    size_t vertexIndex = 0;
+    while (validOption == false) {
+        std::cout << "Please choose the profile to be seen :\n";
+        std::cin  >> inputOption;
+        if(inputOption >0 && inputOption< graph.getVertexCount()+1){
+            validOption = true;
+            vertexIndex = inputOption;
+        } else{
+           std::cout << "Invalid number, please try again\n\n";
+        }   
+    }
+    std::cout <<"Name: " << graph.getVertexes()[vertexIndex].data<< "\n" << "Relationships:\n";
+    grph::Vertex<std::string, std::string>** vertexNeighbors =
+    graph.getNeighbors(graph.getVertexes()[vertexIndex]);
+    for (size_t  i = 0; i < graph.getVertexes()[vertexIndex].getLinkCount; i++){
+       std::cout << graph.getVertexes()[i].data << " " << vertex.getLinkWeight(graph.whereIsLink(graph.getVertexes()[vertexIndex],graph.getVertexes()[i])) <<"\n";
+    }
+    
 }
 
 
