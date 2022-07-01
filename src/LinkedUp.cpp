@@ -5,7 +5,8 @@
 
 #include "graph.hpp"
 
-int showOptions ();
+size_t showOptions (const char* initialMessage, const char* options,
+const size_t optionMin, const size_t optionMax);
 void addProfile(grph::Graph<std::string, std::string>& graph);
 void addFriendship(grph::Graph<std::string, std::string>& graph);
 void printProfile(grph::Graph<std::string, std::string>& graph);
@@ -130,12 +131,13 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
 
   bool success = graph.addLink(graph.getVertexes()[first],
   graph.getVertexes()[second], relationships[desition-1]);
-  std::cout << (success)?
-  "The relationship was added succesfully": 
-  "There was already a relationship relation between these profiles";
+  std::cout 
+  << (success? 
+  "The relationship was added succesfully":
+  "There was already a relationship relation between these profiles");
 }
 
-void printProfile(const grph::Graph<std::string, std::string>& graph) {
+void printProfile(grph::Graph<std::string, std::string>& graph) {
   std::cout << "What profile do you want to see?\n";
   for (size_t i = 0; i < graph.getVertexCount(); i++){
       std::cout <<"[" << i+1 << "]"
@@ -152,14 +154,14 @@ void printProfile(const grph::Graph<std::string, std::string>& graph) {
     << profile->getData() 
     << "\nRelationships:\n";
 
-    const grph::Vertex<std::string, std::string>** relationships =
+    grph::Vertex<std::string, std::string>** relationships =
     graph.getNeighbors(profile);
 
     for (size_t  relationship = 0;
     relationship < profile->getLinkCount(); ++relationship) {
        std::cout 
        << relationships[relationship]->getData() << " " 
-       << relationships[relationship]->getLinkWeight(graph.whereIsLink(profile, relationships[relationship])) <<"\n";
+       << relationships[relationship]->getLinkWeight(relationship) <<"\n";
     }
     
 }

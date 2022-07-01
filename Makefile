@@ -10,7 +10,15 @@ asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
 asan: all
 
 # Link appGraph
-bin/appGraph: build/main.o bin/graph.a | bin/.
+bin/appGraph: build/LinkedUp.o bin/graph.a | bin/.
+	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
+
+# Compile app
+build/LinkedUp.o: src/LinkedUp.cpp | build/.
+	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
+
+# Link mainGraph
+bin/mainApp: build/main.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile app
