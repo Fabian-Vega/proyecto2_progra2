@@ -356,7 +356,7 @@ class Graph {
     this->vertexes.erase(this->vertexes.begin()+position);
     --this->vertexCount;
     vertex->getLinkCount() = 0;
-     vertex->getLinkVector().clear();
+    vertex->getLinkVector().clear();
     return true;
   }
 
@@ -585,6 +585,7 @@ class Graph {
           // Erases the found link
           this->vertexes[current]->getLinkVector().erase(
             this->vertexes[current]->getLinkVector().begin() + linkPosition);
+          --this->vertexes[current]->getLinkCount();
         }
       }
     }
