@@ -34,7 +34,7 @@ build/test/%.o: test/test/%.cpp | build/test/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
 # graph library
-#Lo que cambie probablemente es la linea 23
+#Lo que cambie probablemente es la linea 2309
 bin/graph.a: build/graph.o build/vertex.o | bin/.
 	ar rs $@ $^
 
