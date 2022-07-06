@@ -10,22 +10,22 @@ TEST_CASE("tests"){
     REQUIRE(prueba1.isEmpty() == true);
 
     // Should return true because the adding of an existing vertex was succesful
-    grph::Vertex<std::string, long long>* boston = new grph::Vertex<std::string, long long>((std::string("Boston")));
-    REQUIRE(prueba1.addVertex(boston) == true);
+    grph::Vertex<std::string>* boston = new grph::Vertex<std::string>((std::string("Boston")));
+    REQUIRE(prueba1.addVertex(boston&) == true);
 
     // Should return false because we added a vertex to the graph
     REQUIRE(prueba1.isEmpty() == false);
 
     // Should return false because the vertex was already added
-    REQUIRE(prueba1.addVertex(boston) == false);
+    REQUIRE(prueba1.addVertex(boston&) == false);
 
     // Should return 2, because it is the amount of vertex we have added
     REQUIRE(prueba1.getVertexCount() == 1);
 
     // Should return true beacause we are creating a link between 2 existent and added vertex
     grph::Vertex<std::string, long long>* york = new grph::Vertex<std::string, long long>((std::string("New York")));
-    prueba1.addVertex(boston);
-    prueba1.addVertex(york);
+    prueba1.addVertex(boston&);
+    prueba1.addVertex(york&);
     long long weights[7] = {80, 3, 26, 18, 43, 786345, 69420};
     REQUIRE(prueba1.addLink(boston, york, weights[0]) == true);
 

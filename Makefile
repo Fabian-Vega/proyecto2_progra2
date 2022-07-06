@@ -13,6 +13,10 @@ asan: test
 .PHONY: test
 test: bin/test bin/blackBoxTestingApp
 
+.PHONY: val
+val: 
+	valgrind --leak-check=full -v bin/appGraph
+
 # Link appGraph
 bin/appGraph: build/app.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
