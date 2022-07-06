@@ -57,7 +57,12 @@ build/%.o: src/%.cpp src/%.hpp | build/.
 %/.:
 	mkdir -p $@
 
+.PHONY: clear
+clear:
+	clear
+
 .PHONY: clean
+clean: clear
 clean:
 	rm -rf bin/ build/ doc/
 

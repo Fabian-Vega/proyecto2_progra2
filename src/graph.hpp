@@ -336,8 +336,10 @@ class Graph {
     if (this->vertexCount >= this->capacity) {
       this->increaseCapacity();
     }
+    
     // Adds the vertex to the vertex list
-    this->vertexes[this->vertexCount++] = &vertex;
+    allocateAndCopy(this->vertexes[this->vertexCount++],
+    vertex);
 
     return true;
   }
@@ -650,7 +652,7 @@ class Graph {
   }
 
  private:
-  static void allocateAndCopy(Vertex<DataType>* first,
+  static void allocateAndCopy(Vertex<DataType>*& first,
   Vertex<DataType>& second) {
     first = new Vertex<DataType>;
     if (first == nullptr) {
@@ -659,20 +661,20 @@ class Graph {
     }
     *first = second;
   }
-  static void allocateAndCopy(WeightType* first,
+  static void allocateAndCopy(WeightType*& first,
   WeightType& second) {
-    first = new WeightType();
+    first = new WeightType;
     if (first == nullptr) {
       throw std::runtime_error(
         "Graph: No enough memory to copy element");
     }
     *first = second;
   }
-  static void deleteAndNull(Vertex<DataType>* ptr) {
+  static void deleteAndNull(Vertex<DataType>*& ptr) {
     delete ptr;
     ptr = nullptr;
   }
-  static void deleteAndNull(WeightType* ptr) {
+  static void deleteAndNull(WeightType*& ptr) {
     delete ptr;
     ptr = nullptr;
   }

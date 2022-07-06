@@ -167,8 +167,8 @@ const grph::Graph<std::string, std::string>& graph) {
   std::cout << initialMessage << '\n';
   // Cicle to print each profile
   for (size_t profile = 0; profile < graph.getVertexCount(); ++profile) {
-      std::cout <<"[" << profile+1 << "]"
-      << graph.getVertexes()[profile]->getData() << "\n";
+    std::cout <<"[" << profile+1 << "]"
+    << graph.getVertexes()[profile]->getData() << std::endl;
   }
 }
 
@@ -180,8 +180,7 @@ void addProfile(grph::Graph<std::string, std::string>& graph) {
   // Reads string of the name to be added
   std::getline(std::cin, input);
   // Create the profile
-  grph::Vertex<std::string> profile =
-  grph::Vertex<std::string>(std::string(input));
+  grph::Vertex<std::string> profile(input);
   // Adds the profile to the graph
   bool success = graph.addVertex(profile);
   // If the profile was able to be added
