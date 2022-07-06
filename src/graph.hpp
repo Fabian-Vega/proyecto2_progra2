@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+#include <iostream>
 #include "vertex.hpp"
 
 
@@ -365,7 +366,6 @@ class Graph {
     delete this->vertexes[position];
     // Erase the vertex from the vertexes vector
     this->vertexes.erase(this->vertexes.begin()+position);
-    --this->vertexCount;
     
     // Cycle that goes from 0 until the capacity is reached
     for (size_t row = 0; row < this->capacity; row++) {
@@ -396,6 +396,7 @@ class Graph {
     this->adjacencyMatrix.push_back(
       std::vector<WeightType*> (this->capacity, nullptr));
     
+    --this->vertexCount;
     // Deletes the links of the vertex
     vertex.getLinkCount() = 0;
     return true;

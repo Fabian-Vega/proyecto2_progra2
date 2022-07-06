@@ -1,0 +1,9 @@
+1
+Maria
+1
+Veinteocho
+1
+Cobre
+3 1 2 2
+5 1
+0
