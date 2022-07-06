@@ -8,20 +8,20 @@
 int main(void) {
   try {
     grph::Graph<std::string, int> grafo(3, false);
-    grph::Vertex<std::string> boston =
-    grph::Vertex<std::string>(std::string("Boston"));
-    grph::Vertex<std::string> york =
-    grph::Vertex<std::string>(std::string("New York"));
-    grph::Vertex<std::string> vegas =
-    grph::Vertex<std::string>(std::string("Las Vegas"));
-    grph::Vertex<std::string> chicago =
-    grph::Vertex<std::string>(std::string("Chicago"));
-    grph::Vertex<std::string> angeles =
-    grph::Vertex<std::string>(std::string("Los Angeles"));
-    grph::Vertex<std::string> francisco =
-    grph::Vertex<std::string>(std::string("San Francisco"));
-    grph::Vertex<std::string> perez =
-    grph::Vertex<std::string>(std::string("Perez Zeledon"));
+    grph::Vertex<std::string, int>* boston =
+    new grph::Vertex<std::string, int>((std::string("Boston")));
+    grph::Vertex<std::string, int>* york =
+    new grph::Vertex<std::string, int>((std::string("New York")));
+    grph::Vertex<std::string, int>* vegas =
+    new grph::Vertex<std::string, int>((std::string("Las Vegas")));
+    grph::Vertex<std::string, int>* chicago =
+    new grph::Vertex<std::string, int>((std::string("Chicago")));
+    grph::Vertex<std::string, int>* angeles =
+    new grph::Vertex<std::string, int>((std::string("Los Angeles")));
+    grph::Vertex<std::string, int>* francisco =
+    new grph::Vertex<std::string, int>((std::string("San Franciso")));
+    grph::Vertex<std::string, int>* perez =
+    new grph::Vertex<std::string, int>((std::string("Perez Zeledon")));
 
     grafo.addVertex(boston);
     grafo.addVertex(york);
@@ -43,12 +43,12 @@ int main(void) {
 
     grafo.removeVertex(vegas);
 
-    grph::Vertex<std::string>** bostonNeighbors =
+    grph::Vertex<std::string, int>** bostonNeighbors =
     grafo.getNeighbors(boston);
     std::cout << "\nLas ciudades vecinas de Boston son: \n";
-    for (size_t city = 0; city < boston.getLinkCount(); ++city) {
+    for (size_t city = 0; city < boston->getLinkCount(); ++city) {
       std::cout << bostonNeighbors[city]->getData()
-      << " con una distacia de : " << grafo(boston, *bostonNeighbors[city])
+      << " con una distacia de : " << grafo(boston, bostonNeighbors[city])
       << std::endl;;
     }
     delete [] bostonNeighbors;
@@ -70,16 +70,23 @@ int main(void) {
     std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
     << grafo2.getLink(perez, boston) << std::endl;
 
-    grph::Vertex<std::string>** bNeighboors =
+    grph::Vertex<std::string, int>** bNeighboors =
     grafo.getNeighbors(boston);
     std::cout << "\nLas ciudades vecinas de Boston son: \n";
-    for (size_t city = 0; city < boston.getLinkCount(); ++city) {
+    for (size_t city = 0; city < boston->getLinkCount(); ++city) {
       std::cout << bNeighboors[city]->getData()
-      << " con una distacia de : " << grafo(boston, *bNeighboors[city])
+      << " con una distacia de : " << grafo(boston, bNeighboors[city])
       << std::endl;;
     }
     delete [] bNeighboors;
 
+    delete boston;
+    delete york;
+    delete vegas;
+    delete chicago;
+    delete angeles;
+    delete francisco;
+    delete perez;
   } catch (const std::runtime_error& error) {
     std::cerr << "main error: " << error.what() << std::endl;
   }

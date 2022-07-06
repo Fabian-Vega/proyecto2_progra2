@@ -92,6 +92,14 @@ int main(void) {
 
       switch (inputOption) {
       case 0:
+          for (size_t profile = 0;
+          profile < graph.getVertexCount(); ++profile) {
+            // Removes vertexes befre deleting vector
+            grph::Vertex<std::string, std::string>* current =
+            graph.getVertexes()[profile];
+            graph.removeVertex(current);
+            delete current;
+          }
           std::cout << "Thanks for using LinkedUp." << std::endl;
       break;
 
@@ -166,7 +174,7 @@ const grph::Graph<std::string, std::string>& graph) {
   // Prints the profile
   std::cout << initialMessage << '\n';
   // Cicle to print each profile
-  for (size_t profile = 0; profile < graph.getVertexCount(); ++profile) {
+  for (size_t profile = 0; profile < graph.getVertexCount(); profile++) {
       std::cout <<"[" << profile+1 << "]"
       << graph.getVertexes()[profile]->getData() << "\n";
   }
@@ -179,10 +187,13 @@ void addProfile(grph::Graph<std::string, std::string>& graph) {
   std::cin.ignore(2, '\n');
   // Reads string of the name to be added
   std::getline(std::cin, input);
-  // Create the profile
-  grph::Vertex<std::string> profile =
-  grph::Vertex<std::string>(std::string(input));
-  // Adds the profile to the graph
+  grph::Vertex<std::string, std::string>* profile =
+  new grph::Vertex<std::string, std::string>((std::string(input)));
+  // If the profile was not been able to be added
+  if (profile == nullptr) {
+    std::cout << "The profile wasnt able to be added." << std::endl;
+  }
+  // Adds the vertex to the graph
   bool success = graph.addVertex(profile);
   // If the profile was able to be added
   if (success) {
@@ -199,9 +210,11 @@ void deleteProfile(grph::Graph<std::string, std::string>& graph) {
     size_t inputOption = showOptions(
         "Please choose the profile to be deleted",
         "", 1, graph.getVertexCount());
-    grph::Vertex<std::string> profile = *graph.getVertexes()[inputOption-1];
+    grph::Vertex<std::string, std::string>* profile =
+    graph.getVertexes()[inputOption-1];
     // Removes the vertex from graph
     bool success = graph.removeVertex(profile);
+    delete profile;
     if (success) {
       std::cout <<
       "The profile was able to be deleted succesfully." << std::endl;
@@ -249,8 +262,8 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
       "[1]Friendship\n[2]Romantic Relationship\n[3]Family Member\n[4]Coworker",
       1, 4);
     // Adds the relationship to the profiles
-    bool success = graph.addLink(*graph.getVertexes()[first-1],
-    *graph.getVertexes()[second-1], relationships[desition-1]);
+    bool success = graph.addLink(graph.getVertexes()[first-1],
+    graph.getVertexes()[second-1], relationships[desition-1]);
     std::cout
     << (success?
     "The relationship was added succesfully":
@@ -303,8 +316,8 @@ void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
     "", 1, graph.getVertexCount());
 
   // Removes the friendship link
-  bool success = graph.removeLink(*graph.getVertexes()[first-1],
-  *graph.getVertexes()[second-1]);
+  bool success = graph.removeLink(graph.getVertexes()[first-1],
+  graph.getVertexes()[second-1]);
 
   std::cout
   << (success? "There is not a relationship between those profiles":
@@ -335,8 +348,8 @@ void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
 
   try {
     // Changes the friendship link
-    graph.setLink(*graph.getVertexes()[first-1],
-    *graph.getVertexes()[second-1], relationships[desition-1]);
+    graph.setLink(graph.getVertexes()[first-1],
+    graph.getVertexes()[second-1], relationships[desition-1]);
     std::cout
     << "The frienship was modified succesfully"
     << std::endl;
@@ -354,23 +367,23 @@ void printProfile(grph::Graph<std::string, std::string>& graph) {
     size_t inputOption = showOptions(
       "Please choose the profile to be seen", "",
       1, graph.getVertexCount());
-    // Gets the profile
-    grph::Vertex<std::string> profile =
-    *graph.getVertexes()[inputOption-1];
+    // Gets the friendships of the profile
+    grph::Vertex<std::string, std::string>* profile =
+    graph.getVertexes()[inputOption-1];
     // Prints the name of the profile
     std::cout << "Name: "
-    << profile.getData()
+    << profile->getData()
     << "\nRelationships:\n";
     // Finds the neighbours of the vertex
-    grph::Vertex<std::string>** relationships =
+    grph::Vertex<std::string, std::string>** relationships =
     graph.getNeighbors(profile);
 
     for (size_t friendship = 0;
-    friendship < profile.getLinkCount(); ++friendship) {
+    friendship < profile->getLinkCount(); ++friendship) {
         // Prints each profile, with a relationship with it
         std::cout
         << relationships[friendship]->getData() << " "
-        << graph.getLink(profile, *relationships[friendship]) << std::endl;
+        << profile->getLinkWeight(friendship) << std::endl;
     }
 
     delete[] relationships;
