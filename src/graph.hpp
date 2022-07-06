@@ -25,7 +25,8 @@ namespace grph {
  * @tparam DataType Specific type of data the vertex are going to use
  * @tparam WeightType Specific type of data the links of the graphs are going to use 
  */
-template<typename DataType, typename WeightType>
+template<typename DataType, typename WeightType, bool matrix = true>
+
 
 /**
  * @brief class for the graph type of object
@@ -39,6 +40,8 @@ class Graph {
   size_t capacity;
   // AdjacencyMatrix is a matrix that represents the adjancency of the vertex
   std::vector<std::vector<int>> adjacencyMatrix;
+  // AdjacencyList is a list of Vertex that represents the adjancency of the vertexes
+  std::vector<list<nodeList<DataType, WeightType>>*> adjacencyList;
   // Vertexes is a vector with all the vertex
   std::vector<Vertex<DataType, WeightType>*> vertexes;
   // IsDirected is a bool that identifies if the links are directed or not
@@ -58,6 +61,7 @@ class Graph {
   adjacencyMatrix(capacity, std::vector<int>(capacity, 0)),
   vertexes(capacity, nullptr),
   isDirected(directed) {
+
   }
   /**
    * @brief Construct a new Graph object
@@ -101,7 +105,8 @@ class Graph {
     this->adjacencyMatrix.clear();
     this->vertexes.clear();
   }
-
+  
+  
  public:
   /**
    * @brief Operator= overload with constants
@@ -285,6 +290,22 @@ class Graph {
     // Returns the value of the following propositions
     return this->adjacencyMatrix[originPosition][destinPosition] != 0
     || this->adjacencyMatrix[destinPosition][originPosition] != 0;
+
+
+
+    // METHOD ADJACENCY LIST
+    for (size_t i = 0; i < this->vertexCount; i++){
+      if (adjacencyList.begin().contents == origin){
+        for (size_t i = 0; i < adjacencyList.size()+1; i++){
+          nodeList node =  std::advance(listOfStrs.begin(), i);
+          if (node.contents == connection){
+            return true
+          }
+        }
+        return false;
+      }
+    }
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -370,6 +391,19 @@ class Graph {
     vertex->getLinkCount() = 0;
     vertex->getLinkVector().clear();
     return true;
+
+    // METHOD ADJACENCY LIST
+    for (size_t i = 0; i < this->vertexCount; i++){
+        for (size_t i = 0; i < adjacencyList.size()+1; i++){
+          nodeList node =  std::advance(listOfStrs.begin(), i);
+          if (node.contents == vertex){
+            adjacencyList.erase(node);
+          }
+        }
+        return true;
+      
+    }
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -415,6 +449,16 @@ class Graph {
       this->adjacencyMatrix[destinPosition][originPosition] = 1;
     }
     return true;
+
+    // METHOD ADJACENCY LIST
+    for (size_t i = 0; i < this->vertexCount; i++){
+      if (adjacencyList.begin().contents == origin){
+        nodeList node<DataType, WeightType>(connection&,weight );
+        adjacencyList.push_back(node);
+        return true;
+      }
+    }
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -461,6 +505,21 @@ class Graph {
       this->adjacencyMatrix[destinPosition][originPosition] = 0;
     }
     return false;
+
+    // METHOD ADJACENCY LIST
+    for (size_t i = 0; i < this->vertexCount; i++){
+        if (adjacencyList.begin().contents == origin){
+          for (size_t i = 0; i < adjacencyList.size()+1; i++){
+            nodeList node =  std::advance(listOfStrs.begin(), i);
+            if (node.contents == vertex){
+              adjacencyList.erase(node);
+            }
+          }
+          return true;
+        }
+      
+    }
+    // METHOD ADJACENCY LIST
   }
 
    /**
@@ -486,6 +545,21 @@ class Graph {
     }
 
     return origin->getLinkWeight(this->whereIsLink(origin, connection)-1);
+
+    // METHOD ADJACENCY LIST
+    for (size_t i = 0; i < this->vertexCount; i++){
+        if (adjacencyList.begin().contents == origin){
+          for (size_t i = 0; i < adjacencyList.size()+1; i++){
+            nodeList node =  std::advance(listOfStrs.begin(), i);
+            if (node.contents == vertex){
+              return node.weigth;
+            }
+          }
+          
+        }
+      
+    }
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -511,6 +585,25 @@ class Graph {
     if (this->adjacencyMatrix[originPosition][destinPosition] == 0) {
       throw std::runtime_error("Graph: Could not find Link to set it");
     }
+
+    // METHOD ADJACENCY LIST
+    for (size_t i = 0; i < this->vertexCount; i++){
+        bool found = false;
+        if (adjacencyList.begin().contents == origin){
+          for (size_t i = 0; i < adjacencyList.size()+1; i++){
+            nodeList node =  std::advance(listOfStrs.begin(), i);
+            if (node.contents == connection){
+              found = true;
+            }
+          }
+          if (found == false){
+            throw std::runtime_error("Graph: Could not find Link to set it");
+          }
+        }
+    }
+    // METHOD ADJACENCY LIST
+
+
     // Assigns the weight to the link
     origin->getLinkWeight(this->whereIsLink(origin, connection)-1) = weight;
     // Condition if it is not directed, then assigns the weight to the link
@@ -540,6 +633,11 @@ class Graph {
     for (size_t row = 0; row < this->vertexCount; row++) {
       this->adjacencyMatrix[row].resize(newCapacity, 0);
     }
+
+    // METHOD ADJACENCY LIST
+    adjacencyList.resize(newCapacity, std::vector<int>(newCapacity, 0));
+   
+    // METHOD ADJACENCY LIST
     // Resizes the vertexes
     this->vertexes.resize(newCapacity, nullptr);
     // Condition in case we could bot increase the capacity,
@@ -577,6 +675,12 @@ class Graph {
     }
 
     return true;
+
+    // METHOD ADJACENCY LIST
+    if (this->adjacencyList.size() != newCapacity) {
+      return false;
+    }
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -603,7 +707,32 @@ class Graph {
       }
     }
   }
+  
+
 };
+
+template<typename DataType, typename WeightType>
+class nodeList {
+  private:
+  Vertex& contents;
+  WeightType& weigth
+public:
+  explicit nodeList(const Vertex& contents, WeightType& weigth)
+  :contents(contents),
+  weigth(weigth) {
+  }
+
+  inline const WeightType& getWeigth() const {
+    return this->weigth;
+  }
+
+  inline const Vertex& getVertex() const {
+    return this->contents;
+  }
+
+};
+
+
 
 }  // namespace grph
 /*! @} End of Doxygen Groups*/
