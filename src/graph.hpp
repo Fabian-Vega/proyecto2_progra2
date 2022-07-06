@@ -311,7 +311,7 @@ class Graph {
         // Condition in case the position is the same as the vertex param
         if (this->vertexes[position] == &vertex) {
           // Returns the position
-          return ++position;
+          return position+1;
         }
     }
     return 0;

@@ -198,12 +198,14 @@ void deleteProfile(grph::Graph<std::string, std::string>& graph) {
     size_t inputOption = showOptions(
         "Please choose the profile to be deleted",
         "", 1, graph.getVertexCount());
-    grph::Vertex<std::string> profile = *graph.getVertexes()[inputOption-1];
     // Removes the vertex from graph
-    bool success = graph.removeVertex(profile);
+    bool success = graph.removeVertex(*graph.getVertexes()[inputOption-1]);
     if (success) {
       std::cout <<
       "The profile was able to be deleted succesfully." << std::endl;
+    } else {
+      std::cout <<
+      "The profile doesnt exist????....i guess" << std::endl;
     }
   } else {
     std::cout
