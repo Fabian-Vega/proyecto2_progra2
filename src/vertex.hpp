@@ -36,11 +36,32 @@ class Vertex {
   /**
    * @brief Construct a new Vertex object
    * 
-   * @param data vertex pointer to the vertex from which the link comes out
+   * @param data data inside the vertex
    */
   explicit Vertex(const DataType& data = DataType())
   :data(data),
   linkCount(0) {
+  }
+
+  public:
+  /**
+   * @brief Construct a new Vertex object
+   * 
+   * @param other vertex to the vertex to copy
+   */
+  Vertex(const Vertex<DataType>& other)
+  :data(other.data),
+  linkCount(other.linkCount) {
+  }
+
+  Vertex<DataType>& operator=(const
+  Vertex<DataType>& other) {
+    // Conditions in case this is diferent from the other reference
+    if (this != &other) {
+      this->data = other.data;
+      this->linkCount = other.linkCount;
+    }
+    return *this;
   }
 
  public:
