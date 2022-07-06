@@ -84,7 +84,7 @@ int main(void) {
     "[5]See Profile\n[0]Quit\n";
     // Creates the graph
     grph::Graph<std::string, std::string> graph(3, false);
-    
+
     // Cicle while the user hasnt quitted the program
     while (inputOption) {
       // Prints the question, and options
@@ -272,7 +272,7 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
 
   } else {
     std::cout
-    << "Currently,"
+    << "Currently, "
     << "there are no enough profiles on LinkedUp to add friendships"
     << std::endl;
   }
@@ -295,7 +295,7 @@ void updateFriendship(grph::Graph<std::string, std::string>& graph) {
     }
   } else {
     std::cout
-    << "Currently,"
+    << "Currently, "
     << "there are no enough profiles on LinkedUp to modify friendships"
     << std::endl;
   }
@@ -306,7 +306,7 @@ void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
   showProfiles(
     "What friendship between two profiles do you want to delete?", graph);
   size_t first = 0, second = 0;
-  // Gets the first index 
+  // Gets the first index
   first = showOptions(
     "Please choose the first profile",
     "", 1, graph.getVertexCount());
@@ -330,7 +330,7 @@ void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
     "What friendship between two profiles do you want to modify", graph);
 
   size_t first = 0, second = 0;
-  // Gets the first index 
+  // Gets the first index
   first = showOptions(
     "Please choose the first profile",
     "", 1, graph.getVertexCount());
@@ -386,7 +386,7 @@ void printProfile(grph::Graph<std::string, std::string>& graph) {
         << profile->getLinkWeight(friendship) << std::endl;
     }
 
-    // delete[] relationships;
+    delete[] relationships;
   } else {
     std::cout
     << "Currently, there are no profiles on LinkedUp" << std::endl;
