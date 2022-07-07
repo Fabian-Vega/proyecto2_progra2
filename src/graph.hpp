@@ -672,11 +672,11 @@ class Graph {
     }
     *first = second;
   }
-  static void deleteAndNull(Vertex<DataType>*& ptr) {
+  static void deleteAndNull(Vertex<DataType>* ptr) {
     delete ptr;
     ptr = nullptr;
   }
-  static void deleteAndNull(WeightType*& ptr) {
+  static void deleteAndNull(WeightType* ptr) {
     delete ptr;
     ptr = nullptr;
   }
@@ -758,8 +758,9 @@ class Graph {
       // Conditions if the current vertex is the same as the param vertex
       if (current != vertexPosition) {
         if (this->adjacencyMatrix[current][vertexPosition]) {
-          delete this->adjacencyMatrix[current][vertexPosition];
-          this->adjacencyMatrix[current][vertexPosition] = nullptr;
+          deleteAndNull(this->adjacencyMatrix[current][vertexPosition]);
+          //delete this->adjacencyMatrix[current][vertexPosition];
+          //this->adjacencyMatrix[current][vertexPosition] = nullptr;
           --this->vertexes[current]->getLinkCount();
         }
       }
