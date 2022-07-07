@@ -6,8 +6,7 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
-#include "Vertex.hpp"
-
+#include "Link.hpp"
 
 const size_t INITIAL_CAPACITY = 10;
 const size_t INCREASE_FACTOR = 3;
@@ -41,7 +40,7 @@ class Graph {
   // AdjacencyMatrix is a matrix that represents the adjancency of the vertex
   std::vector<std::vector<WeightType*>> adjacencyMatrix;
   // AdjacencyList is a list of Vertex that represents the adjancency of the vertexes
-  std::vector<list<nodeList<DataType, WeightType>>*> adjacencyList;
+  /*std::vector<std::list<Link<DataType, WeightType>>*> adjacencyList;*/
   // Vertexes is a vector with all the vertex
   std::vector<Vertex<DataType>*> vertexes;
   // IsDirected is a bool that identifies if the links are directed or not
@@ -750,26 +749,6 @@ class Graph {
     }
   }
   
-};
-
-template<typename DataType, typename WeightType>
-class nodeList {
-  private:
-  Vertex& contents;
-  WeightType& weigth
-public:
-  explicit nodeList(const Vertex& contents, WeightType& weigth)
-  :contents(contents),
-  weigth(weigth) {
-  }
-
-  inline const WeightType& getWeigth() const {
-    return this->weigth;
-  }
-
-  inline const Vertex& getVertex() const {
-    return this->contents;
-  }
 };
 
 }  // namespace grph
