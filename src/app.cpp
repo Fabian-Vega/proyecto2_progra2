@@ -237,7 +237,7 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
       if (first == second) {
         std::cout
         << "You have chosen the same profile two times, "
-        << "are you sure about this desicion? (y/n)"
+        << "are you sure about this decision? (y/n)"
         << std::endl;
         std::cin >> inputOption;
       } else {
