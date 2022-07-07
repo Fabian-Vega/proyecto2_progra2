@@ -41,7 +41,7 @@ class Graph {
   // AdjacencyMatrix is a matrix that represents the adjancency of the vertex
   std::vector<std::vector<WeightType*>> adjacencyMatrix;
   // AdjacencyList is a list of Vertex that represents the adjancency of the vertexes
-  /*std::vector<list<nodeList<DataType, WeightType>>*> adjacencyList;*/
+  std::vector<list<nodeList<DataType, WeightType>>*> adjacencyList;
   // Vertexes is a vector with all the vertex
   std::vector<Vertex<DataType>*> vertexes;
   // IsDirected is a bool that identifies if the links are directed or not
@@ -752,7 +752,7 @@ class Graph {
   
 };
 
-/*template<typename DataType, typename WeightType>
+template<typename DataType, typename WeightType>
 class nodeList {
   private:
   Vertex& contents;
@@ -769,7 +769,8 @@ public:
 
   inline const Vertex& getVertex() const {
     return this->contents;
-  }*/
+  }
+};
 
 }  // namespace grph
 
