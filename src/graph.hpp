@@ -228,7 +228,7 @@ class Graph {
     Vertex<DataType>& origin,
     Vertex<DataType>& connection) {
       return *this->adjacencyMatrix[--this->whereIsVertex(origin)][
-      --this->whereIsVertex(connection)];;
+      --this->whereIsVertex(connection)];
   }
 
   /**
