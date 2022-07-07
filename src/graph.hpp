@@ -227,8 +227,8 @@ class Graph {
   WeightType& operator() (
     Vertex<DataType>& origin,
     Vertex<DataType>& connection) {
-      return *this->adjacencyMatrix[--this->whereIsVertex(origin)][
-      --this->whereIsVertex(connection)];
+      return *this->adjacencyMatrix[this->whereIsVertex(origin)-1][
+        this->whereIsVertex(connection)-1];
   }
 
   /**
