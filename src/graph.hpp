@@ -370,7 +370,7 @@ class Graph {
     delete this->vertexes[position];
     // Erase the vertex from the vertexes vector
     this->vertexes.erase(this->vertexes.begin()+position);
-    
+    this->vertexes.push_back(nullptr);
     // Cycle that goes from 0 until the capacity is reached
     for (size_t row = 0; row < this->capacity; row++) {
       // Condition in case the row is different from the position

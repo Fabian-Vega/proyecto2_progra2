@@ -54,31 +54,39 @@ int main(void) {
       << " con una distacia de : " << graph(boston, *bostonNeighbors[city])
       << std::endl;;
     }
-    //delete [] bostonNeighbors;
+    delete [] bostonNeighbors;
 
     grph::Graph<std::string, int> graph2(graph);
 
+    grph::Vertex<std::string>& boston2 = *graph2.getVertexes()[0];
+    grph::Vertex<std::string>& york2 = *graph2.getVertexes()[1];
+    grph::Vertex<std::string>& chicago2 = *graph2.getVertexes()[2];
+    grph::Vertex<std::string>& angeles2 = *graph2.getVertexes()[3];
+    grph::Vertex<std::string>& francisco2 = *graph2.getVertexes()[4];
+    grph::Vertex<std::string>& perez2 = *graph2.getVertexes()[5];
+
+
     std::cout << "\nLa distancia entre Boston y New York es: "
-    << graph2.getLink(boston, york) << std::endl;
-    std::cout << "\nLa distancia entre Boston y Las Vegas es: "
-    << graph2.getLink(boston, vegas) << std::endl;
+    << graph2.getLink(boston2, york2) << std::endl;
+    //std::cout << "\nLa distancia entre Boston y Las Vegas es: "
+    //<< graph2.getLink(boston, vegas) << std::endl;
     std::cout << "\nLa distancia entre Boston y Chicago es: "
-    << graph2.getLink(boston, chicago) << std::endl;
+    << graph2.getLink(boston2, chicago2) << std::endl;
     std::cout << "\nLa distancia entre Boston y Los Angeles es: "
-    << graph2.getLink(boston, angeles) << std::endl;
+    << graph2.getLink(boston2, angeles2) << std::endl;
     std::cout << "\nLa distancia entre Boston y Sam Francisco es: "
-    << graph2.getLink(boston, francisco) << std::endl;
+    << graph2.getLink(boston2, francisco2) << std::endl;
     std::cout << "\nLa distancia entre Boston y Perez Zeledón es: "
-    << graph2.getLink(boston, perez) << std::endl;
+    << graph2.getLink(boston2, perez2) << std::endl;
     std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
-    << graph2.getLink(perez, boston) << std::endl;
+    << graph2.getLink(perez2, boston2) << std::endl;
 
     grph::Vertex<std::string>** bNeighboors =
-    graph.getNeighbors(boston);
+    graph.getNeighbors(boston2);
     std::cout << "\nLas ciudades vecinas de Boston son: \n";
-    for (size_t city = 0; city < boston.getLinkCount(); ++city) {
+    for (size_t city = 0; city < boston2.getLinkCount(); ++city) {
       std::cout << bNeighboors[city]->getData() 
-      << " con una distacia de : " << graph(boston, *bNeighboors[city])
+      << " con una distacia de : " << graph(boston2, *bNeighboors[city])
       << std::endl;;
     }
     delete [] bNeighboors;
