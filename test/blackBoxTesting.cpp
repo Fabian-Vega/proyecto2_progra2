@@ -29,12 +29,12 @@ int main(void) {
     graph.addVertex(cities[6]);
 
     grph::Vertex<std::string>& boston = *graph.getVertexes()[0];
-    grph::Vertex<std::string>& york = *graph.getVertexes()[0];
-    grph::Vertex<std::string>& vegas = *graph.getVertexes()[0];
-    grph::Vertex<std::string>& chicago = *graph.getVertexes()[0];
-    grph::Vertex<std::string>& angeles = *graph.getVertexes()[0];
-    grph::Vertex<std::string>& francisco = *graph.getVertexes()[0];
-    grph::Vertex<std::string>& perez = *graph.getVertexes()[0];
+    grph::Vertex<std::string>& york = *graph.getVertexes()[1];
+    grph::Vertex<std::string>& vegas = *graph.getVertexes()[2];
+    grph::Vertex<std::string>& chicago = *graph.getVertexes()[3];
+    grph::Vertex<std::string>& angeles = *graph.getVertexes()[4];
+    grph::Vertex<std::string>& francisco = *graph.getVertexes()[5];
+    grph::Vertex<std::string>& perez = *graph.getVertexes()[6];
 
     graph.addLink(boston, york, weights[0]);
     graph.addLink(boston, vegas, weights[1]);
@@ -54,7 +54,7 @@ int main(void) {
       << " con una distacia de : " << graph(boston, *bostonNeighbors[city])
       << std::endl;;
     }
-    delete [] bostonNeighbors;
+    //delete [] bostonNeighbors;
 
     grph::Graph<std::string, int> graph2(graph);
 
@@ -77,7 +77,7 @@ int main(void) {
     graph.getNeighbors(boston);
     std::cout << "\nLas ciudades vecinas de Boston son: \n";
     for (size_t city = 0; city < boston.getLinkCount(); ++city) {
-      std::cout << bNeighboors[city]->getData()
+      std::cout << bNeighboors[city]->getData() 
       << " con una distacia de : " << graph(boston, *bNeighboors[city])
       << std::endl;;
     }
