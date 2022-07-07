@@ -336,7 +336,7 @@ class Graph {
     // Condition in case the vertex is not found
     if (this->whereIsVertex(vertex) != 0) {
       return false;
-    }
+    } 
     // Condition in case the amount of vertex is bigger than
     // the capacity, if so, increase the capacity
     if (this->vertexCount >= this->capacity) {
