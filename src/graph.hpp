@@ -287,6 +287,7 @@ class Graph {
     size_t neighborsFound = 0, vertex = 0,
     // variable to know the position of origin
     originPosition = this->whereIsVertex(origin);
+    --originPosition;
     // Cycle that stores the neighboors from origin
     while (neighborsFound < origin.getLinkCount()
     && vertex < this->vertexCount) {

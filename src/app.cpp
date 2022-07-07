@@ -176,7 +176,7 @@ void addProfile(grph::Graph<std::string, std::string>& graph) {
   std::cout << "What is the name of the person to be added?" << std::endl;
   std::string input = "\0";
 
-  std::cin.ignore(2, '\n');
+  std::cin.ignore(1, '\n');
   // Reads string of the name to be added
   std::getline(std::cin, input);
   // Create the profile
