@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "../src/graph.hpp"
+#include "../src/Graph.hpp"
 
 int main(void) {
   try {
