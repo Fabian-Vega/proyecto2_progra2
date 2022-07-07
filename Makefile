@@ -27,7 +27,7 @@ build/app.o: src/app.cpp | build/.
 
 
 # Link blackBoxTestingApp
-bin/blackBoxTestingApp: build/blackBoxTesting.o bin/Graph.a | bin/.
+bin/blackBoxTestingApp: build/blackBoxTesting.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile blackBoxTestingApp
@@ -45,7 +45,7 @@ build/%.o: test/%.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
 
-# Graph library
+# graph library
 bin/Graph.a: build/Graph.o build/Vertex.o | bin/.
 	ar rs $@ $^
 
