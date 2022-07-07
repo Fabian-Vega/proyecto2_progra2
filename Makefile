@@ -8,7 +8,6 @@ all:  bin/appGraph
 .PHONY: asan
 asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
 asan: all
-asan: test
 
 .PHONY: test
 test: bin/test bin/blackBoxTestingApp

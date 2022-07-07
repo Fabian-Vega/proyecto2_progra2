@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
-#include <iostream>
 #include "vertex.hpp"
 
 
@@ -103,10 +102,15 @@ class Graph {
     this->vertexCount = 0;
     this->capacity = 0;
     this->isDirected = false;
+    this->clear();
+  }
+  
+ public:
+  void clear() {
     this->deleteMatrix();
     this->deleteVertexes();
   }
-  
+
  public:
   /**
    * @brief Operator= overload with constants
@@ -340,8 +344,8 @@ class Graph {
     }
     
     // Adds the vertex to the vertex list
-    allocateAndCopy(this->vertexes[this->vertexCount++],
-    vertex);
+    this->vertexes[this->vertexCount++] =
+    new Vertex<DataType>(vertex);
 
     return true;
   }
@@ -443,17 +447,19 @@ class Graph {
       return false;
     }
     // Adds link
-    allocateAndCopy(
-    this->adjacencyMatrix[originPosition][destinPosition],
-    weight);
+    this->adjacencyMatrix[originPosition][destinPosition] =
+    new WeightType;
+    *this->adjacencyMatrix[originPosition][destinPosition] =
+    weight;
     // Increases the link count
     ++origin.getLinkCount();
     // In case it is not directed
     if (!this->isDirected && &origin != &connection) {
       // Adds link
-      allocateAndCopy(
-      this->adjacencyMatrix[destinPosition][originPosition],
-      weight);
+      this->adjacencyMatrix[destinPosition][originPosition] =
+      new WeightType;
+      *this->adjacencyMatrix[destinPosition][originPosition] =
+      weight;
       // Increases the link count
       ++connection.getLinkCount();
     }
@@ -495,14 +501,16 @@ class Graph {
       return true;
     }
     // Erase the link
-    deleteAndNull(this->adjacencyMatrix[originPosition][destinPosition]);
+    delete this->adjacencyMatrix[originPosition][destinPosition];
+    this->adjacencyMatrix[originPosition][destinPosition] = nullptr;
     // Decreases the link count
     --origin.getLinkCount();
     
     // Condition if it is not directed
     if (!this->isDirected && &origin != &connection) {
       // Erase the link
-      deleteAndNull(this->adjacencyMatrix[destinPosition][originPosition]);
+      delete this->adjacencyMatrix[destinPosition][originPosition];
+      this->adjacencyMatrix[destinPosition][originPosition] = nullptr;
       // Decreases the link count
       --connection.getLinkCount();
     }
@@ -591,7 +599,7 @@ class Graph {
     // Assigns the weight to the link
     *this->adjacencyMatrix[originPosition][destinPosition] = weight;
     // Condition if it is not directed, then assigns the weight to the link
-    if (!this->isDirected) {
+    if (!this->isDirected && &origin != &connection) {
       *this->adjacencyMatrix[destinPosition][originPosition] = weight;
     }
 
@@ -614,17 +622,55 @@ class Graph {
   }
 
  private:
+  void copyMatrixAndVertexes(const Graph<DataType, WeightType>& other) {
+    for (size_t row = 0; row < other.vertexCount;
+    ++row) {
+      for (size_t column = 0; column < other.vertexCount;
+      ++column) {
+        if (other.adjacencyMatrix[row][column]) {
+          this->adjacencyMatrix[row][column] = new WeightType;
+          *this->adjacencyMatrix[row][column] =
+          *other.adjacencyMatrix[row][column];
+        }
+      }
+      this->vertexes[row] =
+      new Vertex<DataType>(*other.vertexes[row]);
+    }
+  }
+
+ private:
+  void deleteMatrix() {
+    for (size_t row = 0; row < this->vertexCount;
+    ++row) {
+      for (size_t column = 0; column < this->vertexCount;
+      ++column) {
+        delete this->adjacencyMatrix[row][column];
+        this->adjacencyMatrix[row][column] = nullptr;
+      }
+    }
+  }
+
+  void deleteVertexes() {
+    for (size_t current = 0; current < this->vertexCount;
+      ++current) {
+        delete this->vertexes[current];
+        this->vertexes[current] = nullptr;
+    }
+  }
+
+ private:
   /**
    * @brief Increases the capacity of the graph
    * 
    * @param newCapacity is a size_t variable that will replace the value of the actual capacity of the graph
    */
-  void increaseCapacity(size_t newCapacity = 0) {
+  void increaseCapacity(size_t increaseFactor = 0) {
     // Conditions if the new capacity is 0, then the new capacity will
     // be the increase factor times the actual capacity
-    if (newCapacity == 0) {
-      newCapacity = INCREASE_FACTOR * this->capacity;
+    if (increaseFactor == 0) {
+      increaseFactor = INCREASE_FACTOR;
     }
+     const size_t newCapacity = increaseFactor*this->capacity;
     
     // Cycle that goes from 0 until it reaches the max,
     // resizing the row of the adjacency matrix
@@ -651,68 +697,6 @@ class Graph {
 
     // Changes the capacity
     this->capacity = newCapacity;
-  }
-
- private:
-  static void allocateAndCopy(Vertex<DataType>*& first,
-  Vertex<DataType>& second) {
-    first = new Vertex<DataType>;
-    if (first == nullptr) {
-      throw std::runtime_error(
-        "Graph: No enough memory to copy element");
-    }
-    *first = second;
-  }
-  static void allocateAndCopy(WeightType*& first,
-  WeightType& second) {
-    first = new WeightType;
-    if (first == nullptr) {
-      throw std::runtime_error(
-        "Graph: No enough memory to copy element");
-    }
-    *first = second;
-  }
-  static void deleteAndNull(Vertex<DataType>* ptr) {
-    delete ptr;
-    ptr = nullptr;
-  }
-  static void deleteAndNull(WeightType* ptr) {
-    delete ptr;
-    ptr = nullptr;
-  }
-
-  void copyMatrixAndVertexes(const Graph<DataType, WeightType>& other) {
-    for (size_t row = 0; row < other.vertexCount;
-    ++row) {
-      for (size_t column = 0; column < other.vertexCount;
-      ++column) {
-        if (other.adjacencyMatrix[row][column]) {
-          allocateAndCopy(
-          this->adjacencyMatrix[row][column],
-          *other.adjacencyMatrix[row][column]);
-        }
-      }
-      allocateAndCopy(this->vertexes[row],
-      *other.vertexes[row]);
-    }
-  }
-
- private:
-  void deleteMatrix() {
-    for (size_t row = 0; row < this->vertexCount;
-    ++row) {
-      for (size_t column = 0; column < this->vertexCount;
-      ++column) {
-        deleteAndNull(this->adjacencyMatrix[row][column]);
-      }
-    }
-  }
-
-  void deleteVertexes() {
-    for (size_t current = 0; current < this->vertexCount;
-      ++current) {
-        deleteAndNull(this->vertexes[current]);
-    }
   }
 
  private:
@@ -758,9 +742,8 @@ class Graph {
       // Conditions if the current vertex is the same as the param vertex
       if (current != vertexPosition) {
         if (this->adjacencyMatrix[current][vertexPosition]) {
-          deleteAndNull(this->adjacencyMatrix[current][vertexPosition]);
-          //delete this->adjacencyMatrix[current][vertexPosition];
-          //this->adjacencyMatrix[current][vertexPosition] = nullptr;
+          delete this->adjacencyMatrix[current][vertexPosition];
+          this->adjacencyMatrix[current][vertexPosition] = nullptr;
           --this->vertexes[current]->getLinkCount();
         }
       }

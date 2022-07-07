@@ -127,6 +127,8 @@ int main(void) {
 
       if (inputOption) {
         std::cout << "\nDo you wish to do anything else?" << std::endl;
+      } else {
+        graph.clear();
       }
     }
   } catch (const std::runtime_error& error) {
