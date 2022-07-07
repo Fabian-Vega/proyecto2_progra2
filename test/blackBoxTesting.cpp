@@ -81,15 +81,15 @@ int main(void) {
     std::cout << "\nLa distancia entre Perez Zeledón y Boston es: "
     << graph2.getLink(perez2, boston2) << std::endl;
 
-    grph::Vertex<std::string>** bNeighboors =
-    graph.getNeighbors(boston2);
-    std::cout << "\nLas ciudades vecinas de Boston son: \n";
+    grph::Vertex<std::string>** bNeighbors =
+    graph2.getNeighbors(boston2);
+    std::cout << "\nLas ciudades vecinas de Boston son:" << std::endl;
     for (size_t city = 0; city < boston2.getLinkCount(); ++city) {
-      std::cout << bNeighboors[city]->getData() 
-      << " con una distacia de : " << graph(boston2, *bNeighboors[city])
-      << std::endl;;
+      std::cout << bNeighbors[city]->getData() 
+      << " con una distacia de : " << graph2(boston2, *bNeighbors[city])
+      << std::endl;
     }
-    delete [] bNeighboors;
+    delete [] bNeighbors;
     graph.clear();
 
   } catch (const std::runtime_error& error) {

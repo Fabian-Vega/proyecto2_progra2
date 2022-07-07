@@ -2,7 +2,7 @@
 #ifndef LINK_HPP
 #define LINK_HPP
 
-#include "Vertex.hpp"
+#include "vertex.hpp"
 
 /*!
  *  \addtogroup grph

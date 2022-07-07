@@ -10,15 +10,22 @@ asan: CXXFLAGS += -fsanitize=address -fno-omit-frame-pointer
 asan: all
 asan: test
 
+.PHONY: blackBox
+blackBox: bin/blackBoxTestingApp
+
+.PHONY: whiteBox
+whiteBox: bin/test
+
 .PHONY: test
-test: bin/test bin/blackBoxTestingApp
+test: blackBox
+test: whiteBox
 
 .PHONY: val
 val: 
 	valgrind --leak-check=full -v  bin/appGraph
 
 # Link appGraph
-bin/appGraph: build/app.o bin/Graph.a | bin/.
+bin/appGraph: build/app.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile app
@@ -37,7 +44,7 @@ build/blackBoxTesting.o: test/blackBoxTesting.cpp | build/.
 
 
 # Link catchApp
-bin/test: build/testGraph.o bin/Graph.a | bin/.
+bin/test: build/testGraph.o bin/graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile catchApp
@@ -46,7 +53,7 @@ build/%.o: test/%.cpp | build/.
 
 
 # graph library
-bin/Graph.a: build/Graph.o build/Vertex.o | bin/.
+bin/graph.a: build/graph.o build/vertex.o | bin/.
 	ar rs $@ $^
 
 build/%.o: src/%.cpp src/%.hpp | build/.

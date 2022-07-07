@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "Graph.hpp"
+#include "graph.hpp"
 
 /**
  * @brief Prints header and options to choose

@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
-#include "Link.hpp"
+#include "link.hpp"
 
 const size_t INITIAL_CAPACITY = 10;
 const size_t INCREASE_FACTOR = 3;
@@ -224,7 +224,7 @@ class Graph {
    * 
    * @return WeightType& 
    */
-  WeightType& operator() (
+  WeightType& operator()(
     Vertex<DataType>& origin,
     Vertex<DataType>& connection) {
       return *this->adjacencyMatrix[this->whereIsVertex(origin)-1][
@@ -287,9 +287,9 @@ class Graph {
     new Vertex<DataType>*[origin.getLinkCount()];
     // Variable to know when all the neighboors have been found
     // Counter to move throug vertex
-    size_t neighborsFound = 0, vertex = 0,
+    size_t neighborsFound = 0, vertex = 0;
     // variable to know the position of origin
-    originPosition = this->whereIsVertex(origin);
+    size_t originPosition = this->whereIsVertex(origin);
     --originPosition;
     // Cycle that stores the neighboors from origin
     while (neighborsFound < origin.getLinkCount()
