@@ -7,23 +7,19 @@
 
 int main(void) {
   try {
-    grph::Graph<std::string, int> grafo(3, false);
-    grph::Vertex<std::string> boston =
-    grph::Vertex<std::string>(std::string("Boston"));
-    grph::Vertex<std::string> york =
-    grph::Vertex<std::string>(std::string("New York"));
-    grph::Vertex<std::string> vegas =
-    grph::Vertex<std::string>(std::string("Las Vegas"));
-    grph::Vertex<std::string> chicago =
-    grph::Vertex<std::string>(std::string("Chicago"));
-    grph::Vertex<std::string> angeles =
-    grph::Vertex<std::string>(std::string("Los Angeles"));
-    grph::Vertex<std::string> francisco =
-    grph::Vertex<std::string>(std::string("San Francisco"));
-    grph::Vertex<std::string> perez =
-    grph::Vertex<std::string>(std::string("Perez Zeledon"));
+    grph::Vertex<std::string> cities[7] = {
+      grph::Vertex<std::string>(std::string("Boston")),
+      grph::Vertex<std::string>(std::string("New York")),
+      grph::Vertex<std::string>(std::string("Las Vegas")),
+      grph::Vertex<std::string>(std::string("Chicago")),
+      grph::Vertex<std::string>(std::string("Los Angeles")),
+      grph::Vertex<std::string>(std::string("San Francisco")),
+      grph::Vertex<std::string>(std::string("Perez Zeledon"))
+    }
 
-    grafo.addVertex(boston);
+    int weights[7] = {80, 3, 26, 18, 43, 786345, 69420};
+
+    grafo.addVertex(city[0]);
     grafo.addVertex(york);
     grafo.addVertex(vegas);
     grafo.addVertex(chicago);
@@ -31,7 +27,13 @@ int main(void) {
     grafo.addVertex(francisco);
     grafo.addVertex(perez);
 
-    int weights[7] = {80, 3, 26, 18, 43, 786345, 69420};
+    grph::Vertex<std::string>& boston = *grafo.getVertexes()[0];
+    grph::Vertex<std::string>& york = *grafo.getVertexes()[0];
+    grph::Vertex<std::string>& vegas = *grafo.getVertexes()[0];
+    grph::Vertex<std::string>& chicago = *grafo.getVertexes()[0];
+    grph::Vertex<std::string>& angeles = *grafo.getVertexes()[0];
+    grph::Vertex<std::string>& francisco = *grafo.getVertexes()[0];
+    grph::Vertex<std::string>& perez = *grafo.getVertexes()[0];
 
     grafo.addLink(boston, york, weights[0]);
     grafo.addLink(boston, vegas, weights[1]);
