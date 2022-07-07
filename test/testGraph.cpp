@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "../src/graph.hpp"
+#include "../src/Graph.hpp"
 
 TEST_CASE("tests"){
 

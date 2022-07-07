@@ -18,7 +18,7 @@ val:
 	valgrind --leak-check=full -v  bin/appGraph
 
 # Link appGraph
-bin/appGraph: build/app.o bin/graph.a | bin/.
+bin/appGraph: build/app.o bin/Graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile app
@@ -27,7 +27,7 @@ build/app.o: src/app.cpp | build/.
 
 
 # Link blackBoxTestingApp
-bin/blackBoxTestingApp: build/blackBoxTesting.o bin/graph.a | bin/.
+bin/blackBoxTestingApp: build/blackBoxTesting.o bin/Graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile blackBoxTestingApp
@@ -37,7 +37,7 @@ build/blackBoxTesting.o: test/blackBoxTesting.cpp | build/.
 
 
 # Link catchApp
-bin/test: build/testGraph.o bin/graph.a | bin/.
+bin/test: build/testGraph.o bin/Graph.a | bin/.
 	$(CXX) -g $(CXXFLAGS) $(DEFS) $^ -o $@
 
 # Compile catchApp
@@ -45,8 +45,8 @@ build/%.o: test/%.cpp | build/.
 	$(CXX) -c -g $(CXXFLAGS) $(DEFS) -Isrc $< -o $@
 
 
-# graph library
-bin/graph.a: build/graph.o build/vertex.o | bin/.
+# Graph library
+bin/Graph.a: build/Graph.o build/Vertex.o | bin/.
 	ar rs $@ $^
 
 build/%.o: src/%.cpp src/%.hpp | build/.
