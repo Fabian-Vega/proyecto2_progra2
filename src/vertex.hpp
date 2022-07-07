@@ -1,6 +1,5 @@
 // Copyright [2022] <Alejandro B, Fabian V, Kenneth V>
 #ifndef VERTEX_HPP
-
 #define VERTEX_HPP
 
 #include <cstddef>

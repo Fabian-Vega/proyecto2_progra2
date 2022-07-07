@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
-#include "vertex.hpp"
+#include "Vertex.hpp"
 
 
 const size_t INITIAL_CAPACITY = 10;
