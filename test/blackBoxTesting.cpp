@@ -91,6 +91,7 @@ int main(void) {
     }
     delete [] bNeighbors;
     graph.clear();
+    graph2.clear();
 
   } catch (const std::runtime_error& error) {
     std::cerr << "main error: " << error.what() << std::endl;

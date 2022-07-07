@@ -22,7 +22,7 @@ test: whiteBox
 
 .PHONY: val
 val: 
-	valgrind --leak-check=full -v  bin/appGraph
+	valgrind --leak-check=full -v bin/blackBoxTestingApp
 
 # Link appGraph
 bin/appGraph: build/app.o bin/graph.a | bin/.

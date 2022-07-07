@@ -60,7 +60,6 @@ class Graph {
   adjacencyMatrix(capacity, std::vector<WeightType*>(capacity, nullptr)),
   vertexes(capacity, nullptr),
   isDirected(directed) {
-
   }
   /**
    * @brief Construct a new Graph object
@@ -343,7 +342,7 @@ class Graph {
     }
     
     // Adds the vertex to the vertex list
-    this->vertexes[this->vertexCount++] =
+    this->vertexes[this->vertexCount] =
     new Vertex<DataType>(vertex);
 
     return true;
