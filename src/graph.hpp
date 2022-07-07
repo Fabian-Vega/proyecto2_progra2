@@ -449,7 +449,7 @@ class Graph {
     // Increases the link count
     ++origin.getLinkCount();
     // In case it is not directed
-    if (!this->isDirected) {
+    if (!this->isDirected && &origin != &connection) {
       // Adds link
       allocateAndCopy(
       this->adjacencyMatrix[destinPosition][originPosition],
@@ -500,7 +500,7 @@ class Graph {
     --origin.getLinkCount();
     
     // Condition if it is not directed
-    if (!this->isDirected) {
+    if (!this->isDirected && &origin != &connection) {
       // Erase the link
       deleteAndNull(this->adjacencyMatrix[destinPosition][originPosition]);
       // Decreases the link count
@@ -758,7 +758,8 @@ class Graph {
       // Conditions if the current vertex is the same as the param vertex
       if (current != vertexPosition) {
         if (this->adjacencyMatrix[current][vertexPosition]) {
-          deleteAndNull(this->adjacencyMatrix[current][vertexPosition]);
+          delete this->adjacencyMatrix[current][vertexPosition];
+          this->adjacencyMatrix[current][vertexPosition] = nullptr;
           --this->vertexes[current]->getLinkCount();
         }
       }
