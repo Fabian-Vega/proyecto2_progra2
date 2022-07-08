@@ -376,7 +376,7 @@ class Graph {
    * @param connection a reference to the vertex the link is attached to
    * @return Link<DataType, WeightType> itr->weight()
    */
-  Link<DataType, WeightType>& findLink(size_t originPosition
+  Link<DataType, WeightType> findLink(size_t originPosition
   , const Vertex<DataType>& connection) {
     for(typename std::list<Link<DataType, WeightType>>::iterator itr =
     this->adjacencyList[originPosition].begin();
@@ -386,7 +386,7 @@ class Graph {
         return *itr;
       }
     }
-    return Link link;
+    return Link<DataType, WeightType> link;
   }
 
  public:
@@ -409,10 +409,14 @@ class Graph {
       this->increaseCapacity();
     }
     
+    if(!matrix){
+      list<Link<DataType, WeightType>> links(
+      0, Link<DataType, WeightType>);
+      this->adjacencyList[this->vertexCount] = links;
+    }
     // Adds the vertex to the vertex list
-    this->vertexes[this->vertexCount] =
+    this->vertexes[this->vertexCount++] =
     new Vertex<DataType>(vertex);
-
     return true;
   }
 
@@ -438,52 +442,11 @@ class Graph {
     // Erase the vertex from the vertexes vector
     this->vertexes.erase(this->vertexes.begin()+position);
     this->vertexes.push_back(nullptr);
-    // Cycle that goes from 0 until the capacity is reached
-    for (size_t row = 0; row < this->capacity; row++) {
-      // Condition in case the row is different from the position
-      if (row != position) {
-        // Free the memory allocated for the links to the vertex (columns)
-        delete this->adjacencyMatrix[row][position];
-        // Erase the column on the current row and adjust the adjacency matrix
-        this->adjacencyMatrix[row].erase(
-          this->adjacencyMatrix[row].begin()+position);
-      } else {
-        for (size_t column = 0; column < this->capacity; column++) {
-          // Free the memory allocated for the links from the vertex (row)
-          delete this->adjacencyMatrix[row][column];
-        }
-      }
-    }
-    // Erase the position row and adjust the adjacency matrix
-    this->adjacencyMatrix.erase(
-     this->adjacencyMatrix.begin()+position);
-    
-    // Cycle that goes from 0 until the capacity is reached
-    for (size_t row = 0; row < this->capacity; row++) {
-      // Adds an element at the end of every row to mantain capacity
-      this->adjacencyMatrix[row].push_back(nullptr);
-    }
-    // Adds a row at the end to mantain capacity
-    this->adjacencyMatrix.push_back(
-      std::vector<WeightType*> (this->capacity, nullptr));
-    
+    updateAdjacency("removeVertex", position);
     --this->vertexCount;
     // Deletes the links of the vertex
     vertex.getLinkCount() = 0;
     return true;
-
-    // METHOD ADJACENCY LIST
-    for (size_t i = 0; i < this->vertexCount; i++){
-        for (size_t i = 0; i < adjacencyList.size()+1; i++){
-          nodeList node =  std::advance(listOfStrs.begin(), i);
-          if (node.contents == vertex){
-            adjacencyList.erase(node);
-          }
-        }
-        return true;
-      
-    }
-    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -741,30 +704,18 @@ class Graph {
     if (increaseFactor == 0) {
       increaseFactor = INCREASE_FACTOR;
     }
-     const size_t newCapacity = increaseFactor*this->capacity;
-    
-    // Cycle that goes from 0 until it reaches the max,
-    // resizing the row of the adjacency matrix
-    for (size_t row = 0; row < this->capacity; ++row) {
-      this->adjacencyMatrix[row].resize(newCapacity, nullptr);
-    }
-    // Calls the resize() method
-    this->adjacencyMatrix.resize(
-      newCapacity, std::vector<WeightType*>(newCapacity, nullptr));
+    const size_t newCapacity = increaseFactor*this->capacity;
+
+    updateAdjacency("increaseCapacity", newCapacity);
 
     // Resizes the vertexes
     this->vertexes.resize(newCapacity, nullptr);
     // Condition in case we could bot increase the capacity,
     // and then throws an exception
-
     if (!this->couldIncreaseCapacity(newCapacity)) {
       throw std::runtime_error(
         "Graph: No enough memory to increase capacity");
     }
-
-    // METHOD ADJACENCY LIST
-    adjacencyList.resize(newCapacity, std::vector<int>(newCapacity, 0));
-    // METHOD ADJACENCY LIST
 
     // Changes the capacity
     this->capacity = newCapacity;
@@ -779,27 +730,30 @@ class Graph {
    * @return false 
    */
   bool couldIncreaseCapacity(size_t newCapacity) const {
-    // Condition if the size of the adjacency matrix is different
-    // from new capacity, if so returns false
-    if (this->adjacencyMatrix.size() != newCapacity) {
-      return false;
-    }
-    // Cycle that goes from 0 until it reaches the new capacity
-    for (size_t row = 0; row < newCapacity; row++) {
-      // Condition if the size of the adjacency matrix row is different
+    if(matrix){
+      // Condition if the size of the adjacency matrix is different
       // from new capacity, if so returns false
-      if (this->adjacencyMatrix[row].size() != newCapacity) {
+      if (this->adjacencyMatrix.size() != newCapacity) {
         return false;
       }
+      // Cycle that goes from 0 until it reaches the new capacity
+      for (size_t row = 0; row < newCapacity; row++) {
+        // Condition if the size of the adjacency matrix row is different
+        // from new capacity, if so returns false
+        if (this->adjacencyMatrix[row].size() != newCapacity) {
+          return false;
+        }
+      }
+    } else {
+      if (this->adjacencyList.size() != newCapacity) {
+        return false;
+      } 
+    }
+    if (this->vertexes.size() != newCapacity) {
+      return false;
     }
 
     return true;
-
-    // METHOD ADJACENCY LIST
-    if (this->adjacencyList.size() != newCapacity) {
-      return false;
-    }
-    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -820,7 +774,89 @@ class Graph {
       }
     }
   }
-  
+
+  /**
+   * @brief 
+   * 
+   * @param action 
+   */
+  void updateAdjacency(const char* action, size_t number = 0) {
+    switch (action){
+      case "removeVertex":
+        if(matrix) {
+          removeVertexMatrix(number);
+        } else {
+          removeVertexList(number);
+        }
+      break;
+
+      case "increaseCapacity":
+        if(matrix) {
+          increaseMatrix(number);
+        } else {
+          increaseList(number);
+        }
+      break;
+
+      default:
+      break;
+    }
+  }
+
+  void removeVertexMatrix(size_t position){
+    // Cycle that goes from 0 until the capacity is reached
+    for (size_t row = 0; row < this->capacity; row++) {
+      // Condition in case the row is different from the position
+      if (row != position) {
+        // Free the memory allocated for the links to the vertex (columns)
+        delete this->adjacencyMatrix[row][position];
+        // Erase the column on the current row and adjust the adjacency matrix
+        this->adjacencyMatrix[row].erase(
+        this->adjacencyMatrix[row].begin()+position);
+      } else {
+        for (size_t column = 0; column < this->capacity; column++) {
+         // Free the memory allocated for the links from the vertex (row)
+         delete this->adjacencyMatrix[row][column];
+        }
+      }
+    }
+    // Erase the position row and adjust the adjacency matrix
+    this->adjacencyMatrix.erase(
+    this->adjacencyMatrix.begin()+position);
+    // Cycle that goes from 0 until the capacity is reached
+    for (size_t row = 0; row < this->capacity; row++) {
+      // Adds an element at the end of every row to mantain capacity
+      this->adjacencyMatrix[row].push_back(nullptr);
+    }
+    // Adds a row at the end to mantain capacity
+    this->adjacencyMatrix.push_back(
+    std::vector<WeightType*> (this->capacity, nullptr));
+  }
+
+  void removeVertexList(size_t position){
+    // Erase the position row and adjust the adjacency list
+    this->adjacencyList.erase(
+    this->adjacencyList.begin()+position);
+    this->adjacencyList.push_back(
+    std::list<Link<Datatype, WeightType>> (this->capacity));
+  }
+
+  void increaseMatrix(const size_t newCapacity){
+    // Cycle that goes from 0 until it reaches the max,
+    // resizing the row of the adjacency matrix
+    for (size_t row = 0; row < this->capacity; ++row) {
+      this->adjacencyMatrix[row].resize(newCapacity, nullptr);
+    }
+    // Calls the resize() method
+    this->adjacencyMatrix.resize(
+    newCapacity, std::vector<WeightType*>(newCapacity, nullptr));
+  }
+
+  inline void increaseList(const size_t newCapacity){
+    // Resizes the adjacency list
+    adjacencyList.resize(newCapacity);
+  }
+
 };
 
 }  // namespace grph
