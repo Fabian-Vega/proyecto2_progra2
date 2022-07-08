@@ -53,12 +53,32 @@ class Vertex {
   linkCount(other.linkCount) {
   }
 
+  /**
+   * @brief Construct a new Vertex object
+   * 
+   * @param other vertex to the vertex to copy
+   */
+  Vertex(Vertex<DataType>& other)
+  :data(std::move(other.data)),
+  linkCount(std::move(linkCount)) {
+  }
+
   Vertex<DataType>& operator=(const
   Vertex<DataType>& other) {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
       this->data = other.data;
       this->linkCount = other.linkCount;
+    }
+    return *this;
+  }
+
+  Vertex<DataType>& operator=(
+  Vertex<DataType>&& other) {
+    // Conditions in case this is diferent from the other reference
+    if (this != &other) {
+      std::swap(this->data, other.data);
+      std::swap(this->linkCount, other.linkCount);
     }
     return *this;
   }
