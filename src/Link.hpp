@@ -19,10 +19,31 @@ class Link {
   WeightType weigth;
 
  public:
+  /**
+  * @brief Construct a new Link object
+  * 
+  * @param weigth 
+  */
+  Link(WeightType& weigth = WeightType())
+  :connection(nullptr),
+  weigth(weigth) {
+  }
+  
   Link(const Vertex<DataType>* connection,
   WeightType& weigth)
   :connection(connection),
   weigth(weigth) {
+  }
+
+  Link(const Link<DataType, WeightType>& other)
+  :connection(other.connection),
+  weigth(other.weigth) {
+  }
+
+  Link(const Link<DataType, WeightType>&& other)
+  :connection(std::move(other.connection)),
+  weigth(std::move(other.weigth)) {
+    other.connection = nullptr;
   }
 
   inline const WeightType& getWeigth() const {
@@ -32,7 +53,7 @@ class Link {
   inline const Vertex<DataType>* getConnection() const {
     return this->connection;
   }
-  
+
 };
 
 }  // namespace grph

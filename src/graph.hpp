@@ -260,8 +260,7 @@ class Graph {
         return *this->adjacencyMatrix[--this->whereIsVertex(origin)][
         --this->whereIsVertex(connection)];
       } else {
-        return *this->adjacencyList[--this->whereIsVertex(origin)][
-        ];
+        return findLink(--this->whereIsVertex(origin), connection).weight;
       }
   }
 
@@ -275,8 +274,12 @@ class Graph {
   WeightType& operator()(
     Vertex<DataType>& origin,
     Vertex<DataType>& connection) {
-      return *this->adjacencyMatrix[this->whereIsVertex(origin)-1][
-        this->whereIsVertex(connection)-1];
+      if(matrix){
+        return *this->adjacencyMatrix[--this->whereIsVertex(origin)][
+        --this->whereIsVertex(connection)];
+      } else {
+        return findLink(--this->whereIsVertex(origin), connection).weight;
+      }
   }
 
   /**
@@ -299,22 +302,17 @@ class Graph {
       // Return false in case the condition above is true
       return false;
     }
-    // Returns the value of the following propositions
-    return this->adjacencyMatrix[originPosition][destinPosition] != nullptr;
-
-    // METHOD ADJACENCY LIST
-    for (size_t i = 0; i < this->vertexCount; i++){
-      if (adjacencyList.begin().connections == origin){
-        for (size_t i = 0; i < adjacencyList.size()+1; i++){
-          nodeList node =  std::advance(listOfStrs.begin(), i);
-          if (node.connections == connection){
-            return true
-          }
-        }
-        return false;
-      }
+    if(matrix){
+      // Returns the value of the following propositions
+      return this->adjacencyMatrix[originPosition][destinPosition] != nullptr;
+    } else {
+      // METHOD ADJACENCY LIST
+      return findLink(originPosition, connection).weight;
+      // METHOD ADJACENCY LIST
     }
-    // METHOD ADJACENCY LIST
+    
+
+    
   }
 
   /**
@@ -336,14 +334,23 @@ class Graph {
     // variable to know the position of origin
     size_t originPosition = this->whereIsVertex(origin);
     --originPosition;
-    // Cycle that stores the neighboors from origin
-    while (neighborsFound < origin.getLinkCount()
-    && vertex < this->vertexCount) {
-      if (this->adjacencyMatrix[originPosition][vertex]
-      != nullptr) {
-        neighbors[neighborsFound++] = this->vertexes[vertex];
+    
+    if(matrix){
+      // Cycle that stores the neighboors from origin
+      while (neighborsFound < origin.getLinkCount()
+      && vertex < this->vertexCount) {
+        if (this->adjacencyMatrix[originPosition][vertex]
+        != nullptr) {
+          neighbors[neighborsFound++] = this->vertexes[vertex];
+        }
+        ++vertex;
       }
-      ++vertex;
+    } else {
+      for(typename std::list<Link<DataType, WeightType>>::iterator itr =
+      this->adjacencyList[originPosition].begin();
+      itr !=this->adjacencyList[originPosition].end(); ++itr) {
+        neighbors[neighborsFound++] = itr->connection;
+      }
     }
     return neighbors;
   }
@@ -367,17 +374,24 @@ class Graph {
     return 0;
   }
 
-  Link<DataType, WeightType> findLink(size_t originPosition
+  /**
+   * @brief Returns the weight of the Link
+   * 
+   * @param originPosition position of the adjacencyList the origin of the link is
+   * @param connection a reference to the vertex the link is attached to
+   * @return Link<DataType, WeightType> itr->weight()
+   */
+  Link<DataType, WeightType>& findLink(size_t originPosition
   , const Vertex<DataType>& connection) {
-    for(std::list<Link<DataType, WeightType>>::iterator itr =
+    for(typename std::list<Link<DataType, WeightType>>::iterator itr =
     this->adjacencyList[originPosition].begin();
     itr !=this->adjacencyList[originPosition].end();
     ++itr) {
-        if(itr->connections() == connection) {
-          return itr->weight();
-        }
+      if((*itr).connection == &connection) {
+        return *itr;
+      }
     }
-    return 0;
+    return Link();
   }
 
  public:
