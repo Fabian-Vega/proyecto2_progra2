@@ -306,13 +306,8 @@ class Graph {
       // Returns the value of the following propositions
       return this->adjacencyMatrix[originPosition][destinPosition] != nullptr;
     } else {
-      // METHOD ADJACENCY LIST
-      return findLink(originPosition, connection).weight;
-      // METHOD ADJACENCY LIST
+      return findLink(originPosition, connection).connection != nullptr;
     }
-    
-
-    
   }
 
   /**
@@ -330,12 +325,12 @@ class Graph {
     new Vertex<DataType>*[origin.getLinkCount()];
     // Variable to know when all the neighboors have been found
     // Counter to move throug vertex
-    size_t neighborsFound = 0, vertex = 0;
+    size_t neighborsFound = 0;
     // variable to know the position of origin
-    size_t originPosition = this->whereIsVertex(origin);
-    --originPosition;
-    
+    size_t originPosition = this->whereIsVertex(origin) -1;
+
     if(matrix){
+      size_t vertex = 0;
       // Cycle that stores the neighboors from origin
       while (neighborsFound < origin.getLinkCount()
       && vertex < this->vertexCount) {
@@ -349,7 +344,7 @@ class Graph {
       for(typename std::list<Link<DataType, WeightType>>::iterator itr =
       this->adjacencyList[originPosition].begin();
       itr !=this->adjacencyList[originPosition].end(); ++itr) {
-        neighbors[neighborsFound++] = itr->connection;
+        neighbors[neighborsFound++] = itr.connection;
       }
     }
     return neighbors;
@@ -391,7 +386,7 @@ class Graph {
         return *itr;
       }
     }
-    return Link();
+    return Link link;
   }
 
  public:
