@@ -15,13 +15,13 @@ namespace grph {
 template<typename DataType, typename WeightType>
 class Link {
  private:
-  Vertex<DataType>& contents;
-  WeightType& weigth;
+  Vertex<DataType>* connection;
+  WeightType weigth;
 
  public:
-  Link(const Vertex<DataType>& contents,
+  Link(const Vertex<DataType>* connection,
   WeightType& weigth)
-  :contents(contents),
+  :connection(connection),
   weigth(weigth) {
   }
 
@@ -29,9 +29,10 @@ class Link {
     return this->weigth;
   }
 
-  inline const Vertex<DataType>& getVertex() const {
-    return this->contents;
+  inline const Vertex<DataType>* getConnection() const {
+    return this->connection;
   }
+  
 };
 
 }  // namespace grph

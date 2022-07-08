@@ -34,17 +34,21 @@ template<typename DataType, typename WeightType, bool matrix = true>
  * 
  */
 class Graph {
+  typedef std::vector<std::vector<WeightType*>> matrixType;
+  typedef std::vector<std::list<Link<DataType, WeightType>>> listType;
+  typedef std::vector<Vertex<DataType>*> vertexesType;
+
  private:
   // VertexCount that stores the amount of vertex the graph contains
   size_t vertexCount;
   // Capacity is a variable that stores the capacity the graph contains
   size_t capacity;
   // AdjacencyMatrix is a matrix that represents the adjancency of the vertex
-  std::vector<std::vector<WeightType*>> adjacencyMatrix;
+  matrixType adjacencyMatrix;
   // AdjacencyList is a list of Vertex that represents the adjancency of the vertexes
-  std::vector<std::list<Link<DataType, WeightType>> adjacencyList;
+  listType adjacencyList;
   // Vertexes is a vector with all the vertex
-  std::vector<Vertex<DataType>*> vertexes;
+  vertexesType vertexes;
   // IsDirected is a bool that identifies if the links are directed or not
   bool isDirected;
 
@@ -198,6 +202,7 @@ class Graph {
       std::swap(this->vertexCount, other.vertexCount);
       std::swap(this->capacity, other.capacity);
       std::swap(this->adjacencyMatrix, other.adjacencyMatrix);
+      std::swap(this->adjacencyList, other.adjacencyList);
       std::swap(this->vertexes, other.vertexes);
       std::swap(this->isDirected, other.isDirected);
     }
@@ -251,8 +256,13 @@ class Graph {
   const WeightType& operator()(
     const Vertex<DataType>& origin,
     const Vertex<DataType>& connection) const {
-      return *this->adjacencyMatrix[--this->whereIsVertex(origin)][
-      --this->whereIsVertex(connection)];
+      if(matrix){
+        return *this->adjacencyMatrix[--this->whereIsVertex(origin)][
+        --this->whereIsVertex(connection)];
+      } else {
+        return *this->adjacencyList[--this->whereIsVertex(origin)][
+        ];
+      }
   }
 
   /**
@@ -294,10 +304,10 @@ class Graph {
 
     // METHOD ADJACENCY LIST
     for (size_t i = 0; i < this->vertexCount; i++){
-      if (adjacencyList.begin().contents == origin){
+      if (adjacencyList.begin().connections == origin){
         for (size_t i = 0; i < adjacencyList.size()+1; i++){
           nodeList node =  std::advance(listOfStrs.begin(), i);
-          if (node.contents == connection){
+          if (node.connections == connection){
             return true
           }
         }
@@ -355,6 +365,16 @@ class Graph {
         }
     }
     return 0;
+  }
+
+  Link<DataType, WeightType> findLink(size_t originPosition
+  , const Vertex<DataType>& connection) {
+    for(std::list<Link<DataType, WeightType>>::iterator itr =
+    this->adjacencyList[originPosition].begin();
+    itr !=this->adjacencyList[originPosition].end();
+    ++itr) {
+
+    }
   }
 
  public:
