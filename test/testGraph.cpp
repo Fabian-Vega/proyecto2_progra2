@@ -3,61 +3,41 @@
 #include "../src/graph.hpp"
 
 TEST_CASE("tests"){
-
-    grph::Graph<std::string, long long> prueba1(3, false);
-    grph::Vertex<std::string> cities[2] = {
+  grph::Graph<std::string, int, true> prueba(3, false);
+    grph::Vertex<std::string> cities[3] = {
       grph::Vertex<std::string>(std::string("Boston")),
-      grph::Vertex<std::string>(std::string("New York"))
+      grph::Vertex<std::string>(std::string("New York")),
+      grph::Vertex<std::string>(std::string("Las Vegas"))
     };
-
-    long long weights[7] = {80, 3, 26};
-
-    // Should return true because we have not added any vertex or link
-    REQUIRE(prueba1.isEmpty() == true);
-
-    // Should return true because the adding of an existing vertex was succesful
-    prueba1.addVertex(cities[0]);
-    REQUIRE(prueba1.addVertex(cities[0]) == true);
-
-    // Should return false because we added a vertex to the graph
-    REQUIRE(prueba1.isEmpty() == false);
-
-    // Should return false because the vertex was already added
-    prueba1.addVertex(cities[0]);
-    REQUIRE(prueba1.addVertex(cities[0]) == false);
-
-    // Should return 2, because it is the amount of vertex we have added
-    REQUIRE(prueba1.getVertexCount() == 1);
-
-    // Should return true beacause we are creating a link between 2 existent and added vertex
-    prueba1.addVertex(cities[1]);
-    REQUIRE(prueba1.addLink(cities[0], cities[1], weights[0]) == true);
-
-    // Should return false beacause we already created a link between 2 existent and added vertex
-    REQUIRE(prueba1.addLink(cities[0], cities[1], weights[0]) == false);
-
-    // Should return 80 because the function returns the weight of the link
-    REQUIRE(prueba1.getLink(cities[0], cities[1]) == 80);
-
-    //Should return 1 because we are creating a link between two vertex
-    prueba1.addLink(cities[0], cities[1], weights[0]);
-    REQUIRE(cities[0].getLinkCount() == 1);
-
-    // Should return 2, because it is the amount of vertex we have added
-    REQUIRE(prueba1.getVertexCount() == 2);
-
-    //Should return true because we are removing an already added vertex
-    REQUIRE(prueba1.removeVertex(cities[0]) == true);
-
-    //Should return false because we are removing an already removed vertex
-    REQUIRE(prueba1.removeVertex(cities[0]) == false);
-
-    // Should return 2, because it is the amount of vertex we have added
-    REQUIRE(prueba1.getVertexCount() == 1);
-
-    // Should return 0 because are removing all the vertex that were in the graph
-    prueba1.removeVertex(cities[0]);
-    prueba1.removeVertex(cities[1]);
-    REQUIRE(prueba1.getVertexCount() == 0);
+  // Should return true because we haven't added anything yet
+  REQUIRE(prueba.isEmpty()==true);
+  // Should return true because we are adding a non added before vertex
+  REQUIRE(prueba.addVertex(cities[0]) == true);
+  // Should return false because we already added a vertex
+  REQUIRE(prueba.isEmpty()==false);
+  // Should return true because we are adding a non added before vertex
+  REQUIRE(prueba.addVertex(cities[1]) == true);
+  // Should return true because we are adding a non added before vertex
+  grph::Vertex<std::string>& boston = *prueba.getVertexes()[0];
+  grph::Vertex<std::string>& york = *prueba.getVertexes()[1];
+  REQUIRE(prueba.addVertex(boston) == false);
+  // Should return 2 because that is the amount of vertexes that are in the graph
+  REQUIRE(prueba.getVertexCount()== 2);
+  // Should return true because the non existent link was created succesfully
+  int weights[3] = {801, 367, 72345};
+  REQUIRE(prueba.addLink(boston, york, weights[0])==true);
+  // Should return false because the existent link was already created
+  REQUIRE(prueba.addLink(boston, york, weights[0])==false);
+  // Should return 2 because of the correct creation of the previous link
+  grph::Vertex<std::string>& vegas = *prueba.getVertexes()[2];
+  prueba.addVertex(vegas);
+  //prueba.addLink(boston, vegas, weights[1]);
+  REQUIRE(boston.getLinkCount() == 1);
+  // Should return 801 because of the correct creation of the previous link
+  REQUIRE(prueba.getLink(boston, york) == 801);
+  // Should return true if deleting was  succesful
+  REQUIRE(prueba.removeVertex(york)==true);
+  // Should return 1 because that is the amount of vertexes that are in the graph
+  REQUIRE(prueba.getVertexCount()== 1);
 
 }
