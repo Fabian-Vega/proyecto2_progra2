@@ -139,7 +139,10 @@ class Graph {
   Graph<DataType, WeightType>& other) {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
-      if(matrix){
+      // Delete this vertexes
+      this->deleteVertexes();
+
+      if (matrix) {
         // Delete this matrix
         this->deleteMatrix();
         if (this->capacity != other.capacity) {
@@ -151,36 +154,37 @@ class Graph {
           }
           // Resizing the adjacency Matrix
           this->adjacencyMatrix.resize(other.capacity);
-          // Delete this vertexes
-          this->deleteVertexes();
           // Resizing Vertexes
           this->vertexes.resize(other.capacity);
           // Assign the new capacity
           this->capacity = other.capacity;
-        } 
+        }
+        // Assigns the matrix
+        this->copyMatrix(other);
         
       } else {
         // Conditional in case the capacities are different
         if (this->capacity != other.capacity) {
           // Resizing the adjacency List
           this->adjacencyList.resize(other.capacity);
-          // Delete this vertexes
-          this->deleteVertexes();
           // Resizing Vertexes
           this->vertexes.resize(other.capacity);
           // Assign the new capacity
           this->capacity = other.capacity;
         }
+        // Assigns the list
+        this->adjancencyList = other.adjacencyList;
       }
-      // Assigns new adjacency matrix, vertexes, vertex count
+      
+      // Assigns vertexes and vertex count
       // and the fact that if its directed or not
-      this->copyMatrix(other);
       this->copyVertexes(other);
       this->vertexCount = other.vertexCount;
       this->isDirected = other.isDirected;
     }
     return *this;
   }
+
   /**
    * @brief Operator= overload
    * @details see @a operator= for the other param
