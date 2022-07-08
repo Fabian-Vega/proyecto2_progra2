@@ -373,8 +373,11 @@ class Graph {
     this->adjacencyList[originPosition].begin();
     itr !=this->adjacencyList[originPosition].end();
     ++itr) {
-
+        if(itr->connections() == connection) {
+          return itr->weight();
+        }
     }
+    return 0;
   }
 
  public:
