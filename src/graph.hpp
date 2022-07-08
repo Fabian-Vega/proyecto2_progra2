@@ -129,7 +129,11 @@ class Graph {
 
  public:
   void clear() {
-    this->deleteMatrix();
+    if (matrix) {
+      this->deleteMatrix();
+    } else {
+      this->adjacencyList.clear();
+    }
     this->deleteVertexes();
   }
 
@@ -375,14 +379,14 @@ class Graph {
   }
 
   /**
-   * @brief Returns the weight of the Link
+   * @brief Returns the itr of the Link
    * 
    * @param originPosition position of the adjacencyList the origin of the link is
    * @param connection a reference to the vertex the link is attached to
    * @return Link<DataType, WeightType> itr->weight()
    */
   typename std::list<Link<DataType, WeightType>>::iterator whereIsLink(
-    size_t originPosition, const Vertex<DataType>& connection) {
+    const size_t originPosition, Vertex<DataType>& connection) {
     typename std::list<Link<DataType, WeightType>>::iterator itr =
     this->adjacencyList[originPosition].begin();
     for (; itr != this->adjacencyList[originPosition].end();
@@ -419,8 +423,9 @@ class Graph {
       std::swap(this->adjacencyList[this->vertexCount], links);
     }
     // Adds the vertex to the vertex list
-    this->vertexes[this->vertexCount++] =
+    this->vertexes[this->vertexCount] =
     new Vertex<DataType>(vertex);
+    this->vertexes[this->vertexCount++]->getLinkCount() = 0;
     return true;
   }
 
@@ -476,7 +481,7 @@ class Graph {
         "Graph: Could not find vertex(es) to add the link");
     }
     // Condition if the vertex are already connected, then returns false
-    if (this->adjacencyMatrix[originPosition][destinPosition]) {
+    if (this->isAdjacent(origin, connection)) {
       return false;
     }
     // Adds link
@@ -725,9 +730,9 @@ class Graph {
     for (size_t current = 0; current < this->vertexCount; ++current) {
       // Conditions if the current vertex is the same as the param vertex
       if (current != vertexPosition) {
-        if (this->adjacencyMatrix[current][vertexPosition]) {
-          delete this->adjacencyMatrix[current][vertexPosition];
-          this->adjacencyMatrix[current][vertexPosition] = nullptr;
+        if (this->isAdjacent(*this->vertexes[current],
+        *this->vertexes[vertexPosition])) {
+          this->updateAdjacency('l', current, vertexPosition);
           --this->vertexes[current]->getLinkCount();
         }
       }
@@ -771,18 +776,6 @@ class Graph {
     }
   }
 
-  void removeLinkMatrix(const size_t originPosition,
-  const size_t destinPosition) {
-    delete this->adjacencyMatrix[originPosition][destinPosition];
-    this->adjacencyMatrix[originPosition][destinPosition] = nullptr;
-  }
-
-  void removeLinkList(const size_t originPosition,
-  const size_t destinPosition) {
-    this->adjacencyMatrix[originPosition].erase(
-        adjacencyMatrix[originPosition].begin()+destinPosition);
-  }
-
   void removeVertexMatrix(size_t position) {
     // Cycle that goes from 0 until the capacity is reached
     for (size_t row = 0; row < this->capacity; row++) {
@@ -819,6 +812,19 @@ class Graph {
     this->adjacencyList.begin()+position);
     typename std::list<Link<DataType, WeightType>> list;
     this->adjacencyList.push_back(list);
+  }
+
+  void removeLinkMatrix(const size_t originPosition,
+  const size_t destinPosition) {
+    delete this->adjacencyMatrix[originPosition][destinPosition];
+    this->adjacencyMatrix[originPosition][destinPosition] = nullptr;
+  }
+
+  void removeLinkList(const size_t originPosition,
+  const size_t destinPosition) {
+    this->adjacencyList[originPosition].erase(
+    this->whereIsLink(originPosition,
+    *this->vertexes[destinPosition]));
   }
 
   void increaseMatrix(const size_t newCapacity) {
