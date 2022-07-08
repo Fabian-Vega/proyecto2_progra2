@@ -154,7 +154,7 @@ const size_t optionMin, const size_t optionMax) {
 
     // Checks if the answear is between the established range
     for (size_t option = optionMin; option <= optionMax; ++option) {
-      //Conditional in case the input option is the same as the option
+      // Conditional in case the input option is the same as the option
       if (inputOption == option) {
         // Option verification
         validOption = true;
@@ -315,7 +315,7 @@ void updateFriendship(grph::Graph<std::string, std::string>& graph) {
     << std::endl;
   }
 }
-//End of procedure
+// End of procedure
 
 // Procedure deleteFriendship()
 void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
