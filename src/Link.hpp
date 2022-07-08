@@ -20,27 +20,42 @@ class Link {
 
  public:
   /**
-  * @brief Construct a new Link object
-  * 
-  * @param weigth 
-  */
+   * @brief Default constructor
+   * 
+   * @param weigth 
+   */
   Link(WeightType& weigth = WeightType())
   :connection(nullptr),
   weigth(weigth) {
   }
-  
+  /**
+   * @brief Default Constructor
+   * 
+   * @param connection 
+   * @param weigth 
+   */
   Link(const Vertex<DataType>* connection,
   WeightType& weigth)
   :connection(connection),
   weigth(weigth) {
   }
 
+  /**
+   * @brief Copy Constructor
+   * 
+   * @param other 
+   */
   Link(const Link<DataType, WeightType>& other)
   :connection(other.connection),
   weigth(other.weigth) {
   }
-
-  Link(const Link<DataType, WeightType>&& other)
+  
+  /**
+   * @brief Move Constructor
+   * 
+   * @param other 
+   */
+  Link(Link<DataType, WeightType>&& other)
   :connection(std::move(other.connection)),
   weigth(std::move(other.weigth)) {
     other.connection = nullptr;
