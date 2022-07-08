@@ -35,7 +35,7 @@ template<typename DataType, typename WeightType, bool matrix = true>
  */
 class Graph {
   typedef std::vector<std::vector<WeightType*>> matrixType;
-  typedef std::vector<std::list<Link<DataType, WeightType>>> listType;
+  typedef std::vector<std::list<Link<DataType, WeightType>>*> listType;
   typedef std::vector<Vertex<DataType>*> vertexesType;
 
  private:
@@ -72,7 +72,7 @@ class Graph {
       this->adjacencyMatrix.resize(
       capacity, std::vector<WeightType*>(capacity, nullptr));
     } else {
-      this->adjacencyList.resize(capacity);
+      this->adjacencyList.resize(capacity, nullptr);
     }
   }
   /**
@@ -92,8 +92,8 @@ class Graph {
       other.capacity, std::vector<WeightType*>(other.capacity, nullptr));
       this->copyMatrix(other);
     } else {
-      this->adjacencyList.resize(other.capacity);
-      this->adjacencyList = other.adjacencyList;
+      this->adjacencyList.resize(other.capacity, nullptr);
+      this->copyList(other);
     }
     this->copyVertexes(other);
   }
@@ -109,11 +109,11 @@ class Graph {
   adjacencyList(std::move(other.adjacencyList)),
   vertexes(std::move(other.vertexes)),
   isDirected(std::move(other.isDirected)) {
+    other.vertexCount = 0;
+    other.capacity = 0;
     other.adjacencyMatrix.clear();
     other.adjacencyList.clear();
     other.vertexes.clear();
-    other.vertexCount = 0;
-    other.capacity = 0;
     other.isDirected = false;
   }
   /**
@@ -132,7 +132,7 @@ class Graph {
     if (matrix) {
       this->deleteMatrix();
     } else {
-      this->adjacencyList.clear();
+      this->deleteList();
     }
     this->deleteVertexes();
   }
@@ -172,6 +172,8 @@ class Graph {
         this->copyMatrix(other);
 
       } else {
+        // delete List
+        this->deleteList();
         // Conditional in case the capacities are different
         if (this->capacity != other.capacity) {
           // Resizing the adjacency List
@@ -182,7 +184,7 @@ class Graph {
           this->capacity = other.capacity;
         }
         // Assigns the list
-        this->adjancencyList = other.adjacencyList;
+        this->copyList(other);
       }
 
       // Assigns vertexes and vertex count
@@ -253,6 +255,41 @@ class Graph {
   }
 
   /**
+   * @brief Get the memory size of the graph
+   * 
+   * @return const size_t
+   */
+  size_t getSize() const {
+    // Get the sizeof of the attributes + padding
+    size_t size = sizeof(*this);
+
+    // Add the memory from the elements of vertexes
+    // and the allocated memory
+    size += 8*this->vertexes.size();
+    size += this->vertexCount*sizeof(Vertex<DataType>);
+
+    // Add the memory from the matrix, if any
+    size += (sizeof(std::vector<Vertex<DataType>*>) +
+    8*this->capacity)*this->adjacencyMatrix.size();
+
+    // Add the memory from the list, if any
+    size += 8*this->adjacencyList.size();
+
+    // Add the dinamically allocated memory
+    if (matrix) {
+      size += this->vertexCount*sizeof(WeightType);
+    } else {
+      for (size_t list = 0; list < this->vertexCount; ++list) {
+        size += sizeof(*this->adjacencyList[list]) +
+        sizeof(Link<DataType, WeightType>)*
+        (*this->adjacencyList[list]).size();
+      }
+    }
+
+    return size;
+  }
+
+  /**
    * @brief operator() overload with constants
    * @param origin Vertex type of object that is the parting point of a link
    * @param connection Vertex type of object that is the destiny of the link
@@ -315,7 +352,7 @@ class Graph {
       return this->adjacencyMatrix[originPosition][destinPosition] != nullptr;
     } else {
       return whereIsLink(originPosition, connection) !=
-      this->adjacencyList[originPosition].end();
+      (*this->adjacencyList[originPosition]).end();
     }
   }
 
@@ -351,8 +388,8 @@ class Graph {
       }
     } else {
       for (typename std::list<Link<DataType, WeightType>>::iterator itr =
-      this->adjacencyList[originPosition].begin();
-      itr != this->adjacencyList[originPosition].end(); ++itr) {
+      (*this->adjacencyList[originPosition]).begin();
+      itr != (*this->adjacencyList[originPosition]).end(); ++itr) {
         neighbors[neighborsFound++] = (*itr).getConnection();
       }
     }
@@ -388,8 +425,8 @@ class Graph {
   typename std::list<Link<DataType, WeightType>>::iterator whereIsLink(
     const size_t originPosition, Vertex<DataType>& connection) {
     typename std::list<Link<DataType, WeightType>>::iterator itr =
-    this->adjacencyList[originPosition].begin();
-    for (; itr != this->adjacencyList[originPosition].end();
+    (*this->adjacencyList[originPosition]).begin();
+    for (; itr != (*this->adjacencyList[originPosition]).end();
     ++itr) {
       if ((*itr).getConnection() == &connection) {
         return itr;
@@ -419,8 +456,9 @@ class Graph {
     }
 
     if (!matrix) {
-      std::list<Link<DataType, WeightType>> links;
-      std::swap(this->adjacencyList[this->vertexCount], links);
+      std::list<Link<DataType, WeightType>>* newLinks =
+      new std::list<Link<DataType, WeightType>>;
+      this->adjacencyList[this->vertexCount] = newLinks;
     }
     // Adds the vertex to the vertex list
     this->vertexes[this->vertexCount] =
@@ -491,8 +529,8 @@ class Graph {
       *this->adjacencyMatrix[originPosition][destinPosition] =
       weight;
     } else {
-      this->adjacencyList[originPosition].push_back(
-        Link<DataType, WeightType>(&connection, weight));
+      (*this->adjacencyList[originPosition]).push_back(
+      Link<DataType, WeightType>(&connection, weight));
     }
     // Increases the link count
     ++origin.getLinkCount();
@@ -505,8 +543,8 @@ class Graph {
         *this->adjacencyMatrix[destinPosition][originPosition] =
         weight;
       } else {
-        this->adjacencyList[destinPosition].push_back(
-          Link<DataType, WeightType>(&origin, weight));
+        (*this->adjacencyList[destinPosition]).push_back(
+        Link<DataType, WeightType>(&origin, weight));
       }
       // Increases the link count
       ++connection.getLinkCount();
@@ -615,7 +653,7 @@ class Graph {
   }
 
  private:
-  void copyMatrix(const Graph<DataType, WeightType>& other) {
+  void copyMatrix(const Graph<DataType, WeightType, matrix>& other) {
     for (size_t row = 0; row < other.vertexCount;
     ++row) {
       for (size_t column = 0; column < other.vertexCount;
@@ -628,11 +666,21 @@ class Graph {
       }
     }
   }
+
+  void copyList(const Graph<DataType, WeightType, matrix>& other) {
+    for (size_t list = 0; list < other.vertexCount;
+    ++list) {
+      this->adjacencyList[list] =
+      new std::list<Link<DataType, WeightType>>(
+      *other.adjacencyList[list]);
+    }
+  }
+
   void copyVertexes(const Graph<DataType, WeightType, matrix>& other) {
-    for (size_t row = 0; row < other.vertexCount;
-    ++row) {
-      this->vertexes[row] =
-      new Vertex<DataType>(*other.vertexes[row]);
+    for (size_t vertex = 0; vertex < other.vertexCount;
+    ++vertex) {
+      this->vertexes[vertex] =
+      new Vertex<DataType>(*other.vertexes[vertex]);
     }
   }
 
@@ -648,11 +696,19 @@ class Graph {
     }
   }
 
+  void deleteList() {
+    for (size_t list = 0; list < this->vertexCount;
+      ++list) {
+        delete this->adjacencyList[list];
+        this->adjacencyList[list] = nullptr;
+    }
+  }
+
   void deleteVertexes() {
-    for (size_t current = 0; current < this->vertexCount;
-      ++current) {
-        delete this->vertexes[current];
-        this->vertexes[current] = nullptr;
+    for (size_t vertex = 0; vertex < this->vertexCount;
+      ++vertex) {
+        delete this->vertexes[vertex];
+        this->vertexes[vertex] = nullptr;
     }
   }
 
@@ -807,11 +863,11 @@ class Graph {
   }
 
   void removeVertexList(size_t position) {
+    delete this->adjacencyList[position];
     // Erase the position row and adjust the adjacency list
     this->adjacencyList.erase(
     this->adjacencyList.begin()+position);
-    typename std::list<Link<DataType, WeightType>> list;
-    this->adjacencyList.push_back(list);
+    this->adjacencyList.push_back(nullptr);
   }
 
   void removeLinkMatrix(const size_t originPosition,
@@ -822,7 +878,7 @@ class Graph {
 
   void removeLinkList(const size_t originPosition,
   const size_t destinPosition) {
-    this->adjacencyList[originPosition].erase(
+    (*this->adjacencyList[originPosition]).erase(
     this->whereIsLink(originPosition,
     *this->vertexes[destinPosition]));
   }
@@ -840,7 +896,7 @@ class Graph {
 
   inline void increaseList(const size_t newCapacity){
     // Resizes the adjacency list
-    adjacencyList.resize(newCapacity);
+    adjacencyList.resize(newCapacity, nullptr);
   }
 };
 

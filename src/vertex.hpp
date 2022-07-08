@@ -27,10 +27,10 @@ template<typename DataType>
  */
 class Vertex {
  private:
-  // data is a DataType stored on the vertex
-  DataType             data;
   // linkCount size_t with the number of link that the vertex has
   size_t               linkCount;
+  // data is a DataType stored on the vertex
+  DataType             data;
 
  public:
   /**
@@ -39,8 +39,8 @@ class Vertex {
    * @param data data inside the vertex
    */
   explicit Vertex(const DataType& data = DataType())
-  :data(data),
-  linkCount(0) {
+  :linkCount(0),
+  data(data) {
   }
 
  public:
@@ -50,8 +50,8 @@ class Vertex {
    * @param other vertex to the vertex to copy
    */
   Vertex(const Vertex<DataType>& other)
-  :data(other.data),
-  linkCount(other.linkCount) {
+  :linkCount(other.linkCount),
+  data(other.data) {
   }
 
   /**
@@ -60,8 +60,8 @@ class Vertex {
    * @param other vertex to the vertex to copy
    */
   Vertex(Vertex<DataType>& other)
-  :data(std::move(other.data)),
-  linkCount(std::move(linkCount)) {
+  :linkCount(std::move(linkCount)),
+  data(std::move(other.data)) {
   }
 
   Vertex<DataType>& operator=(const
@@ -69,8 +69,8 @@ class Vertex {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
       // Assigns the corresponding data
-      this->data = other.data;
       this->linkCount = other.linkCount;
+      this->data = other.data;
     }
     return *this;
   }
@@ -80,21 +80,13 @@ class Vertex {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
       // Swaps the corresponding datas
-      std::swap(this->data, other.data);
       std::swap(this->linkCount, other.linkCount);
+      std::swap(this->data, other.data);
     }
     return *this;
   }
 
  public:
-  /**
-   * @brief Get the const data from the vertex
-   * 
-   * @return const DataType&
-   */
-  inline const DataType& getData() const {
-    return this->data;
-  }
   /**
    * @brief Get the linkCount from the vertex
    * 
@@ -111,6 +103,14 @@ class Vertex {
    */
   inline const size_t& getLinkCount() const {
     return this->linkCount;
+  }
+  /**
+   * @brief Get the const data from the vertex
+   * 
+   * @return const DataType&
+   */
+  inline const DataType& getData() const {
+    return this->data;
   }
 };
 

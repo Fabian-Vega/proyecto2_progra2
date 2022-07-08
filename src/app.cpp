@@ -94,7 +94,8 @@ int main(void) {
 
       switch (inputOption) {
       case 0:
-          std::cout << "Thanks for using LinkedUp." << std::endl;
+          std::cout << "Thanks for using LinkedUp, Please come back soon."
+          << std::endl;
       break;
 
       case 1:
@@ -132,6 +133,13 @@ int main(void) {
         // Exception
         std::cout << "\nDo you wish to do anything else?" << std::endl;
       } else {
+        size_t bytes = graph.getSize();
+        std::cout << "In this execution the graph on your program used: "
+        << bytes << " bytes." << std::endl;
+
+        if (bytes <= 220) {std::cout << "That is not too much" << std::endl;
+        } else if (bytes <= 660) {std::cout << "That is ok" << std::endl;
+        } else {std::cout << "That is a lot" << std::endl;}
         graph.clear();
       }
     }
