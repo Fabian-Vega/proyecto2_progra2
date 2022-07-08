@@ -20,22 +20,13 @@ class Link {
 
  public:
   /**
-   * @brief Default constructor
-   * 
-   * @param weigth 
-   */
-  Link(WeightType& weigth = WeightType())
-  :connection(nullptr),
-  weigth(weigth) {
-  }
-  /**
    * @brief Default Constructor
    * 
    * @param connection 
    * @param weigth 
    */
-  Link(const Vertex<DataType>* connection,
-  WeightType& weigth)
+  Link(Vertex<DataType>* connection = nullptr,
+  WeightType& weigth = WeightType())
   :connection(connection),
   weigth(weigth) {
   }
@@ -65,7 +56,15 @@ class Link {
     return this->weigth;
   }
 
+  inline WeightType& getWeigth() {
+    return this->weigth;
+  }
+
   inline const Vertex<DataType>* getConnection() const {
+    return this->connection;
+  }
+
+  inline Vertex<DataType>* getConnection() {
     return this->connection;
   }
 
