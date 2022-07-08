@@ -58,6 +58,7 @@ class Link {
   weigth(std::move(other.weigth)) {
     other.connection = nullptr;
   }
+
   // Weight getter
   inline const WeightType& getWeigth() const {
     return this->weigth;

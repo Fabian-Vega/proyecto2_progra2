@@ -35,7 +35,7 @@ template<typename DataType, typename WeightType, bool matrix = true>
  */
 class Graph {
   typedef std::vector<std::vector<WeightType*>> matrixType;
-  typedef std::vector<std::list<Link<DataType, WeightType>>*> listType;
+  typedef std::list<Link<DataType, WeightType>> listType;
   typedef std::vector<Vertex<DataType>*> vertexesType;
 
  private:
@@ -47,7 +47,7 @@ class Graph {
   matrixType adjacencyMatrix;
   // AdjacencyList is a list of Vertex
   // that represents the adjancency of the vertexes
-  listType adjacencyList;
+  std::vector<listType*> adjacencyList;
   // Vertexes is a vector with all the vertex
   vertexesType vertexes;
   // IsDirected is a bool that identifies if the links are directed or not
@@ -387,7 +387,7 @@ class Graph {
         ++vertex;
       }
     } else {
-      for (typename std::list<Link<DataType, WeightType>>::iterator itr =
+      for (typename listType::iterator itr =
       (*this->adjacencyList[originPosition]).begin();
       itr != (*this->adjacencyList[originPosition]).end(); ++itr) {
         neighbors[neighborsFound++] = (*itr).getConnection();
@@ -422,9 +422,9 @@ class Graph {
    * @param connection a reference to the vertex the link is attached to
    * @return Link<DataType, WeightType> itr->weight()
    */
-  typename std::list<Link<DataType, WeightType>>::iterator whereIsLink(
+  typename listType::iterator whereIsLink(
     const size_t originPosition, Vertex<DataType>& connection) {
-    typename std::list<Link<DataType, WeightType>>::iterator itr =
+    typename listType::iterator itr =
     (*this->adjacencyList[originPosition]).begin();
     for (; itr != (*this->adjacencyList[originPosition]).end();
     ++itr) {
@@ -456,8 +456,7 @@ class Graph {
     }
 
     if (!matrix) {
-      std::list<Link<DataType, WeightType>>* newLinks =
-      new std::list<Link<DataType, WeightType>>;
+      listType* newLinks = new listType;
       this->adjacencyList[this->vertexCount] = newLinks;
     }
     // Adds the vertex to the vertex list
@@ -671,8 +670,7 @@ class Graph {
     for (size_t list = 0; list < other.vertexCount;
     ++list) {
       this->adjacencyList[list] =
-      new std::list<Link<DataType, WeightType>>(
-      *other.adjacencyList[list]);
+      new listType(*other.adjacencyList[list]);
     }
   }
 

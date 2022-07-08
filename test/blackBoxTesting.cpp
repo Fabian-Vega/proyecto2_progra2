@@ -7,7 +7,7 @@
 
 int main(void) {
   try {
-    grph::Graph<std::string, int, true> graph(3, false);
+    grph::Graph<std::string, int, false> graph(3, false);
     grph::Vertex<std::string> cities[7] = {
       grph::Vertex<std::string>(std::string("Boston")),
       grph::Vertex<std::string>(std::string("New York")),
@@ -56,7 +56,7 @@ int main(void) {
     }
     delete [] bostonNeighbors;
 
-    grph::Graph<std::string, int, true> graph2(graph);
+    grph::Graph<std::string, int, false> graph2(graph);
 
     grph::Vertex<std::string>& boston2 = *graph2.getVertexes()[0];
     grph::Vertex<std::string>& york2 = *graph2.getVertexes()[1];
