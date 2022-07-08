@@ -80,7 +80,7 @@ class Graph {
    * 
    * @param other 
    */
-  Graph(const Graph<DataType, WeightType>& other)
+  Graph(const Graph<DataType, WeightType, matrix>& other)
   :vertexCount(other.vertexCount),
   capacity(other.capacity),
   adjacencyMatrix(0),
@@ -102,7 +102,7 @@ class Graph {
    * 
    * @param other 
    */
-  Graph(Graph<DataType, WeightType>&& other)
+  Graph(Graph<DataType, WeightType, matrix>&& other)
   :vertexCount(std::move(other.vertexCount)),
   capacity(std::move(other.capacity)),
   adjacencyMatrix(std::move(other.adjacencyMatrix)),
@@ -140,8 +140,8 @@ class Graph {
    * 
    * @return Graph<DataType, WeightType>& 
    */
-  Graph<DataType, WeightType>& operator=(const
-  Graph<DataType, WeightType>& other) {
+  Graph<DataType, WeightType, matrix>& operator=(const
+  Graph<DataType, WeightType, matrix>& other) {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
       // Delete this vertexes
@@ -196,7 +196,8 @@ class Graph {
    * 
    * @return Graph<DataType, WeightType>& 
    */
-  Graph<DataType, WeightType>& operator=(Graph<DataType, WeightType>&& other) {
+  Graph<DataType, WeightType, matrix>& operator=(
+    Graph<DataType, WeightType, matrix>&& other) {
     if (this != &other) {
       // Swaps the vertex count, capacity, adjacency matrix, vertexes
       // and if it is directed or not from this to other
@@ -622,7 +623,7 @@ class Graph {
       }
     }
   }
-  void copyVertexes(const Graph<DataType, WeightType>& other) {
+  void copyVertexes(const Graph<DataType, WeightType, matrix>& other) {
     for (size_t row = 0; row < other.vertexCount;
     ++row) {
       this->vertexes[row] =

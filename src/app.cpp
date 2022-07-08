@@ -5,6 +5,8 @@
 
 #include "graph.hpp"
 
+typedef grph::Graph<std::string, std::string, false> graphType;
+
 /**
  * @brief Prints header and options to choose
  * @tparam const char* header message to be printed
@@ -21,49 +23,49 @@ const size_t optionMin, const size_t optionMax);
  * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
  * profile will be made. 
  */
-void addProfile(grph::Graph<std::string, std::string>& graph);
+void addProfile(graphType& graph);
 
 /**
  * @brief Deletes a Profile from a graph.
  * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
  * profile will be deleted from.
  */
-void deleteProfile(grph::Graph<std::string, std::string>& graph);
+void deleteProfile(graphType& graph);
 
 /**
  * @brief Adds a friendship link between two profiles.
  * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
  * Friendship will be made.
  */
-void addFriendship(grph::Graph<std::string, std::string>& graph);
+void addFriendship(graphType& graph);
 
 /**
  * @brief Will delete or chage the destination of a friendship link.
  * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
  * Friendship will be updated from.
  */
-void updateFriendship(grph::Graph<std::string, std::string>& graph);
+void updateFriendship(graphType& graph);
 
 /**
  * @brief Will delete a friendship link between two profiles.
  * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
  * Friendship will be deleted from.
  */
-void deleteFriendship(grph::Graph<std::string, std::string>& graph);
+void deleteFriendship(graphType& graph);
 
 /**
  * @brief Will chage the destination of a friendship link.
  * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
  * Friendship will be updated from.
  */
-void modifyFriendship(grph::Graph<std::string, std::string>& graph);
+void modifyFriendship(graphType& graph);
 
 /**
  * @brief Prints the data from a profile
  * @tparam grph::Graph<std::string, std::string>& reference to the graph, in which the 
  * Friendship will be printed from.
  */
-void printProfile(grph::Graph<std::string, std::string>& graph);
+void printProfile(graphType& graph);
 
 
 int main(void) {
@@ -83,7 +85,7 @@ int main(void) {
     "[3]Add Friendship\n[4]Update Friendship\n"
     "[5]See Profile\n[0]Quit\n";
     // Creates the graph
-    grph::Graph<std::string, std::string> graph(3, false);
+    graphType graph(3, false);
 
     // Cicle while the user hasnt quitted the program
     while (inputOption) {
@@ -172,7 +174,7 @@ const size_t optionMin, const size_t optionMax) {
 
 // Procedure showProfiles()
 void showProfiles(const char* initialMessage,
-const grph::Graph<std::string, std::string>& graph) {
+const graphType& graph) {
   // Prints the profile
   std::cout << initialMessage << '\n';
   // Cicle to print each profile
@@ -184,7 +186,7 @@ const grph::Graph<std::string, std::string>& graph) {
 // End of procedure
 
 // Procedure addProfile()
-void addProfile(grph::Graph<std::string, std::string>& graph) {
+void addProfile(graphType& graph) {
   std::cout << "What is the name of the person to be added?" << std::endl;
   std::string input = "\0";
 
@@ -204,7 +206,7 @@ void addProfile(grph::Graph<std::string, std::string>& graph) {
 // End of procedure
 
 // Procedure deleteProfile()
-void deleteProfile(grph::Graph<std::string, std::string>& graph) {
+void deleteProfile(graphType& graph) {
   // If the graph has at least one vertex
   if (graph.getVertexCount() > 0) {
     // Prints all the available profiles
@@ -236,7 +238,7 @@ void deleteProfile(grph::Graph<std::string, std::string>& graph) {
 // Ends of procedure
 
 // Procedure addFriendship()
-void addFriendship(grph::Graph<std::string, std::string>& graph) {
+void addFriendship(graphType& graph) {
   if (graph.getVertexCount() > 0) {
     showProfiles("What profiles do you want to link?", graph);
 
@@ -292,7 +294,7 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
 // End procedure
 
 // Procedure updateFriendship()
-void updateFriendship(grph::Graph<std::string, std::string>& graph) {
+void updateFriendship(graphType& graph) {
   // Checks if the graph has 1 or more profiles to update
   if (graph.getVertexCount() > 0) {
     // Prints both the option to update or delete
@@ -318,7 +320,7 @@ void updateFriendship(grph::Graph<std::string, std::string>& graph) {
 // End of procedure
 
 // Procedure deleteFriendship()
-void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
+void deleteFriendship(graphType& graph) {
   // Prints the available profiles to delete
   showProfiles(
     "What friendship between two profiles do you want to delete?", graph);
@@ -343,7 +345,7 @@ void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
 // End of procedure
 
 // Procedure modifyFriendship()
-void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
+void modifyFriendship(graphType& graph) {
   // Prints the available profiles to delete
   showProfiles(
     "What friendship between two profiles do you want to modify", graph);
@@ -382,7 +384,7 @@ void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
 // End of procedure
 
 // Procedure printProfile()
-void printProfile(grph::Graph<std::string, std::string>& graph) {
+void printProfile(graphType& graph) {
   if (graph.getVertexCount() > 0) {
     showProfiles("What profile do you want to see?", graph);
     // Prints the available profiles to print
