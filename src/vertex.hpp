@@ -3,6 +3,7 @@
 #define VERTEX_HPP
 
 #include <cstddef>
+#include <utility>
 #include <vector>
 
 /*!
@@ -42,7 +43,7 @@ class Vertex {
   linkCount(0) {
   }
 
-  public:
+ public:
   /**
    * @brief Construct a new Vertex object
    * 
@@ -67,16 +68,18 @@ class Vertex {
   Vertex<DataType>& other) {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
+      // Assigns the corresponding data
       this->data = other.data;
       this->linkCount = other.linkCount;
     }
     return *this;
   }
-
+  // Operator= Overload
   Vertex<DataType>& operator=(
   Vertex<DataType>&& other) {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
+      // Swaps the corresponding datas
       std::swap(this->data, other.data);
       std::swap(this->linkCount, other.linkCount);
     }

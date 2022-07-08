@@ -121,17 +121,20 @@ int main(void) {
       break;
 
       default:
-        std::cout << "Am unexpected error has ocurred\n" << std::endl;
+        // Exception
+        std::cout << "An unexpected error has ocurred\n" << std::endl;
       break;
       }
 
       if (inputOption) {
+        // Exception
         std::cout << "\nDo you wish to do anything else?" << std::endl;
       } else {
         graph.clear();
       }
     }
   } catch (const std::runtime_error& error) {
+    // Exception
     std::cerr << "main error: " << error.what() << std::endl;
   }
 
@@ -151,18 +154,23 @@ const size_t optionMin, const size_t optionMax) {
 
     // Checks if the answear is between the established range
     for (size_t option = optionMin; option <= optionMax; ++option) {
+      //Conditional in case the input option is the same as the option
       if (inputOption == option) {
+        // Option verification
         validOption = true;
         break;
       }
     }
+    // Conditional in case the option is invalid
     if (!validOption) {
+      // Exception
       std::cout << "Invalid number, please try again\n" << std::endl;
     }
   }
   return inputOption;
 }
 
+// Procedure showProfiles()
 void showProfiles(const char* initialMessage,
 const grph::Graph<std::string, std::string>& graph) {
   // Prints the profile
@@ -173,7 +181,9 @@ const grph::Graph<std::string, std::string>& graph) {
     << graph.getVertexes()[profile]->getData() << std::endl;
   }
 }
+// End of procedure
 
+// Procedure addProfile()
 void addProfile(grph::Graph<std::string, std::string>& graph) {
   std::cout << "What is the name of the person to be added?" << std::endl;
   std::string input = "\0";
@@ -187,10 +197,13 @@ void addProfile(grph::Graph<std::string, std::string>& graph) {
   bool success = graph.addVertex(profile);
   // If the profile was able to be added
   if (success) {
+    // Exception
     std::cout << "The profile was able to be added succesfully." << std::endl;
   }
 }
+// End of procedure
 
+// Procedure deleteProfile()
 void deleteProfile(grph::Graph<std::string, std::string>& graph) {
   // If the graph has at least one vertex
   if (graph.getVertexCount() > 0) {
@@ -206,18 +219,23 @@ void deleteProfile(grph::Graph<std::string, std::string>& graph) {
     // Removes the vertex from graph
     bool success = graph.removeVertex(profile);
     if (success) {
+      // Exception
       std::cout <<
       "The profile was able to be deleted succesfully." << std::endl;
     } else {
+      // Exception
       std::cout <<
       "The profile doesnt exist????....i guess" << std::endl;
     }
   } else {
+    // Exception
     std::cout
     << "Currently, there are no profiles to delete on LinkedUp" << std::endl;
   }
 }
+// Ends of procedure
 
+// Procedure addFriendship()
 void addFriendship(grph::Graph<std::string, std::string>& graph) {
   if (graph.getVertexCount() > 0) {
     showProfiles("What profiles do you want to link?", graph);
@@ -237,6 +255,7 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
 
       // If the two inputs refer to the same profile
       if (first == second) {
+        // Exception
         std::cout
         << "You have chosen the same profile two times, "
         << "are you sure about this decision? (y/n)"
@@ -270,7 +289,9 @@ void addFriendship(grph::Graph<std::string, std::string>& graph) {
     << std::endl;
   }
 }
+// End procedure
 
+// Procedure updateFriendship()
 void updateFriendship(grph::Graph<std::string, std::string>& graph) {
   // Checks if the graph has 1 or more profiles to update
   if (graph.getVertexCount() > 0) {
@@ -287,13 +308,16 @@ void updateFriendship(grph::Graph<std::string, std::string>& graph) {
       modifyFriendship(graph);
     }
   } else {
+    // Exception
     std::cout
     << "Currently, "
     << "there are no enough profiles on LinkedUp to modify friendships"
     << std::endl;
   }
 }
+//End of procedure
 
+// Procedure deleteFriendship()
 void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
   // Prints the available profiles to delete
   showProfiles(
@@ -311,12 +335,14 @@ void deleteFriendship(grph::Graph<std::string, std::string>& graph) {
   // Removes the friendship link
   bool success = graph.removeLink(*graph.getVertexes()[first-1],
   *graph.getVertexes()[second-1]);
-
+  // Exception
   std::cout
   << (success? "There is not a relationship between those profiles":
   "The friendship was deleted successfully") << std::endl;
 }
+// End of procedure
 
+// Procedure modifyFriendship()
 void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
   // Prints the available profiles to delete
   showProfiles(
@@ -347,12 +373,15 @@ void modifyFriendship(grph::Graph<std::string, std::string>& graph) {
     << "The frienship was modified succesfully"
     << std::endl;
   } catch (const std::runtime_error& error) {
+    // Exception
     std::cout
     << "There was not an existing frienship between those profiles"
     << std::endl;
   }
 }
+// End of procedure
 
+// Procedure printProfile()
 void printProfile(grph::Graph<std::string, std::string>& graph) {
   if (graph.getVertexCount() > 0) {
     showProfiles("What profile do you want to see?", graph);
@@ -385,3 +414,4 @@ void printProfile(grph::Graph<std::string, std::string>& graph) {
     << "Currently, there are no profiles on LinkedUp" << std::endl;
   }
 }
+// End of procedure
