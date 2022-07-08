@@ -45,7 +45,8 @@ class Graph {
   size_t capacity;
   // AdjacencyMatrix is a matrix that represents the adjancency of the vertex
   matrixType adjacencyMatrix;
-  // AdjacencyList is a list of Vertex that represents the adjancency of the vertexes
+  // AdjacencyList is a list of Vertex
+  // that represents the adjancency of the vertexes
   listType adjacencyList;
   // Vertexes is a vector with all the vertex
   vertexesType vertexes;
@@ -67,7 +68,7 @@ class Graph {
   adjacencyList(0),
   vertexes(capacity, nullptr),
   isDirected(directed) {
-    if (matrix) { 
+    if (matrix) {
       this->adjacencyMatrix.resize(
       capacity, std::vector<WeightType*>(capacity, nullptr));
     } else {
@@ -86,7 +87,7 @@ class Graph {
   adjacencyList(0),
   vertexes(other.vertexes.size(), nullptr),
   isDirected(other.isDirected) {
-    if (matrix) { 
+    if (matrix) {
       this->adjacencyMatrix.resize(
       other.capacity, std::vector<WeightType*>(other.capacity, nullptr));
       this->copyMatrix(other);
@@ -125,7 +126,7 @@ class Graph {
     this->isDirected = false;
     this->clear();
   }
-  
+
  public:
   void clear() {
     this->deleteMatrix();
@@ -165,7 +166,7 @@ class Graph {
         }
         // Assigns the matrix
         this->copyMatrix(other);
-        
+
       } else {
         // Conditional in case the capacities are different
         if (this->capacity != other.capacity) {
@@ -179,7 +180,7 @@ class Graph {
         // Assigns the list
         this->adjancencyList = other.adjacencyList;
       }
-      
+
       // Assigns vertexes and vertex count
       // and the fact that if its directed or not
       this->copyVertexes(other);
@@ -256,11 +257,12 @@ class Graph {
   const WeightType& operator()(
     const Vertex<DataType>& origin,
     const Vertex<DataType>& connection) const {
-      if(matrix){
+      if (matrix) {
         return *this->adjacencyMatrix[this->whereIsVertex(origin)-1][
         --this->whereIsVertex(connection)];
       } else {
-        return (*whereIsLink(this->whereIsVertex(origin)-1, connection)).getWeigth();
+        return (*whereIsLink(
+        this->whereIsVertex(origin)-1, connection)).getWeigth();
       }
   }
 
@@ -274,11 +276,12 @@ class Graph {
   WeightType& operator()(
     Vertex<DataType>& origin,
     Vertex<DataType>& connection) {
-      if(matrix){
+      if (matrix) {
         return *this->adjacencyMatrix[this->whereIsVertex(origin)-1][
         this->whereIsVertex(connection)-1];
       } else {
-        return (*whereIsLink(this->whereIsVertex(origin)-1, connection)).getWeigth();
+        return (*whereIsLink(
+        this->whereIsVertex(origin)-1, connection)).getWeigth();
       }
   }
 
@@ -302,7 +305,7 @@ class Graph {
       // Return false in case the condition above is true
       return false;
     }
-    if(matrix){
+    if (matrix) {
       // Returns the value of the following propositions
       return this->adjacencyMatrix[originPosition][destinPosition] != nullptr;
     } else {
@@ -330,7 +333,7 @@ class Graph {
     // variable to know the position of origin
     size_t originPosition = this->whereIsVertex(origin) -1;
 
-    if(matrix){
+    if (matrix) {
       size_t vertex = 0;
       // Cycle that stores the neighboors from origin
       while (neighborsFound < origin.getLinkCount()
@@ -342,7 +345,7 @@ class Graph {
         ++vertex;
       }
     } else {
-      for(typename std::list<Link<DataType, WeightType>>::iterator itr =
+      for (typename std::list<Link<DataType, WeightType>>::iterator itr =
       this->adjacencyList[originPosition].begin();
       itr != this->adjacencyList[originPosition].end(); ++itr) {
         neighbors[neighborsFound++] = (*itr).getConnection();
@@ -381,9 +384,9 @@ class Graph {
     size_t originPosition, const Vertex<DataType>& connection) {
     typename std::list<Link<DataType, WeightType>>::iterator itr =
     this->adjacencyList[originPosition].begin();
-    for(;itr != this->adjacencyList[originPosition].end();
+    for (; itr != this->adjacencyList[originPosition].end();
     ++itr) {
-      if((*itr).getConnection() == &connection) {
+      if ((*itr).getConnection() == &connection) {
         return itr;
       }
     }
@@ -403,14 +406,14 @@ class Graph {
     // Condition in case the vertex is not found
     if (this->whereIsVertex(vertex) != 0) {
       return false;
-    } 
+    }
     // Condition in case the amount of vertex is bigger than
     // the capacity, if so, increase the capacity
     if (this->vertexCount >= this->capacity) {
       this->increaseCapacity();
     }
-    
-    if(!matrix){
+
+    if (!matrix) {
       std::list<Link<DataType, WeightType>> links;
       std::swap(this->adjacencyList[this->vertexCount], links);
     }
@@ -526,14 +529,14 @@ class Graph {
         "Graph: Could not find vertex(es) to remove the link");
     }
     // Condition if the vertex are not already connected, then returns true
-    if (!this->isAdjacent(origin, connection)){
+    if (!this->isAdjacent(origin, connection)) {
       return true;
     }
     // Erase the link
     this->updateAdjacency('l', originPosition, destinPosition);
     // Decreases the link count
     --origin.getLinkCount();
-    
+
     // Condition if it is not directed
     if (!this->isDirected && &origin != &connection) {
       // Erase the link
@@ -685,7 +688,7 @@ class Graph {
    * @return false 
    */
   bool couldIncreaseCapacity(size_t newCapacity) const {
-    if(matrix){
+    if (matrix) {
       // Condition if the size of the adjacency matrix is different
       // from new capacity, if so returns false
       if (this->adjacencyMatrix.size() != newCapacity) {
@@ -702,7 +705,7 @@ class Graph {
     } else {
       if (this->adjacencyList.size() != newCapacity) {
         return false;
-      } 
+      }
     }
     if (this->vertexes.size() != newCapacity) {
       return false;
@@ -737,9 +740,9 @@ class Graph {
    */
   void updateAdjacency(const char action,
   const size_t firstNumber = 0, const size_t secondNumber = 0) {
-    switch (action){
+    switch (action) {
       case 'v':
-        if(matrix) {
+        if (matrix) {
           removeVertexMatrix(firstNumber);
         } else {
           removeVertexList(firstNumber);
@@ -747,7 +750,7 @@ class Graph {
       break;
 
       case 'l':
-        if(matrix) {
+        if (matrix) {
           removeLinkMatrix(firstNumber, secondNumber);
         } else {
           removeLinkList(firstNumber, secondNumber);
@@ -755,7 +758,7 @@ class Graph {
       break;
 
       case 'i':
-        if(matrix) {
+        if (matrix) {
           increaseMatrix(firstNumber);
         } else {
           increaseList(firstNumber);
@@ -768,18 +771,18 @@ class Graph {
   }
 
   void removeLinkMatrix(const size_t originPosition,
-  const size_t destinPosition){
+  const size_t destinPosition) {
     delete this->adjacencyMatrix[originPosition][destinPosition];
     this->adjacencyMatrix[originPosition][destinPosition] = nullptr;
   }
 
   void removeLinkList(const size_t originPosition,
-  const size_t destinPosition){
+  const size_t destinPosition) {
     this->adjacencyMatrix[originPosition].erase(
         adjacencyMatrix[originPosition].begin()+destinPosition);
   }
 
-  void removeVertexMatrix(size_t position){
+  void removeVertexMatrix(size_t position) {
     // Cycle that goes from 0 until the capacity is reached
     for (size_t row = 0; row < this->capacity; row++) {
       // Condition in case the row is different from the position
@@ -809,7 +812,7 @@ class Graph {
     std::vector<WeightType*> (this->capacity, nullptr));
   }
 
-  void removeVertexList(size_t position){
+  void removeVertexList(size_t position) {
     // Erase the position row and adjust the adjacency list
     this->adjacencyList.erase(
     this->adjacencyList.begin()+position);
@@ -832,7 +835,6 @@ class Graph {
     // Resizes the adjacency list
     adjacencyList.resize(newCapacity);
   }
-
 };
 
 }  // namespace grph

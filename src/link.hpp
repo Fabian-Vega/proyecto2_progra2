@@ -74,7 +74,6 @@ class Link {
   inline Vertex<DataType>* getConnection() {
     return this->connection;
   }
-
 };
 
 }  // namespace grph
