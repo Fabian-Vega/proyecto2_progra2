@@ -24,18 +24,6 @@ class Link {
 
  public:
   /**
-<<<<<<< HEAD
-   * @brief Default constructor
-   * 
-   * @param weigth data that the Link carries, may be assumed in case is missing
-   */
-  explicit Link(WeightType& weigth = WeightType())
-  :connection(nullptr),
-  weigth(weigth) {
-  }
-  /**
-=======
->>>>>>> 91cea470bfad50ff62ab40e78f28b47ef6472821
    * @brief Default Constructor
    * 
    * @param connection is the finishing point where the link is connected to
@@ -74,12 +62,6 @@ class Link {
   inline const WeightType& getWeigth() const {
     return this->weigth;
   }
-<<<<<<< HEAD
-  // Connection getter
-  inline const Vertex<DataType>* getConnection() const {
-    return this->connection;
-  }
-=======
 
   inline WeightType& getWeigth() {
     return this->weigth;
@@ -93,7 +75,6 @@ class Link {
     return this->connection;
   }
 
->>>>>>> 91cea470bfad50ff62ab40e78f28b47ef6472821
 };
 
 }  // namespace grph
