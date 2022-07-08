@@ -2,10 +2,12 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <list>
 #include <new>
 #include <stdexcept>
 #include <utility>
 #include <vector>
+
 #include "link.hpp"
 
 const size_t INITIAL_CAPACITY = 10;
@@ -40,7 +42,7 @@ class Graph {
   // AdjacencyMatrix is a matrix that represents the adjancency of the vertex
   std::vector<std::vector<WeightType*>> adjacencyMatrix;
   // AdjacencyList is a list of Vertex that represents the adjancency of the vertexes
-  /*std::vector<std::list<Link<DataType, WeightType>>*> adjacencyList;*/
+  std::vector<std::list<Link<DataType, WeightType>> adjacencyList;
   // Vertexes is a vector with all the vertex
   std::vector<Vertex<DataType>*> vertexes;
   // IsDirected is a bool that identifies if the links are directed or not
@@ -49,7 +51,7 @@ class Graph {
 
  public:
   /**
-   * @brief Construct a new Graph object
+   * @brief Default constructor
    * 
    * @param capacity size_t type of data that represents the capacity of the graph for nodes
    * @param directed bool type of data that represents if the links of the graphs will be directed or not
@@ -57,36 +59,53 @@ class Graph {
   explicit Graph(size_t capacity = INITIAL_CAPACITY, bool directed = false)
   :vertexCount(0),
   capacity(capacity),
-  adjacencyMatrix(capacity, std::vector<WeightType*>(capacity, nullptr)),
+  adjacencyMatrix(0),
+  adjacencyList(0),
   vertexes(capacity, nullptr),
   isDirected(directed) {
+    if (matrix) { 
+      this->adjacencyMatrix.resize(
+      capacity, std::vector<WeightType*>(capacity, nullptr));
+    } else {
+      this->adjacencyList.resize(capacity);
+    }
   }
   /**
-   * @brief Construct a new Graph object
+   * @brief Copy constructor
    * 
    * @param other 
    */
   Graph(const Graph<DataType, WeightType>& other)
   :vertexCount(other.vertexCount),
   capacity(other.capacity),
-  adjacencyMatrix(other.adjacencyMatrix.size(),
-  std::vector<WeightType*>(other.adjacencyMatrix.size(), nullptr)),
+  adjacencyMatrix(0),
+  adjacencyList(0),
   vertexes(other.vertexes.size(), nullptr),
   isDirected(other.isDirected) {
-    this->copyMatrixAndVertexes(other);
+    if (matrix) { 
+      this->adjacencyMatrix.resize(
+      other.capacity, std::vector<WeightType*>(other.capacity, nullptr));
+      this->copyMatrix(other);
+    } else {
+      this->adjacencyList.resize(other.capacity);
+      this->adjacencyList = other.adjacencyList;
+    }
+    this->copyVertexes(other);
   }
   /**
-   * @brief Construct a new Graph object
+   * @brief Move constructor
    * 
    * @param other 
    */
   Graph(Graph<DataType, WeightType>&& other)
-  :vertexCount(other.vertexCount),
-  capacity(other.capacity),
+  :vertexCount(std::move(other.vertexCount)),
+  capacity(std::move(other.capacity)),
   adjacencyMatrix(std::move(other.adjacencyMatrix)),
+  adjacencyList(std::move(other.adjacencyList)),
   vertexes(std::move(other.vertexes)),
-  isDirected(other.isDirected) {
+  isDirected(std::move(other.isDirected)) {
     other.adjacencyMatrix.clear();
+    other.adjacencyList.clear();
     other.vertexes.clear();
     other.vertexCount = 0;
     other.capacity = 0;
@@ -120,27 +139,43 @@ class Graph {
   Graph<DataType, WeightType>& other) {
     // Conditions in case this is diferent from the other reference
     if (this != &other) {
-      // Delete this matrix
-      this->deleteMatrix();
-      // Delete this vertexes
-      this->deleteVertexes();
-      // Conditional in case the capacities are different
-      if (this->capacity != other.capacity) {
-        // Cycle that goes from 0 until it reaches
-        // the size of the adjacency matrix and resizes it
-        for (size_t column = 0; column < this->adjacencyMatrix.size();
-        ++column) {
-          this->adjacencyMatrix[column].resize(other.capacity);
+      if(matrix){
+        // Delete this matrix
+        this->deleteMatrix();
+        if (this->capacity != other.capacity) {
+          // Cycle that goes from 0 until it reaches
+          // the size of the adjacency matrix and resizes it
+          for (size_t column = 0; column < this->adjacencyMatrix.size();
+          ++column) {
+            this->adjacencyMatrix[column].resize(other.capacity);
+          }
+          // Resizing the adjacency Matrix
+          this->adjacencyMatrix.resize(other.capacity);
+          // Delete this vertexes
+          this->deleteVertexes();
+          // Resizing Vertexes
+          this->vertexes.resize(other.capacity);
+          // Assign the new capacity
+          this->capacity = other.capacity;
+        } 
+        
+      } else {
+        // Conditional in case the capacities are different
+        if (this->capacity != other.capacity) {
+          // Resizing the adjacency List
+          this->adjacencyList.resize(other.capacity);
+          // Delete this vertexes
+          this->deleteVertexes();
+          // Resizing Vertexes
+          this->vertexes.resize(other.capacity);
+          // Assign the new capacity
+          this->capacity = other.capacity;
         }
-        // Resizing the adjacency Matrix and the vertexes
-        this->adjacencyMatrix.resize(other.capacity);
-        this->vertexes.resize(other.capacity);
-        // Assign the new capacty
-        this->capacity = other.capacity;
       }
       // Assigns new adjacency matrix, vertexes, vertex count
       // and the fact that if its directed or not
-      this->copyMatrixAndVertexes(other);
+      this->copyMatrix(other);
+      this->copyVertexes(other);
       this->vertexCount = other.vertexCount;
       this->isDirected = other.isDirected;
     }
@@ -253,8 +288,6 @@ class Graph {
     // Returns the value of the following propositions
     return this->adjacencyMatrix[originPosition][destinPosition] != nullptr;
 
-
-    /*
     // METHOD ADJACENCY LIST
     for (size_t i = 0; i < this->vertexCount; i++){
       if (adjacencyList.begin().contents == origin){
@@ -268,7 +301,6 @@ class Graph {
       }
     }
     // METHOD ADJACENCY LIST
-    */
   }
 
   /**
@@ -404,7 +436,7 @@ class Graph {
     vertex.getLinkCount() = 0;
     return true;
 
-    /*// METHOD ADJACENCY LIST
+    // METHOD ADJACENCY LIST
     for (size_t i = 0; i < this->vertexCount; i++){
         for (size_t i = 0; i < adjacencyList.size()+1; i++){
           nodeList node =  std::advance(listOfStrs.begin(), i);
@@ -415,7 +447,7 @@ class Graph {
         return true;
       
     }
-    // METHOD ADJACENCY LIST*/
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -463,7 +495,7 @@ class Graph {
     }
     return true;
 
-    /*// METHOD ADJACENCY LIST
+    // METHOD ADJACENCY LIST
     for (size_t i = 0; i < this->vertexCount; i++){
       if (adjacencyList.begin().contents == origin){
         nodeList node<DataType, WeightType>(connection&,weight );
@@ -471,7 +503,7 @@ class Graph {
         return true;
       }
     }
-    // METHOD ADJACENCY LIST*/
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -514,7 +546,7 @@ class Graph {
     }
     return false;
 
-    /*// METHOD ADJACENCY LIST
+    // METHOD ADJACENCY LIST
     for (size_t i = 0; i < this->vertexCount; i++){
         if (adjacencyList.begin().contents == origin){
           for (size_t i = 0; i < adjacencyList.size()+1; i++){
@@ -527,7 +559,7 @@ class Graph {
         }
       
     }
-    // METHOD ADJACENCY LIST*/
+    // METHOD ADJACENCY LIST
   }
 
    /**
@@ -554,7 +586,7 @@ class Graph {
 
     return *this->adjacencyMatrix[originPosition][destinPosition];
 
-    /*// METHOD ADJACENCY LIST
+    // METHOD ADJACENCY LIST
     for (size_t i = 0; i < this->vertexCount; i++){
         if (adjacencyList.begin().contents == origin){
           for (size_t i = 0; i < adjacencyList.size()+1; i++){
@@ -567,7 +599,7 @@ class Graph {
         }
       
     }
-    // METHOD ADJACENCY LIST*/
+    // METHOD ADJACENCY LIST
   }
 
   /**
@@ -601,7 +633,7 @@ class Graph {
       *this->adjacencyMatrix[destinPosition][originPosition] = weight;
     }
 
-    /*// METHOD ADJACENCY LIST
+    // METHOD ADJACENCY LIST
     for (size_t i = 0; i < this->vertexCount; i++){
         bool found = false;
         if (adjacencyList.begin().contents == origin){
@@ -616,11 +648,11 @@ class Graph {
           }
         }
     }
-    // METHOD ADJACENCY LIST*/
+    // METHOD ADJACENCY LIST
   }
 
  private:
-  void copyMatrixAndVertexes(const Graph<DataType, WeightType>& other) {
+  void copyMatrix(const Graph<DataType, WeightType>& other) {
     for (size_t row = 0; row < other.vertexCount;
     ++row) {
       for (size_t column = 0; column < other.vertexCount;
@@ -631,6 +663,11 @@ class Graph {
           *other.adjacencyMatrix[row][column];
         }
       }
+    }
+  }
+  void copyVertexes(const Graph<DataType, WeightType>& other) {
+    for (size_t row = 0; row < other.vertexCount;
+    ++row) {
       this->vertexes[row] =
       new Vertex<DataType>(*other.vertexes[row]);
     }
@@ -689,9 +726,9 @@ class Graph {
         "Graph: No enough memory to increase capacity");
     }
 
-    /*// METHOD ADJACENCY LIST
+    // METHOD ADJACENCY LIST
     adjacencyList.resize(newCapacity, std::vector<int>(newCapacity, 0));
-    // METHOD ADJACENCY LIST*/
+    // METHOD ADJACENCY LIST
 
     // Changes the capacity
     this->capacity = newCapacity;
@@ -722,11 +759,11 @@ class Graph {
 
     return true;
 
-    /*// METHOD ADJACENCY LIST
+    // METHOD ADJACENCY LIST
     if (this->adjacencyList.size() != newCapacity) {
       return false;
     }
-    // METHOD ADJACENCY LIST*/
+    // METHOD ADJACENCY LIST
   }
 
   /**
