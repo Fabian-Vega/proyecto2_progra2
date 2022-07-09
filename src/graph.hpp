@@ -424,11 +424,14 @@ class Graph {
    */
   typename listType::iterator whereIsLink(
     const size_t originPosition, Vertex<DataType>& connection) {
+    // Creates and iterator
     typename listType::iterator itr =
     this->adjacencyList[originPosition]->begin();
+    // Cycle that goes until it the iterator reaches the end of the list
     for (typename listType::iterator end =
     this->adjacencyList[originPosition]->end();
     itr != end; ++itr) {
+      // Returns the iterator
       if ((*itr).getConnection() == &connection) {
         return itr;
       }
@@ -622,9 +625,10 @@ class Graph {
   /**
    * @brief Set the Link object
    * 
-   * @param origin 
-   * @param connection 
-   * @param weight 
+   * @details see @a operator() for the origin and connection param
+   * @details see @a addLink() for the weight param
+   * @see operator()
+   * @see addLink()
    */
   void setLink(Vertex<DataType>& origin,
   Vertex<DataType>& connection,
@@ -653,6 +657,11 @@ class Graph {
   }
 
  private:
+  /**
+   * @brief  Copies a const matrix data into another matrix
+   * 
+   * @param other a matrix in the graph object
+   */
   void copyMatrix(const Graph<DataType, WeightType, matrix>& other) {
     for (size_t row = 0; row < other.vertexCount;
     ++row) {
@@ -666,7 +675,11 @@ class Graph {
       }
     }
   }
-
+  /**
+   * @brief Copies a const list data into another list
+   * 
+   * @param other a list in the graph object
+   */
   void copyList(const Graph<DataType, WeightType, matrix>& other) {
     for (size_t list = 0; list < other.vertexCount;
     ++list) {
@@ -675,6 +688,11 @@ class Graph {
     }
   }
 
+  /**
+   * @brief Copies a const vertexes data into another vertexes
+   * 
+   * @param other a vertex in the graph object
+   */
   void copyVertexes(const Graph<DataType, WeightType, matrix>& other) {
     for (size_t vertex = 0; vertex < other.vertexCount;
     ++vertex) {
@@ -684,6 +702,10 @@ class Graph {
   }
 
  private:
+  /**
+   * @brief Deletes the matrix and releases the heap memory used
+   * 
+   */
   void deleteMatrix() {
     for (size_t row = 0; row < this->vertexCount;
     ++row) {
@@ -694,7 +716,10 @@ class Graph {
       }
     }
   }
-
+  /**
+   * @brief Deletes the list and releases the heap memory used
+   * 
+   */
   void deleteList() {
     for (size_t list = 0; list < this->vertexCount;
       ++list) {
@@ -702,7 +727,10 @@ class Graph {
         this->adjacencyList[list] = nullptr;
     }
   }
-
+  /**
+   * @brief Deletes the vertexes and releases the heap memory used
+   * 
+   */
   void deleteVertexes() {
     for (size_t vertex = 0; vertex < this->vertexCount;
       ++vertex) {
@@ -764,10 +792,12 @@ class Graph {
         }
       }
     } else {
+      // Conditional in list case the sizes are not the same
       if (this->adjacencyList.size() != newCapacity) {
         return false;
       }
     }
+    // Conditional in vertexes case the sizes are not the same
     if (this->vertexes.size() != newCapacity) {
       return false;
     }
@@ -795,30 +825,34 @@ class Graph {
   }
 
   /**
-   * @brief 
+   * @brief Updates either the adjacency list or the adjacency matrix
    * 
-   * @param action 
+   * @param action a const char that indicates an action to perform
    */
   void updateAdjacency(const char action,
   const size_t firstNumber = 0, const size_t secondNumber = 0) {
     switch (action) {
+      // Remove vertex case
       case 'v':
+        // Condition in case it is a matrix or a list
         if (matrix) {
           removeVertexMatrix(firstNumber);
         } else {
           removeVertexList(firstNumber);
         }
       break;
-
+      // Remove the links case
       case 'l':
+        // Condition in case it is a matrix or a list
         if (matrix) {
           removeLinkMatrix(firstNumber, secondNumber);
         } else {
           removeLinkList(firstNumber, secondNumber);
         }
       break;
-
+      // Increases the size of the matrix
       case 'i':
+        // Condition in case it is a matrix or a list
         if (matrix) {
           increaseMatrix(firstNumber);
         } else {
@@ -831,6 +865,11 @@ class Graph {
     }
   }
 
+  /**
+   * @brief removes the vertex from a matrix
+   * 
+   * @param position index variable
+   */
   void removeVertexMatrix(size_t position) {
     // Cycle that goes from 0 until the capacity is reached
     for (size_t row = 0; row < this->capacity; row++) {
@@ -861,6 +900,12 @@ class Graph {
     std::vector<WeightType*> (this->capacity, nullptr));
   }
 
+  /**
+   * @brief removes the vertex from a list
+   * 
+   * @details see @a removeVertexMatrix() for the position param
+   * @see removeVertexMatrix()
+   */
   void removeVertexList(size_t position) {
     delete this->adjacencyList[position];
     // Erase the position row and adjust the adjacency list
@@ -868,13 +913,25 @@ class Graph {
     this->adjacencyList.begin()+position);
     this->adjacencyList.push_back(nullptr);
   }
-
+  /**
+   * @brief removes the link from a matrix
+   * 
+   * @param originPosition a const size_t index
+   * @param destinPosition a const size_t index
+   */
   void removeLinkMatrix(const size_t originPosition,
   const size_t destinPosition) {
     delete this->adjacencyMatrix[originPosition][destinPosition];
     this->adjacencyMatrix[originPosition][destinPosition] = nullptr;
   }
 
+  /**
+   * @brief removes the link from a list
+   * 
+   * @details see @a removeLinkMatrix() for the originPosition and destinPosition param
+   * @details the origin and destin position are used different from one proccess to another
+   * @see removeLinkMatrix()
+   */
   void removeLinkList(const size_t originPosition,
   const size_t destinPosition) {
     (*this->adjacencyList[originPosition]).erase(
@@ -882,6 +939,11 @@ class Graph {
     *this->vertexes[destinPosition]));
   }
 
+  /**
+   * @brief increases the capacity of the matrix
+   * 
+   * @param newCapacity size_t const that determines the new size of the matrix
+   */
   void increaseMatrix(const size_t newCapacity) {
     // Cycle that goes from 0 until it reaches the max,
     // resizing the row of the adjacency matrix
@@ -893,6 +955,11 @@ class Graph {
     newCapacity, std::vector<WeightType*>(newCapacity, nullptr));
   }
 
+  /**
+   * @brief increases the capacity of the list
+   * 
+   * @param size_t const that determines the new size of the link
+   */
   inline void increaseList(const size_t newCapacity){
     // Resizes the adjacency list
     adjacencyList.resize(newCapacity, nullptr);

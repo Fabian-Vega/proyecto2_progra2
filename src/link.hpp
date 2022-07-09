@@ -59,19 +59,19 @@ class Link {
     other.connection = nullptr;
   }
 
-  // Weight getter
+  // Const weight getter
   inline const WeightType& getWeigth() const {
     return this->weigth;
   }
-
+  // Weight getter
   inline WeightType& getWeigth() {
     return this->weigth;
   }
-
+  // Const connection getter
   inline const Vertex<DataType>* getConnection() const {
     return this->connection;
   }
-
+  // Connection getter
   inline Vertex<DataType>* getConnection() {
     return this->connection;
   }

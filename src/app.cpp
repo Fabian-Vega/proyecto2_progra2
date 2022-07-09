@@ -413,7 +413,7 @@ void printProfile(graphType& graph) {
     for (size_t friendship = 0;
     friendship < profile.getLinkCount(); ++friendship) {
         // Prints each profile, with a relationship with it
-        std::cout << relationships[friendship]->getData() << " " 
+        std::cout << relationships[friendship]->getData() << " "
         << graph.getLink(profile, *relationships[friendship]) << std::endl;
     }
 
