@@ -282,7 +282,7 @@ class Graph {
       for (size_t list = 0; list < this->vertexCount; ++list) {
         size += sizeof(*this->adjacencyList[list]) +
         sizeof(Link<DataType, WeightType>)*
-        (*this->adjacencyList[list]).size();
+        this->adjacencyList[list]->size();
       }
     }
 
@@ -352,7 +352,7 @@ class Graph {
       return this->adjacencyMatrix[originPosition][destinPosition] != nullptr;
     } else {
       return whereIsLink(originPosition, connection) !=
-      (*this->adjacencyList[originPosition]).end();
+      this->adjacencyList[originPosition]->end();
     }
   }
 
@@ -388,8 +388,8 @@ class Graph {
       }
     } else {
       for (typename listType::iterator itr =
-      (*this->adjacencyList[originPosition]).begin();
-      itr != (*this->adjacencyList[originPosition]).end(); ++itr) {
+      this->adjacencyList[originPosition]->begin();
+      itr != this->adjacencyList[originPosition]->end(); ++itr) {
         neighbors[neighborsFound++] = (*itr).getConnection();
       }
     }
@@ -425,9 +425,10 @@ class Graph {
   typename listType::iterator whereIsLink(
     const size_t originPosition, Vertex<DataType>& connection) {
     typename listType::iterator itr =
-    (*this->adjacencyList[originPosition]).begin();
-    for (; itr != (*this->adjacencyList[originPosition]).end();
-    ++itr) {
+    this->adjacencyList[originPosition]->begin();
+    for (typename listType::iterator end =
+    this->adjacencyList[originPosition]->end();
+    itr != end; ++itr) {
       if ((*itr).getConnection() == &connection) {
         return itr;
       }
@@ -528,7 +529,7 @@ class Graph {
       *this->adjacencyMatrix[originPosition][destinPosition] =
       weight;
     } else {
-      (*this->adjacencyList[originPosition]).push_back(
+      this->adjacencyList[originPosition]->push_back(
       Link<DataType, WeightType>(&connection, weight));
     }
     // Increases the link count
@@ -542,7 +543,7 @@ class Graph {
         *this->adjacencyMatrix[destinPosition][originPosition] =
         weight;
       } else {
-        (*this->adjacencyList[destinPosition]).push_back(
+        this->adjacencyList[destinPosition]->push_back(
         Link<DataType, WeightType>(&origin, weight));
       }
       // Increases the link count

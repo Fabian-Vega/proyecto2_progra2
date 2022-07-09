@@ -200,7 +200,7 @@ void addProfile(graphType& graph) {
 
   std::cin.ignore(1, '\n');
   // Reads string of the name to be added
-  std::getline(std::cin, input);
+  std::getline(std::cin, input, '\r');
   // Create the profile
   grph::Vertex<std::string> profile(input);
   // Adds the profile to the graph
