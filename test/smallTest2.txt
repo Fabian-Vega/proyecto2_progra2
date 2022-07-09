@@ -1,9 +1,29 @@
-1 Faby
-1 Barbo
-1 Kenneth
-1 Archi
-1 Daniel
-3 1 2 1
-3 1 3 1
-3 1 4 1
-5 1 0
+1 Demarion Boyle
+1 Marilyn Frey
+1 Yasmin Townsend
+1 Charlize Klein
+1 Paris Rollins
+1 Chaz Morrow
+1 Nico Edwards
+1 Piper Stanton
+1 Valeria Rodgers
+1 Justice Cox
+3 4 7 2
+3 6 4 4
+3 7 3 2
+3 2 3 4
+3 1 10 4
+3 7 1 3
+3 3 7 4
+3 9 8 2
+3 3 1 3
+3 4 8 4
+5 1
+5 2
+5 3
+5 4
+5 5
+5 6
+5 7
+5 8
+0
