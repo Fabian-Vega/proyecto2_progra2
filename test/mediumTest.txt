@@ -1,149 +1,899 @@
-1 Jonathan Johnson
-1 Holly Salas
-1 Brian Brown
-1 Roy West
-1 Stephanie Rodgers
-1 Donald Dodson
-1 Ariel Johnson
-1 Jose Bean
-1 Shannon Moore
-1 Mr. James Bray MD
-1 Jessica Lee
-1 Kyle Crawford
-1 Joshua Berry
-1 Kathy Bell
-1 Jordan Guerrero
-1 Mrs. Melissa Baker
-1 Kenneth Gutierrez
-1 Sheila Fox
-1 Timothy Weaver
-1 Brenda Smith
-1 Cynthia May
-1 Danielle Douglas
-1 Michelle Gomez
-1 Heather Rose
-1 Norma Gray
-1 Amy Macdonald
-1 Miguel Harper
-1 Cory Mills
-1 Michael Day
-1 Timothy Brown
-1 Troy Robinson
-1 Victoria Conway
-1 Michael Robles
-1 Brittany Jackson PhD
-1 Sara Brock
-1 Brenda Ross
-1 Edgar Johnson
-1 Lori Wood
-1 Austin Pearson
-1 Rebecca Carlson
-1 Jill Archer
-1 Catherine Martin
-1 Michelle Williams
-1 Cody Jackson
-1 Marissa Myers
-1 Teresa Wallace MD
-1 Connie Hernandez
-1 Brian Gutierrez DDS
-1 Ethan Duncan
-1 Gary Anderson
-3 16 40 2
-3 6 30 4
-3 25 24 2
-3 18 10 4
-3 7 19 4
-3 22 18 3
-3 22 6 4
-3 38 31 3
-3 34 49 4
-3 46 48 3
-3 11 31 2
-3 36 10 3
-3 9 19 2
-3 15 42 2
-3 42 10 4
-3 16 39 3
-3 43 44 1
-3 24 47 3
-3 23 32 2
-3 28 33 4
-3 32 48 3
-3 40 39 2
-3 13 4 3
-3 32 18 4
-3 33 15 4
-3 8 36 1
-3 34 29 1
-3 5 8 4
-3 9 30 1
-3 19 13 1
-3 29 44 3
-3 21 40 4
-3 26 8 3
-3 1 44 2
-3 22 28 2
-3 8 35 1
-3 33 24 3
-3 7 29 2
-3 28 37 1
-3 32 11 2
-3 18 40 2
-3 13 16 4
-3 47 46 2
-3 34 2 2
-3 44 23 4
-3 20 36 4
-3 40 19 4
-3 40 25 1
-3 46 4 1
-5 38
-5 40
-5 33
-5 47
-5 13
-5 28
-5 6
-5 26
-5 43
-5 5
-5 23
-5 45
-5 15
-5 7
-5 46
-5 15
-5 7
-5 20
-5 3
-5 26
-5 11
-5 25
-5 16
-5 29
-5 22
-5 11
-5 9
-5 46
-5 8
-5 17
-5 19
+1 Marley Cooke
+1 Uriah Bean
+1 Dayana Armstrong
+1 Sammy Ferguson
+1 Ezequiel House
+1 Ricky Campbell
+1 Kaelyn Lam
+1 Malakai Howe
+1 Allen Hardy
+1 Anderson Bowers
+1 Judith Meyer
+1 Riley Adkins
+1 Cassius Cunningham
+1 Ava Mack
+1 Rylee Woods
+1 Kylan Smith
+1 Maggie Burton
+1 Kyla Best
+1 Matthias Huang
+1 Max Martinez
+1 Darius Palmer
+1 Nikolas Esparza
+1 Deborah Carr
+1 Johanna Wade
+1 Leticia Craig
+1 Deon Stafford
+1 Bryant Moss
+1 Sullivan Grant
+1 Rachel Petty
+1 Cohen Fleming
+1 Stephany Hall
+1 Cody Serrano
+1 Stephanie Strong
+1 Will Robles
+1 Melina Mcclure
+1 Raquel Hayden
+1 Shaylee Cisneros
+1 Marlon Spears
+1 Emanuel Choi
+1 Hope Bolton
+1 Ayaan Kline
+1 Anderson Cordova
+1 Alissa Tanner
+1 Marilyn Ewing
+1 Thalia Conley
+1 Rylie Ochoa
+1 Kevin Hood
+1 Abril House
+1 Kadin Norris
+1 Kimberly Herring
+1 Amirah Hartman
+1 Summer Ware
+1 Isiah Roman
+1 Ariel Jordan
+1 Camila Potts
+1 Luciano Tucker
+1 Moshe Galloway
+1 Adolfo Williams
+1 Zechariah Ayers
+1 Iyana Bolton
+1 Savion Lucas
+1 Hailee Macdonald
+1 Tommy Carr
+1 Louis Zamora
+1 Elliana Morse
+1 Alijah Lin
+1 Tianna Scott
+1 Tristin Dean
+1 Tiffany Hammond
+1 Adelaide Clark
+1 Sydnee Villarreal
+1 Ellen Ray
+1 Peyton Willis
+1 Harley Keith
+1 Gavyn Pugh
+1 Janae Norris
+1 Jamarcus Rocha
+1 Francisco Garner
+1 Cali Edwards
+1 Cassidy Santana
+1 Javon Armstrong
+1 Kyson Wiggins
+1 Aidan Sosa
+1 Lorena Flowers
+1 Camryn Henderson
+1 Catalina Cantrell
+1 Alissa Strickland
+1 Demarcus Mayer
+1 Katelyn Padilla
+1 Meghan Vang
+1 Jax Barton
+1 Bobby Calderon
+1 Kyra Mendez
+1 Moises Burgess
+1 Jimena Holland
+1 Tomas Dougherty
+1 Brett George
+1 Raiden Leon
+1 Kael Tyler
+1 Giancarlo Barrett
+1 Erika Pace
+1 Nia Craig
+1 Aniyah Ortiz
+1 Kristin Burke
+1 Amiyah Potts
+1 Darryl Moyer
+1 Zaid Douglas
+1 Angelica Bullock
+1 Nickolas Norman
+1 Laura Duarte
+1 Omar Hatfield
+1 Amber Simpson
+1 Kiersten Lewis
+1 Seamus Lamb
+1 George Anthony
+1 Lana Villanueva
+1 Octavio Combs
+1 Tanner Glenn
+1 Ronan Ramsey
+1 Braiden Sawyer
+1 Cynthia Floyd
+1 August Romero
+1 Chase Parsons
+1 Ainsley Meza
+1 Mina Fischer
+1 Miya Ashley
+1 Maia Moses
+1 Andreas Kramer
+1 Jeffery Dorsey
+1 Ariel Orr
+1 Elise Cox
+1 Luka Rush
+1 Jenny Alexander
+1 Lamont Davila
+1 Emmalee Hahn
+1 Cyrus Ball
+1 Nolan Preston
+1 Kiara Kaiser
+1 Zechariah Landry
+1 Gina Wheeler
+1 Jeffrey Floyd
+1 Sienna Hooper
+1 Cayden Waller
+1 Rebekah Herring
+1 Rosa Bender
+1 Lucas Baker
+1 Boston Spencer
+1 Celeste Frey
+1 Jaelyn Salazar
+1 Rene Johnson
+1 Dashawn Mcdonald
+1 Giancarlo Buckley
+1 Reginald Drake
+1 Israel Herman
+1 James Benjamin
+1 Jose Jefferson
+1 Kaylie Dickson
+1 Helena Orr
+1 Isabela Grant
+1 Cynthia Lopez
+1 Finnegan Melton
+1 Santos Sloan
+1 Frankie Stephens
+1 Karsyn Juarez
+1 Nicholas Hooper
+1 Marissa Archer
+1 Johnny Sellers
+1 Laci Wolfe
+1 Anabella Petty
+1 Maria Curry
+1 Terry Kennedy
+1 Dakota Horton
+1 Jovani Heath
+1 Jerome Armstrong
+1 Randall Mack
+1 Leticia Molina
+1 Tyler Larson
+1 Darryl Bates
+1 Briley Harrell
+1 Damaris Young
+1 Gia Chung
+1 Daniel Conway
+1 Emanuel Cameron
+1 Leia Ortega
+1 Evie Salas
+1 Selina Blankenship
+1 Randall Reese
+1 Kylie Hull
+1 Faith Santiago
+1 Yael Madden
+1 Libby Rush
+1 Kathy Oconnell
+1 Darian Martin
+1 Karson Gross
+1 Andy Reid
+1 Sonny Stuart
+1 Cyrus Meadows
+1 Sage Garrett
+1 Toby Parks
+1 Alissa Mendez
+1 Kimora Ibarra
+1 Jaydan Bean
+1 Riley Turner
+1 Jaylin Yates
+1 Noemi Daugherty
+1 Zane Bauer
+1 Celeste Crane
+1 Rhianna Herrera
+1 Savannah Anthony
+1 Brenda Schmitt
+1 Micaela Cantu
+1 Zaid Ewing
+1 Eliana Figueroa
+1 Sean Frey
+1 Brenna Holloway
+1 Alia Lara
+1 Laila Love
+1 Carter Sutton
+1 Maxim Hood
+1 Sophia Riley
+1 Penelope Contreras
+1 Maxwell Duran
+1 Miranda Proctor
+1 Beau Gross
+1 Joseph Reid
+1 Ashley Patterson
+1 Charlie Andrews
+1 Marely Duncan
+1 Esther Levy
+1 Zack Cain
+1 Sloane Ellison
+1 Troy Trujillo
+1 Leandro Meyer
+1 Haylie Curtis
+1 Camron Henson
+1 Annalise Hensley
+1 Adyson Montoya
+1 Allison Maynard
+1 Dania Barajas
+1 Rudy Le
+1 Kate Weber
+1 Angie Herring
+1 Van Fowler
+1 Aliana Velazquez
+1 Gretchen Waller
+1 Diamond Schroeder
+1 Paige Woods
+1 Carsen Vargas
+1 Giana Rivers
+1 Alivia Neal
+1 Elliott Petty
+1 Uriah Esparza
+1 Emerson Preston
+1 Jacquelyn Mason
+1 Annalise Shepherd
+1 Lesly Mccarthy
+1 Nelson Mahoney
+1 Chasity Goodwin
+1 Shyann Combs
+1 Adriana Sandoval
+1 Harper Woodard
+1 Morgan Barr
+1 Yahir Medina
+1 Juliet Compton
+1 Lance Clarke
+1 Lilah Johns
+1 Luka Fuller
+1 Maxwell Copeland
+1 Taniya Lambert
+1 Chasity Mcintyre
+1 Andres Zuniga
+1 Ariel Reed
+1 Susan Gay
+1 Edward Pitts
+1 Winston Garrison
+1 Warren Morgan
+1 Jackson Ramsey
+1 Naima Villanueva
+1 Douglas Anthony
+1 Tess Nelson
+1 Meredith Lara
+1 Valentino Watkins
+1 Walker Lutz
+1 Royce Torres
+1 Henry Kirby
+1 Mercedes Bird
+1 Nasir Bates
+1 Victor Sims
+1 Christina Maxwell
+1 Keaton Wolfe
+1 Allisson Esparza
+1 Victor Dalton
+1 Kody Torres
+1 Amaya Jones
+1 Randall Kaufman
+1 Alexander Mooney
+1 Josephine Bolton
+1 Skylar Haas
+1 Nyasia Williams
+1 Karlie Travis
+3 284 287 2
+3 116 294 4
+3 287 193 2
+3 122 63 4
+3 291 260 4
+3 227 241 3
+3 173 137 4
+3 69 268 2
+3 183 231 3
+3 224 68 4
+3 30 103 3
+3 259 270 4
+3 194 257 4
+3 143 130 2
+3 22 120 1
+3 38 99 1
+3 216 271 2
+3 227 92 1
+3 57 274 3
+3 171 197 2
+3 106 226 1
+3 28 237 2
+3 47 130 2
+3 258 25 4
+3 283 46 3
+3 268 135 1
+3 244 51 4
+3 109 277 3
+3 189 85 4
+3 252 255 4
+3 133 61 1
+3 169 140 1
+3 227 187 3
+3 240 196 3
+3 135 179 4
+3 202 198 3
+3 118 193 1
+3 57 2 1
+3 87 242 2
+3 90 245 4
+3 41 130 4
+3 218 298 4
+3 82 276 2
+3 128 268 1
+3 198 154 3
+3 66 107 4
+3 120 225 1
+3 172 33 2
+3 4 120 3
+3 169 209 4
+3 41 250 1
+3 24 219 2
+3 147 52 2
+3 156 180 1
+3 165 129 2
+3 51 194 1
+3 135 65 1
+3 215 288 1
+3 244 292 4
+3 266 160 1
+3 233 252 2
+3 29 276 4
+3 175 122 3
+3 296 30 2
+3 136 194 3
+3 129 244 4
+3 229 130 1
+3 5 44 4
+3 114 39 3
+3 41 5 3
+3 229 289 2
+3 118 18 1
+3 225 244 3
+3 84 291 4
+3 173 126 1
+3 91 6 4
+3 255 287 2
+3 183 43 1
+3 98 208 4
+3 5 249 4
+3 123 229 4
+3 244 47 1
+3 41 23 4
+3 11 106 2
+3 62 31 3
+3 6 121 1
+3 245 127 3
+3 66 9 1
+3 283 159 1
+3 238 163 1
+3 1 37 1
+3 300 280 3
+3 69 72 2
+3 132 82 3
+3 134 195 1
+3 64 200 2
+3 300 197 4
+3 274 14 1
+3 291 296 3
+3 267 285 1
+3 191 285 1
+3 43 37 4
+3 46 157 4
+3 19 288 1
+3 149 173 4
+3 10 237 3
+3 43 288 3
+3 202 14 1
+3 122 56 4
+3 200 22 1
+3 140 212 1
+3 168 6 1
+3 228 51 1
+3 59 121 1
+3 23 270 1
+3 182 31 1
+3 293 73 1
+3 51 26 2
+3 123 200 1
+3 243 99 2
+3 99 291 1
+3 291 210 2
+3 220 137 1
+3 56 195 1
+3 180 270 2
+3 177 151 4
+3 161 143 4
+3 185 194 2
+3 222 68 1
+3 14 62 3
+3 127 160 1
+3 285 122 3
+3 43 169 1
+3 290 173 1
+3 259 199 1
+3 109 254 1
+3 4 134 2
+3 249 91 3
+3 68 247 1
+3 130 201 3
+3 289 198 2
+3 191 104 2
+3 64 198 2
+3 293 187 2
+3 153 197 4
+3 189 58 2
+3 137 61 3
+3 22 61 1
+3 129 128 3
+3 249 257 3
+3 195 298 4
+3 44 240 3
+3 229 4 1
+3 282 48 3
+3 260 252 4
+3 135 140 1
+3 16 28 1
+3 30 50 1
+3 186 230 4
+3 236 178 1
+3 239 72 2
+3 190 168 1
+3 193 96 4
+3 145 130 3
+3 283 141 2
+3 70 27 1
+3 162 43 1
+3 118 124 2
+3 82 10 3
+3 226 297 4
+3 78 235 3
+3 227 125 2
+3 15 69 2
+3 159 213 3
+3 101 247 3
+3 295 17 1
+3 79 230 3
+3 191 48 3
+3 52 181 4
+3 194 158 4
+3 213 287 3
+3 56 213 3
+3 13 280 3
+3 170 190 3
+3 156 42 1
+3 34 88 1
+3 239 167 3
+3 185 57 2
+3 7 161 2
+3 138 106 4
+3 18 19 2
+3 184 74 3
+3 174 138 2
+3 284 8 3
+3 58 215 4
+3 130 1 4
+3 219 239 2
+3 289 175 2
+3 158 182 2
+3 259 71 4
+3 218 140 2
+3 164 23 3
+3 74 248 4
+3 263 283 3
+3 93 92 2
+3 16 222 2
+3 275 192 4
+3 152 232 2
+3 138 141 3
+3 231 99 2
+3 182 17 1
+3 203 232 4
+3 297 5 3
+3 281 19 2
+3 271 163 1
+3 280 178 2
+3 237 205 1
+3 184 108 4
+3 58 245 4
+3 112 228 3
+3 237 161 3
+3 6 64 2
+3 45 112 2
+3 135 92 4
+3 156 115 2
+3 269 94 3
+3 106 83 3
+3 83 18 3
+3 94 75 3
+3 194 187 2
+3 144 175 3
+3 214 180 2
+3 163 276 1
+3 220 111 1
+3 295 18 3
+3 36 38 4
+3 254 144 2
+3 129 226 4
+3 111 19 2
+3 37 264 4
+3 191 159 3
+3 205 72 2
+3 34 286 2
+3 274 205 4
+3 6 251 1
+3 204 286 3
+3 196 240 2
+3 21 68 3
+3 164 178 1
+3 82 266 1
+3 237 156 3
+3 19 112 3
+3 33 197 4
+3 22 171 1
+3 173 228 3
+3 41 184 1
+3 299 131 4
+3 48 151 3
+3 74 15 4
+3 223 148 1
+3 283 136 1
+3 5 155 4
+3 99 187 1
+3 179 260 3
+3 163 184 2
+3 149 224 1
+3 173 223 3
+3 136 22 2
+3 166 148 4
+3 177 70 3
+3 102 104 2
+3 234 108 4
+3 229 207 2
+3 121 85 1
+3 235 299 4
+3 277 199 4
+3 253 72 2
+3 60 207 3
+3 17 125 2
+3 40 1 3
+3 210 154 2
+3 215 139 2
+3 127 68 4
+3 224 188 4
+3 33 123 2
+3 76 151 4
+3 291 155 3
+3 232 214 2
+3 195 282 2
+3 4 21 2
+3 183 282 4
+3 216 197 2
+3 5 23 1
+3 52 298 1
+3 235 82 3
+3 116 158 1
+3 196 200 3
+3 98 184 1
+3 155 78 2
+3 88 133 3
 5 1
+5 2
+5 3
+5 4
+5 5
+5 6
 5 7
-5 3
-5 3
-5 20
-5 30
 5 8
-5 45
-5 29
+5 9
+5 10
+5 11
 5 12
+5 13
+5 14
+5 15
+5 16
+5 17
+5 18
+5 19
+5 20
+5 21
+5 22
 5 23
 5 24
+5 25
+5 26
+5 27
+5 28
+5 29
+5 30
+5 31
 5 32
+5 33
 5 34
-5 20
-5 46
+5 35
+5 36
+5 37
+5 38
+5 39
 5 40
+5 41
+5 42
+5 43
 5 44
+5 45
+5 46
+5 47
+5 48
+5 49
+5 50
+5 51
+5 52
+5 53
+5 54
+5 55
+5 56
+5 57
+5 58
+5 59
+5 60
+5 61
+5 62
+5 63
+5 64
+5 65
+5 66
+5 67
+5 68
+5 69
+5 70
+5 71
+5 72
+5 73
+5 74
+5 75
+5 76
+5 77
+5 78
+5 79
+5 80
+5 81
+5 82
+5 83
+5 84
+5 85
+5 86
+5 87
+5 88
+5 89
+5 90
+5 91
+5 92
+5 93
+5 94
+5 95
+5 96
+5 97
+5 98
+5 99
+5 100
+5 101
+5 102
+5 103
+5 104
+5 105
+5 106
+5 107
+5 108
+5 109
+5 110
+5 111
+5 112
+5 113
+5 114
+5 115
+5 116
+5 117
+5 118
+5 119
+5 120
+5 121
+5 122
+5 123
+5 124
+5 125
+5 126
+5 127
+5 128
+5 129
+5 130
+5 131
+5 132
+5 133
+5 134
+5 135
+5 136
+5 137
+5 138
+5 139
+5 140
+5 141
+5 142
+5 143
+5 144
+5 145
+5 146
+5 147
+5 148
+5 149
+5 150
+5 151
+5 152
+5 153
+5 154
+5 155
+5 156
+5 157
+5 158
+5 159
+5 160
+5 161
+5 162
+5 163
+5 164
+5 165
+5 166
+5 167
+5 168
+5 169
+5 170
+5 171
+5 172
+5 173
+5 174
+5 175
+5 176
+5 177
+5 178
+5 179
+5 180
+5 181
+5 182
+5 183
+5 184
+5 185
+5 186
+5 187
+5 188
+5 189
+5 190
+5 191
+5 192
+5 193
+5 194
+5 195
+5 196
+5 197
+5 198
+5 199
+5 200
+5 201
+5 202
+5 203
+5 204
+5 205
+5 206
+5 207
+5 208
+5 209
+5 210
+5 211
+5 212
+5 213
+5 214
+5 215
+5 216
+5 217
+5 218
+5 219
+5 220
+5 221
+5 222
+5 223
+5 224
+5 225
+5 226
+5 227
+5 228
+5 229
+5 230
+5 231
+5 232
+5 233
+5 234
+5 235
+5 236
+5 237
+5 238
+5 239
+5 240
+5 241
+5 242
+5 243
+5 244
+5 245
+5 246
+5 247
+5 248
+5 249
+5 250
+5 251
+5 252
+5 253
+5 254
+5 255
+5 256
+5 257
+5 258
+5 259
+5 260
+5 261
+5 262
+5 263
+5 264
+5 265
+5 266
+5 267
+5 268
+5 269
+5 270
+5 271
+5 272
+5 273
+5 274
+5 275
+5 276
+5 277
+5 278
+5 279
+5 280
+5 281
+5 282
+5 283
+5 284
+5 285
+5 286
+5 287
+5 288
+5 289
+5 290
+5 291
+5 292
+5 293
+5 294
+5 295
+5 296
+5 297
+5 298
 0
