@@ -5,7 +5,7 @@
 
 #include "graph.hpp"
 
-typedef grph::Graph<std::string, std::string, true> graphType;
+typedef grph::Graph<std::string, std::string, false> graphType;
 
 /**
  * @brief Prints header and options to choose
