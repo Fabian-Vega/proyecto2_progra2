@@ -61,8 +61,8 @@ int main(void) {
     }
     // Releases the heap memory that was used during this proccess
     delete [] bostonNeighbors;
-    // Creates a graph class object using the first an copying it
-    grph::Graph<std::string, int, false> graph2(graph);
+    // Creates a graph class object using the move constructor
+    grph::Graph<std::string, int, false> graph2(std::move(graph));
     // This proccess makes the vertexes usable via a refrence
     grph::Vertex<std::string>& boston2 = *graph2.getVertexes()[0];
     grph::Vertex<std::string>& york2 = *graph2.getVertexes()[1];
