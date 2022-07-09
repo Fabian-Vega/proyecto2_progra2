@@ -17,7 +17,7 @@ TEST_CASE("tests"){
   REQUIRE(prueba.isEmpty()==false);
   // Should return true because we are adding a non added before vertex
   REQUIRE(prueba.addVertex(cities[1]) == true);
-  // Should return true because we are adding a non added before vertex
+  // Should return false because we are adding an already added vertex
   grph::Vertex<std::string>& boston = *prueba.getVertexes()[0];
   grph::Vertex<std::string>& york = *prueba.getVertexes()[1];
   REQUIRE(prueba.addVertex(boston) == false);
@@ -28,7 +28,6 @@ TEST_CASE("tests"){
   REQUIRE(prueba.addLink(boston, york, weights[0])==true);
   // Should return false because the existent link was already created
   REQUIRE(prueba.addLink(boston, york, weights[0])==false);
-  // Should return 2 because of the correct creation of the previous link
   // Should return true because we are adding a non added before vertex
   REQUIRE(prueba.addVertex(cities[2]) == true);
   grph::Vertex<std::string>& vegas = *prueba.getVertexes()[2];
@@ -70,22 +69,19 @@ TEST_CASE("tests"){
   REQUIRE(prueba2.addLink(cartago, puntarenas, weightsCr[0])==true);
   // Should return false because the existent link was already created
   REQUIRE(prueba2.addLink(cartago, puntarenas, weightsCr[0])==false);
-  // Should return 2 because of the correct creation of the previous link
   // Should return true because we are adding a non added before vertex
-  // ***Agregue el vertice al vertex
   REQUIRE(prueba2.addVertex(citiesCr[2]) == true);
   grph::Vertex<std::string>& limon = *prueba2.getVertexes()[2];
   // Should return false because the link was already created
   REQUIRE(prueba2.addVertex(limon) == false);
   // Should return true because the non existent link was created succesfully
   REQUIRE( prueba2.addLink(cartago, limon, weightsCr[1])==true);
-  // ***Cambio aqui de 1 a 2
+  // Should return 2 because that's the amount of links we have
   REQUIRE(cartago.getLinkCount() == 2);
   // Should return 801 because of the correct creation of the previous link
   REQUIRE(prueba2.getLink(cartago, puntarenas) == 801);
   // Should return true if deleting was  succesful
   REQUIRE(prueba2.removeVertex(puntarenas)==true);
   // Should return 1 because that is the amount of vertexes that are in the graph
-  // ***Lo cambie a 2 porque deberian haber 2
   REQUIRE(prueba2.getVertexCount()== 2);
 }
