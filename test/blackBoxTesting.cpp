@@ -169,7 +169,6 @@ void testList(const bool directed) {
     // Creates a graph class object using the move constructor
     grph::Graph<long double, bool> graph2(std::move(graph));
     // This proccess makes the vertexes usable via a refrence
-    grph::Vertex<long double>& first2 = *graph2.getVertexes()[0];
     grph::Vertex<long double>& third2 = *graph2.getVertexes()[1];
     grph::Vertex<long double>& fourth2 = *graph2.getVertexes()[2];
     grph::Vertex<long double>& fifth2 = *graph2.getVertexes()[3];
@@ -191,7 +190,6 @@ void testList(const bool directed) {
     << (graph2.getLink(sixth2, sixth2)? "positiva!":"negativa!")
     << std::endl;
     
-    graph2.addLink(fifth2, first2, isMultNegative[1]);
     // Creates a string of vertexes with the neighbors of fifth2
     grph::Vertex<long double>** fifth2Neighbors =
     graph2.getNeighbors(fifth2);
