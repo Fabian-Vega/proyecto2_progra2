@@ -30,26 +30,22 @@ TEST_CASE("tests"){
   REQUIRE(prueba.addLink(boston, york, weights[0])==false);
   // Should return 2 because of the correct creation of the previous link
   // Should return true because we are adding a non added before vertex
-  // ***Agregue el vertice al vertex
   REQUIRE(prueba.addVertex(cities[2]) == true);
   grph::Vertex<std::string>& vegas = *prueba.getVertexes()[2];
   // Should return false because the link was already created
   REQUIRE(prueba.addVertex(vegas) == false);
   // Should return true because the non existent link was created succesfully
   REQUIRE( prueba.addLink(boston, vegas, weights[1])==true);
-  // ***Cambio aqui de 1 a 2
   REQUIRE(boston.getLinkCount() == 2);
   // Should return 801 because of the correct creation of the previous link
   REQUIRE(prueba.getLink(boston, york) == 801);
   // Should return true if deleting was  succesful
   REQUIRE(prueba.removeVertex(york)==true);
-  // Should return 1 because that is the amount of vertexes that are in the graph
-  // ***Lo cambie a 2 porque deberian haber 2
+  // Should return 2 because that is the amount of vertexes that are in the graph
   REQUIRE(prueba.getVertexCount()== 2);
 
 
-  /// ***Lista enlazada
-  grph::Graph<std::string, int, true> prueba2(3, false);
+  grph::Graph<std::string, int, false> prueba2(3, false);
     grph::Vertex<std::string> citiesCr[3] = {
       grph::Vertex<std::string>(std::string("Cartago")),
       grph::Vertex<std::string>(std::string("Puntarenas")),
