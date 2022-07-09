@@ -5,7 +5,7 @@
 
 #include "graph.hpp"
 
-typedef grph::Graph<std::string, std::string, false> graphType;
+typedef grph::Graph<std::string, std::string, true> graphType;
 
 /**
  * @brief Prints header and options to choose
@@ -200,7 +200,7 @@ void addProfile(graphType& graph) {
 
   std::cin.ignore(1, '\n');
   // Reads string of the name to be added
-  std::getline(std::cin, input, '\r');
+  std::getline(std::cin, input);
   // Create the profile
   grph::Vertex<std::string> profile(input);
   // Adds the profile to the graph
